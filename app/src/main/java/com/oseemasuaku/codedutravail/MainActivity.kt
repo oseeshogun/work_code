@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import com.oseemasuaku.codedutravail.presentation.screens.Home
 import com.oseemasuaku.codedutravail.ui.theme.CodeDuTravailTheme
 
 
@@ -16,16 +17,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CodeDuTravailTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    val content: String = assets.open("work_code.yaml").bufferedReader().use {
-                        it.readText()
-                    }
-                    Text(text = content.substring(0, 30))
-                }
+                Home()
+
+//                    val content: String = assets.open("work_code.yaml").bufferedReader().use {
+//                        it.readText()
+//                    }
+
             }
         }
     }
