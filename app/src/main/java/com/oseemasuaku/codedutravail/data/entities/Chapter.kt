@@ -2,6 +2,7 @@ package com.oseemasuaku.codedutravail.data.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -13,11 +14,14 @@ import androidx.room.PrimaryKey
             childColumns = arrayOf("title"),
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [Index(value = ["number", "title"], unique = true)]
 )
 data class Chapter(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     val number: Int,
-    val name: String,
+    val text: String,
     val title: Int,
+    val articles: List<Int>,
 )

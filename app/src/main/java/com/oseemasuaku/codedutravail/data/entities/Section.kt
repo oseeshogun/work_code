@@ -2,22 +2,24 @@ package com.oseemasuaku.codedutravail.data.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "sections",
-    foreignKeys = [
+    tableName = "sections", foreignKeys = [
         ForeignKey(
-            entity = Chapter::class,
+            entity = Title::class,
             parentColumns = arrayOf("number"),
-            childColumns = arrayOf("chapter"),
+            childColumns = arrayOf("title"),
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ], indices = [Index(value = ["number", "chapter", "title"], unique = true)]
 )
 data class Section(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val number: Int,
-    val name: String,
+    val text: String,
     val chapter: Int,
+    val title: Int,
+    val articles: List<Int>,
 )

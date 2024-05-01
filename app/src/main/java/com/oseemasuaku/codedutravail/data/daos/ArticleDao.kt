@@ -14,12 +14,4 @@ interface ArticleDao {
     @Query("SELECT * FROM articles")
     fun streamAll(): Flow<List<Article>>
 
-    @Query("SELECT * FROM articles WHERE title = :title")
-    fun streamByTitle(title: Int): Flow<List<Article>>
-
-    @Query("SELECT * FROM articles WHERE chapter = :chapter")
-    fun streamByChapter(chapter: Int): Flow<List<Article>>
-
-    @Query("SELECT * FROM articles WHERE section = :section")
-    fun streamBySection(section: Int): Flow<List<Article>>
 }

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.devtoolsKsp)
+    alias(libs.plugins.daggerHilt)
 }
 
 android {
@@ -14,10 +15,15 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
         }
     }
 
@@ -67,8 +73,21 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.extensions)
 
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.dagger.compiler)
+    ksp(libs.hilt.android.compiler)
+
+    implementation(libs.jackson.dataformat.yaml)
+    implementation(libs.jackson.module.kotlin)
+
+    implementation(libs.androidx.multidex)
 }
