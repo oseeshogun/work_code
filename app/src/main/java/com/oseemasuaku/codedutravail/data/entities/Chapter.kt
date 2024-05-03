@@ -1,5 +1,6 @@
 package com.oseemasuaku.codedutravail.data.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -22,6 +23,6 @@ data class Chapter(
     val id: Int = 0,
     val number: Int,
     val text: String,
-    val title: Int,
+    @ColumnInfo(index = true) val title: Int,
     val articles: List<Int>,
 )

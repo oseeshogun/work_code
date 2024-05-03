@@ -17,11 +17,11 @@ class SectionRepositoryImpl(
         sectionDao.insertAll(*dbSections.toTypedArray())
     }
 
-    override fun streamByChapter(chapterId: Int): Flow<List<SectionData>> {
-        return sectionDao.streamByChapter(chapterId).map { data ->
-            data.map {
-                SectionData(it.number, it.text, it.chapter, it.title, it.articles)
-            }
+    override fun streamByChapter(titleNumber: Int, chapterNumber: Int): Flow<List<SectionData>> {
+        return sectionDao.streamByChapter(titleNumber, chapterNumber).map { sections ->
+            sections.map { SectionData(id = it.id, number = it.number, text = it.text, chapterNumber = it.chapter, titleNumber = it.title, articles = it.articles) }
         }
     }
+
+
 }

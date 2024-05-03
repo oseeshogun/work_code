@@ -7,5 +7,5 @@ interface SectionRepository {
 
     suspend fun insertAll(vararg sections: SectionData)
 
-    fun streamByChapter(chapterId: Int): Flow<List<SectionData>>
+    fun streamByChapter(titleNumber: Int, chapterNumber: Int): Flow<List<SectionData>>
 }

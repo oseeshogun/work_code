@@ -14,6 +14,6 @@ interface SectionDao {
     @Query("SELECT * FROM sections")
     fun streamAll(): Flow<List<Section>>
 
-    @Query("SELECT * FROM sections WHERE chapter = :chapter")
-    fun streamByChapter(chapter: Int): Flow<List<Section>>
+    @Query("SELECT * FROM sections WHERE chapter = :chapter AND title = :title")
+    fun streamByChapter(title: Int, chapter: Int): Flow<List<Section>>
 }

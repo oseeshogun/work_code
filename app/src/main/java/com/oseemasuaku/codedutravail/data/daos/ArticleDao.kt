@@ -14,4 +14,6 @@ interface ArticleDao {
     @Query("SELECT * FROM articles")
     fun streamAll(): Flow<List<Article>>
 
+    @Query("SELECT * FROM articles WHERE number IN (:ids)")
+    fun streamArticles(ids: List<Int>): Flow<List<Article>>
 }

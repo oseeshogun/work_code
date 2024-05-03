@@ -20,7 +20,7 @@ class ChapterRepositoryImpl(
     override fun streamByTitle(titleId: Int): Flow<List<ChapterData>> {
         return chapterDao.streamByTitle(titleId).map { data ->
             data.map {
-                ChapterData(it.number, it.text, it.title, it.articles)
+                ChapterData(it.id, it.number, it.text, it.title, it.articles)
             }
         }
     }

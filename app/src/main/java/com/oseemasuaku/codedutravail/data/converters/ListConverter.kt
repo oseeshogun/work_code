@@ -5,6 +5,7 @@ import androidx.room.TypeConverter
 class ListConverter {
     @TypeConverter
     fun fromListInt(value: String): List<Int> {
+        if (value.isBlank()) return emptyList()
         return value.split(',').map { it.toInt() }
     }
 
