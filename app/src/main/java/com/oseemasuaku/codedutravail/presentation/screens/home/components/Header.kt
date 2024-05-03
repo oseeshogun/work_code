@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.oseemasuaku.codedutravail.R
 
 @Composable
-fun Header() {
+fun Header(hideSearch: Boolean = false) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -40,7 +40,7 @@ fun Header() {
                 style = MaterialTheme.typography.headlineMedium
             )
         }
-        IconButton(onClick = { /*TODO*/ }
+        if (!hideSearch) IconButton(onClick = { /*TODO*/ }
         ) {
             Icon(imageVector = Icons.Default.Search, contentDescription = "Recherche")
         }

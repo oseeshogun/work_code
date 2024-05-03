@@ -11,13 +11,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.oseemasuaku.codedutravail.domain.entities.SectionData
 import com.oseemasuaku.codedutravail.presentation.screens.home.HomeViewModel
 import com.oseemasuaku.codedutravail.presentation.screens.home.components.expandable_section.ExpandableSection
 import com.oseemasuaku.codedutravail.presentation.screens.home.utils.toRomanNumeral
 
 @Composable
-fun HomeBuildSections(title: Int, chapter: Int) {
+fun HomeBuildSections(title: Int, chapter: Int, navController: NavHostController) {
     val viewModel: HomeViewModel = hiltViewModel()
 
     var openedSections by remember {
@@ -48,7 +49,7 @@ fun HomeBuildSections(title: Int, chapter: Int) {
                         openedSections.toMutableList().plus(it.id)
                     }
                 }) {
-                HomeBuildArticles(ids = it.articles)
+                HomeBuildArticles(ids = it.articles, navController)
             }
         }
     }

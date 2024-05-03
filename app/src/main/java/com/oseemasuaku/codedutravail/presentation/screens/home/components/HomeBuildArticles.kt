@@ -18,11 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.oseemasuaku.codedutravail.domain.entities.ArticleData
 import com.oseemasuaku.codedutravail.presentation.screens.home.HomeViewModel
 
 @Composable
-fun HomeBuildArticles(ids: List<Int>) {
+fun HomeBuildArticles(ids: List<Int>, navController: NavHostController) {
     val viewModel: HomeViewModel = hiltViewModel()
 
     var articles by remember {
@@ -41,7 +42,7 @@ fun HomeBuildArticles(ids: List<Int>) {
                 modifier = Modifier
                     .padding(vertical = 8.dp)
                     .clickable {
-
+                        navController.navigate("article/${it.number}")
                     },
             ) {
                 Text(text = buildAnnotatedString {

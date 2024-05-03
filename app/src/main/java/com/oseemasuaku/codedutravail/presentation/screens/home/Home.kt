@@ -13,12 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.oseemasuaku.codedutravail.presentation.screens.home.components.Header
 import com.oseemasuaku.codedutravail.presentation.screens.home.components.HomeBegin
 import com.oseemasuaku.codedutravail.presentation.screens.home.components.HomeWorkCode
 
 @Composable
-fun Home() {
+fun Home(navController: NavHostController) {
     val viewModel: HomeViewModel = hiltViewModel()
 
     val titles by viewModel.titles.collectAsState()
@@ -39,7 +40,7 @@ fun Home() {
                     if (titles.isEmpty()) {
                         HomeBegin()
                     } else {
-                        HomeWorkCode(titles)
+                        HomeWorkCode(titles, navController)
                     }
                 }
             }

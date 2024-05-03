@@ -7,5 +7,7 @@ interface ArticleRepository {
 
     suspend fun insertAll(articles: List<ArticleData>)
 
+    fun streamArticleById(id: Int): Flow<ArticleData>
+
     fun streamArticles(ids: List<Int>): Flow<List<ArticleData>>
 }

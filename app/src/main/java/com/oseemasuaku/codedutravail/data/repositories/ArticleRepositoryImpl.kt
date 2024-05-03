@@ -18,6 +18,12 @@ class ArticleRepositoryImpl(
         articleDao.insertAll(*dbArticles.toTypedArray())
     }
 
+    override fun streamArticleById(id: Int): Flow<ArticleData> {
+        return articleDao.steamById(id).map {
+            ArticleData(it.number, it.text)
+        }
+    }
+
     override fun streamArticles(ids: List<Int>): Flow<List<ArticleData>> {
         return articleDao.streamArticles(ids).map {
             it.map { article ->

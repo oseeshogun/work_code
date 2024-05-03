@@ -10,13 +10,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.oseemasuaku.codedutravail.domain.entities.TitleData
 import com.oseemasuaku.codedutravail.presentation.screens.home.HomeViewModel
 import com.oseemasuaku.codedutravail.presentation.screens.home.components.expandable_section.ExpandableSection
 import com.oseemasuaku.codedutravail.presentation.screens.home.utils.toRomanNumeral
 
 @Composable
-fun HomeWorkCode(titles: List<TitleData>) {
+fun HomeWorkCode(titles: List<TitleData>, navController: NavHostController) {
 
     val viewModel: HomeViewModel = hiltViewModel()
 
@@ -39,11 +40,11 @@ fun HomeWorkCode(titles: List<TitleData>) {
                             title = "Chapitre ${chapter.number.toRomanNumeral()}. ${chapter.text}",
                             isExpanded = openedChapters.contains(chapter.id),
                             onClick = { viewModel.toggleChapterVisibility(chapter.id) }) {
-                            HomeBuildSections(it.number, chapter.number)
-                            HomeBuildArticles(ids = chapter.articles)
+                            HomeBuildSections(it.number, chapter.number, navController)
+                            HomeBuildArticles(ids = chapter.articles, navController)
                         }
                     }
-                    HomeBuildArticles(ids = it.articles)
+                    HomeBuildArticles(ids = it.articles, navController)
                 }
             }
         }
