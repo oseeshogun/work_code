@@ -12,7 +12,6 @@ import com.oseemasuaku.codedutravail.ui.theme.CodeDuTravailTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 // TODO: Material Search Delegate for Article
-// TODO: Text to Speech
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

@@ -75,6 +75,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.extensions)
+    implementation(libs.androidx.material.icons.extended)
 
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
