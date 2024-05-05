@@ -19,4 +19,7 @@ interface ArticleDao {
 
     @Query("SELECT * FROM articles WHERE number IN (:ids)")
     fun streamArticles(ids: List<Int>): Flow<List<Article>>
+
+    @Query("SELECT * FROM articles WHERE text LIKE '%' || :query || '%' LIMIT 30")
+    fun search(query: String): Flow<List<Article>>
 }

@@ -32,4 +32,12 @@ class ArticleRepositoryImpl(
         }
     }
 
+    override fun search(query: String): Flow<List<ArticleData>> {
+        return articleDao.search(query).map {
+            it.map { article ->
+                ArticleData(number = article.number, text = article.text)
+            }
+        }
+    }
+
 }

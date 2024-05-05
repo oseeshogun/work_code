@@ -10,4 +10,6 @@ interface ArticleRepository {
     fun streamArticleById(id: Int): Flow<ArticleData>
 
     fun streamArticles(ids: List<Int>): Flow<List<ArticleData>>
+
+    fun search(query: String): Flow<List<ArticleData>>
 }
