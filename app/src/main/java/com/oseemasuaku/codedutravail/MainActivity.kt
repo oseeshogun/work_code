@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.oseemasuaku.codedutravail.presentation.screens.article.ArticleScreen
 import com.oseemasuaku.codedutravail.presentation.screens.home.Home
+import com.oseemasuaku.codedutravail.presentation.screens.information.InformationScreen
 import com.oseemasuaku.codedutravail.presentation.screens.search.ArticleSearch
 import com.oseemasuaku.codedutravail.ui.theme.CodeDuTravailTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +31,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("search") {
                         ArticleSearch(navController)
+                    }
+                    composable("info") {
+                        InformationScreen(navController)
                     }
                 }
             }
