@@ -2,11 +2,15 @@ package com.oseemasuaku.codedutravail.presentation.screens.information
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.CorporateFare
 import androidx.compose.material.icons.filled.WavingHand
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -17,7 +21,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
@@ -68,6 +74,40 @@ fun InformationScreen(navController: NavHostController) {
                         uriHandler.openUri("https://www.linkedin.com/in/osee-masuaku/")
                     }
                 )
+            }
+            item {
+                ListItem(
+                    headlineContent = {
+                        Text(text = "À propos du Code du Travail")
+                    },
+                    leadingContent = {
+                        Icon(Icons.Default.CorporateFare, contentDescription = "Corporate")
+                    },
+                    modifier = Modifier.clickable {
+                        navController.navigate("about")
+                    }
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(10.dp))
+            }
+            item {
+                Column(
+                    modifier = Modifier
+                        .padding(10.dp),
+                ) {
+                    Text(text = "CLAUSE DE NON-RESPONSABILITÉ", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(text = "Cette application fournit une version du Code du Travail provenant d'un lien PDF public. Elle n'est pas affiliée à une entité gouvernementale et ne représente pas un service gouvernemental officiel. Les informations contenues dans cette application sont fournies à titre informatif uniquement et ne doivent pas être considérées comme des conseils juridiques. Pour des informations officielles et à jour, veuillez consulter les sources gouvernementales appropriées dans le lien du cnss (La Caisse Nationale de Sécurité Sociale).")
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = "Lien du PDF",
+                        modifier = Modifier.clickable {
+                            uriHandler.openUri("https://cnss.cd/wp-content/uploads/2020/12/Les-Codes-Larcier-t.IV-Droit-du-Travail-et-de-la-Securite-sociale.pdf")
+                        },
+                        color = Color.Blue
+                    )
+                }
             }
         }
 
