@@ -13,7 +13,7 @@ android {
         applicationId = "com.oseemasuaku.codedutravail"
         minSdk = 24
         targetSdk = 34
-        versionCode = 2
+        versionCode = 7
         versionName = "1.0"
         multiDexEnabled = true
 
