@@ -14,8 +14,6 @@ import com.oseemasuaku.codedutravail.presentation.screens.search.ArticleSearch
 import com.oseemasuaku.codedutravail.ui.theme.CodeDuTravailTheme
 import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Material Search Delegate for Article
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
