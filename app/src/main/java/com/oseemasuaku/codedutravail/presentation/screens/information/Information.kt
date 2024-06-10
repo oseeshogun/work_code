@@ -75,7 +75,7 @@ fun InformationScreen(navController: NavHostController, activity: Activity) {
                         Icon(Icons.Default.WavingHand, contentDescription = "Greeting")
                     },
                     modifier = Modifier.clickable {
-                        uriHandler.openUri("https://www.linkedin.com/in/osee-masuaku/")
+                        uriHandler.openUri("https://oseemasuaku.com")
                     }
                 )
             }
@@ -127,7 +127,7 @@ fun InformationScreen(navController: NavHostController, activity: Activity) {
                         modifier = Modifier.clickable {
                             uriHandler.openUri("https://cnss.cd/wp-content/uploads/2020/12/Les-Codes-Larcier-t.IV-Droit-du-Travail-et-de-la-Securite-sociale.pdf")
                         },
-                        color = Color.Blue
+                        color = Color.Gray
                     )
                 }
             }
