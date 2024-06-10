@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                         ArticleSearch(navController)
                     }
                     composable("info") {
-                        InformationScreen(navController)
+                        InformationScreen(navController, this@MainActivity)
                     }
                     composable("about") {
                         AboutWorkCode(navController)

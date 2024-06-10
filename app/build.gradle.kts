@@ -13,8 +13,8 @@ android {
         applicationId = "com.oseemasuaku.codedutravail"
         minSdk = 24
         targetSdk = 34
-        versionCode = 7
-        versionName = "1.0"
+        versionCode = 9
+        versionName = "1.1"
         multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -91,4 +91,7 @@ dependencies {
     implementation(libs.jackson.module.kotlin)
 
     implementation(libs.androidx.multidex)
+
+    implementation(libs.app.update)
+    implementation(libs.app.update.ktx)
 }

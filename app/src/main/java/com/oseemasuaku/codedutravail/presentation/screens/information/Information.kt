@@ -1,5 +1,6 @@
 package com.oseemasuaku.codedutravail.presentation.screens.information
 
+import android.app.Activity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.CorporateFare
+import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.filled.WavingHand
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,12 +27,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InformationScreen(navController: NavHostController) {
+fun InformationScreen(navController: NavHostController, activity: Activity) {
     val uriHandler = LocalUriHandler.current
+    val appUpdateViewModel: AppUpdateViewModel = hiltViewModel();
 
     Scaffold(
         topBar = {
@@ -87,6 +91,24 @@ fun InformationScreen(navController: NavHostController) {
                         navController.navigate("about")
                     }
                 )
+            }
+            if (appUpdateViewModel.updateAvailable) {
+                item {
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
+                item {
+                    ListItem(
+                        headlineContent = {
+                            Text(text = "Une mise à jour est disponible")
+                        },
+                        leadingContent = {
+                            Icon(Icons.Default.Update, contentDescription = "Update")
+                        },
+                        modifier = Modifier.clickable {
+                            appUpdateViewModel.startUpdateFlow(activity)
+                        }
+                    )
+                }
             }
             item {
                 Spacer(modifier = Modifier.height(10.dp))
