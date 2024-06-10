@@ -1,5 +1,6 @@
 [versions]
 agp = "8.3.2"
+appUpdate = "2.1.0"
 hiltAndroid = "2.51"
 hiltNavigation = "1.2.0"
 jacksonDataformatYaml = "2.14.2"
@@ -30,6 +31,8 @@ androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "mult
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+app-update = { module = "com.google.android.play:app-update", version.ref = "appUpdate" }
+app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "appUpdate" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "hiltAndroid" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
