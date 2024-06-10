@@ -34,7 +34,7 @@ import androidx.navigation.NavHostController
 @Composable
 fun InformationScreen(navController: NavHostController, activity: Activity) {
     val uriHandler = LocalUriHandler.current
-    val appUpdateViewModel: AppUpdateViewModel = hiltViewModel();
+    val appUpdateViewModel: AppUpdateViewModel = hiltViewModel()
 
     Scaffold(
         topBar = {
