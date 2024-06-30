@@ -17,6 +17,9 @@ interface ArticleDao {
     @Query("SELECT * FROM articles WHERE number = :number")
     fun steamById(number: Int): Flow<Article>
 
+    @Query("SELECT * FROM articles WHERE number = :number")
+    suspend fun getById(number: Int): Article
+
     @Query("SELECT * FROM articles WHERE number IN (:ids)")
     fun streamArticles(ids: List<Int>): Flow<List<Article>>
 

@@ -1,5 +1,6 @@
 package com.oseemasuaku.codedutravail.presentation.screens.home.components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,26 +28,35 @@ fun HomeWorkCode(titles: List<TitleData>, navController: NavHostController) {
 
     val chapters by viewModel.chapters.collectAsState(initial = emptyList())
 
-    LazyColumn {
-        items(titles) {
-            ExpandableSection(title = "Titre ${it.number.toRomanNumeral()}. ${it.text}",
-                isExpanded = selectedTitle == it.number,
-                onClick = { viewModel.toggleSelectTitle(it.number) }) {
-                Column(
-                    modifier = Modifier.padding(start = 10.dp)
-                ) {
-                    chapters.forEach { chapter ->
-                        ExpandableSection(
-                            title = "Chapitre ${chapter.number.toRomanNumeral()}. ${chapter.text}",
-                            isExpanded = openedChapters.contains(chapter.id),
-                            onClick = { viewModel.toggleChapterVisibility(chapter.id) }) {
-                            HomeBuildSections(it.number, chapter.number, navController)
-                            HomeBuildArticles(ids = chapter.articles, navController)
+    Column {
+        ArticleOfTheDay(navController)
+        Box(
+            modifier = Modifier.weight(1f)
+        ) {
+            LazyColumn {
+                items(titles) {
+                    ExpandableSection(title = "Titre ${it.number.toRomanNumeral()}. ${it.text}",
+                        isExpanded = selectedTitle == it.number,
+                        onClick = { viewModel.toggleSelectTitle(it.number) }) {
+                        Column(
+                            modifier = Modifier.padding(start = 10.dp)
+                        ) {
+                            chapters.forEach { chapter ->
+                                ExpandableSection(
+                                    title = "Chapitre ${chapter.number.toRomanNumeral()}. ${chapter.text}",
+                                    isExpanded = openedChapters.contains(chapter.id),
+                                    onClick = { viewModel.toggleChapterVisibility(chapter.id) }) {
+                                    HomeBuildSections(it.number, chapter.number, navController)
+                                    HomeBuildArticles(ids = chapter.articles, navController)
+                                }
+                            }
+                            HomeBuildArticles(ids = it.articles, navController)
                         }
                     }
-                    HomeBuildArticles(ids = it.articles, navController)
                 }
             }
         }
     }
+
+
 }

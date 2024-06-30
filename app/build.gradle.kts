@@ -94,4 +94,8 @@ dependencies {
 
     implementation(libs.app.update)
     implementation(libs.app.update.ktx)
+
+    implementation(libs.androidx.datastore.preferences)
+
+    implementation(libs.threetenabp)
 }

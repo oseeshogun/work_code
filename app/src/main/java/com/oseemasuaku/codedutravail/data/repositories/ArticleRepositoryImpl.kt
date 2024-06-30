@@ -40,4 +40,9 @@ class ArticleRepositoryImpl(
         }
     }
 
+    override suspend fun getArticleById(id: Int): ArticleData {
+        return articleDao.getById(id).let {
+            ArticleData(it.number, it.text)
+        }
+    }
 }
