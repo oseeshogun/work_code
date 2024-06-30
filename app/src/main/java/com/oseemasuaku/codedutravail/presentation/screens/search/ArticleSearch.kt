@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -42,7 +43,9 @@ fun ArticleSearch(navController: NavHostController) {
     val query by viewModel.query.collectAsState(initial = "")
     val articles by viewModel.articles.collectAsState(initial = emptyList())
 
-    Surface {
+    Surface (
+        modifier = Modifier.fillMaxHeight()
+    ) {
         LazyColumn {
             item {
                 Row(
