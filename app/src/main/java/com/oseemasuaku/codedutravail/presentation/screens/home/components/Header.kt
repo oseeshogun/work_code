@@ -46,8 +46,7 @@ fun Header(hideSearch: Boolean = false, navController: NavController? = null) {
             )
         }
 
-        if (!hideSearch) IconButton(onClick = { /*TODO*/ }
-        ) {
+        if (!hideSearch) {
             IconButton(onClick = {
                 navController.let {
                     it?.navigate("search")
@@ -55,14 +54,14 @@ fun Header(hideSearch: Boolean = false, navController: NavController? = null) {
             }) {
                 Icon(imageVector = Icons.Default.Search, contentDescription = "Recherche")
             }
+            IconButton(onClick = {
+                navController.let {
+                    it?.navigate("info")
+                }
+            }) {
+                Icon(Icons.Default.Info, contentDescription = "Info")
+            }
         }
 
-        IconButton(onClick = {
-            navController.let {
-                it?.navigate("info")
-            }
-        }) {
-            Icon(Icons.Default.Info, contentDescription = "Info")
-        }
     }
 }

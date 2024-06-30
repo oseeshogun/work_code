@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.oseemasuaku.codedutravail.data.PreferencesManager
 import com.oseemasuaku.codedutravail.domain.entities.ArticleData
 import com.oseemasuaku.codedutravail.domain.repositories.ArticleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,8 +16,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ArticleViewModel @Inject constructor(
-    private val articleRepository: ArticleRepository
+    private val articleRepository: ArticleRepository,
+    private val preferencesManager: PreferencesManager
 ): ViewModel() {
+
+    var reviewed by mutableStateOf(false)
+        private set
+
+    init {
+        reviewed = preferencesManager.getBoolean("reviewed", false)
+    }
 
     private  var  textToSpeech: TextToSpeech? = null
 
@@ -47,5 +56,9 @@ class ArticleViewModel @Inject constructor(
             }
             isReading = false
         }
+    }
+
+    fun successReviewed() {
+        preferencesManager.saveBool("reviewed", true)
     }
 }
