@@ -18,7 +18,7 @@ class PreferencesManager @Inject constructor(@ApplicationContext context: Contex
     }
 
     fun getInt(key: String, defaultValue: Int): Int {
-        return sharedPreferences.getInt(key, defaultValue) ?: defaultValue
+        return sharedPreferences.getInt(key, defaultValue)
     }
 
     fun saveBool(key: String, value: Boolean) {
@@ -28,7 +28,7 @@ class PreferencesManager @Inject constructor(@ApplicationContext context: Contex
     }
 
     fun getBoolean(key: String, defaultValue: Boolean): Boolean {
-        return sharedPreferences.getBoolean(key, defaultValue) ?: defaultValue
+        return sharedPreferences.getBoolean(key, defaultValue)
     }
 
 }

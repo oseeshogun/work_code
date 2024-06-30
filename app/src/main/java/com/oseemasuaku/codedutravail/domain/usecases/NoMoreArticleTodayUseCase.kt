@@ -5,7 +5,7 @@ import org.threeten.bp.LocalDate
 import javax.inject.Inject
 
 class NoMoreArticleTodayUseCase @Inject constructor(private val preferencesManager: PreferencesManager) {
-    operator fun invoke(): Unit {
+    operator fun invoke() {
         val today = LocalDate.now().toString()
         preferencesManager.saveBool("no_more_$today", true)
     }

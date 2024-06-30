@@ -13,8 +13,8 @@ android {
         applicationId = "com.oseemasuaku.codedutravail"
         minSdk = 24
         targetSdk = 34
-        versionCode = 10
-        versionName = "1.1"
+        versionCode = 11
+        versionName = "1.2"
         multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -98,4 +98,6 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.threetenabp)
+
+    implementation(libs.review.ktx)
 }
