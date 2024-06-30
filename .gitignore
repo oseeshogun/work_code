@@ -13,3 +13,9 @@
 .externalNativeBuild
 .cxx
 local.properties
+/app/schemas/com.oseemasuaku.codedutravail.data.CodeDatabase/1.json
+/app/release/app-release.aab
+/app/release/app-release.apk
+/app/release/baselineProfiles/0/app-release.dm
+/app/release/baselineProfiles/1/app-release.dm
+/app/release/output-metadata.json
