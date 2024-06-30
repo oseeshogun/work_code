@@ -1,6 +1,7 @@
 [versions]
 agp = "8.3.2"
 appUpdate = "2.1.0"
+datastorePreferences = "1.1.1"
 hiltAndroid = "2.51"
 hiltNavigation = "1.2.0"
 jacksonDataformatYaml = "2.14.2"
@@ -19,9 +20,11 @@ composeBom = "2024.05.00"
 materialIconsExtended = "1.6.7"
 multidex = "2.0.1"
 roomRuntime = "2.6.1"
+threetenabp = "1.4.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-hilt-navigation = { module = "androidx.hilt:hilt-navigation", version.ref = "hiltNavigation" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigation" }
 androidx-lifecycle-extensions = { module = "androidx.lifecycle:lifecycle-extensions", version.ref = "lifecycleExtensions" }
@@ -51,6 +54,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+threetenabp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threetenabp" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

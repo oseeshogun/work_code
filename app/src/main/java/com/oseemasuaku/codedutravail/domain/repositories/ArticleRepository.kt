@@ -12,4 +12,6 @@ interface ArticleRepository {
     fun streamArticles(ids: List<Int>): Flow<List<ArticleData>>
 
     fun search(query: String): Flow<List<ArticleData>>
+
+    suspend fun getArticleById(id: Int): ArticleData
 }

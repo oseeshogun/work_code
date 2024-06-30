@@ -28,17 +28,20 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val saveOfflineUseCase: RegisterDataOnOfflineUseCase,
-    private val titleRepository: TitleRepository,
+
+    titleRepository: TitleRepository,
     private val chapterRepository: ChapterRepository,
     private val sectionRepository: SectionRepository,
     private val articleRepository: ArticleRepository,
 ) : ViewModel() {
+
 
     val titles = titleRepository.streamAll()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     var selectedTitle = MutableStateFlow<Int?>(null)
         private set
+
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val chapters = selectedTitle.flatMapLatest {
@@ -98,4 +101,5 @@ class HomeViewModel @Inject constructor(
             viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
         )
     }
+
 }
