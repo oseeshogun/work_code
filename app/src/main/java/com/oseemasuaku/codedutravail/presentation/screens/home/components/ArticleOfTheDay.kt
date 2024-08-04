@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,7 +58,7 @@ fun ArticleOfTheDay(navController: NavHostController) {
                     .padding(vertical = 6.dp, horizontal = 10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Row (
+                Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
                 ) {
@@ -99,6 +100,16 @@ fun ArticleOfTheDay(navController: NavHostController) {
                         )
                     })
 
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    modifier = Modifier.align(Alignment.Start)
+                ) {
+                    TextButton(onClick = { navController.navigate("article/${articleOfTheDay.number}") }
+
+                    ) {
+                        Text(text = "Voir plus")
+                    }
                 }
             }
         }
