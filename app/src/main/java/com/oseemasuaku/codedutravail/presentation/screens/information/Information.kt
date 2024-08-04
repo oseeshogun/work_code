@@ -120,12 +120,12 @@ fun InformationScreen(navController: NavHostController, activity: Activity) {
                 ) {
                     Text(text = "CLAUSE DE NON-RESPONSABILITÉ", fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.height(6.dp))
-                    Text(text = "Cette application fournit une version du Code du Travail provenant d'un lien PDF public. Elle n'est pas affiliée à une entité gouvernementale et ne représente pas un service gouvernemental officiel. Les informations contenues dans cette application sont fournies à titre informatif uniquement et ne doivent pas être considérées comme des conseils juridiques. Pour des informations officielles et à jour, veuillez consulter les sources gouvernementales appropriées dans le lien du cnss (La Caisse Nationale de Sécurité Sociale).")
+                    Text(text = "Cette application fournit une version du Code du Travail basée sur des informations disponibles publiquement, notamment via le site LegalRDC. Elle n'est affiliée à aucune entité gouvernementale et ne représente pas un service gouvernemental officiel. Les informations contenues dans cette application sont fournies uniquement à titre informatif et ne doivent pas être interprétées comme des conseils juridiques. Pour des informations officielles et à jour, nous vous encourageons à consulter directement les sources gouvernementales appropriées ou à utiliser le lien disponible sur LegalRDC.")
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "Lien du PDF",
+                        text = "Lien de LegalRDC",
                         modifier = Modifier.clickable {
-                            uriHandler.openUri("https://cnss.cd/wp-content/uploads/2020/12/Les-Codes-Larcier-t.IV-Droit-du-Travail-et-de-la-Securite-sociale.pdf")
+                            uriHandler.openUri("https://legalrdc.com/2016/07/15/code-du-travail/")
                         },
                         color = Color.Gray
                     )
