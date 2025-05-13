@@ -1,0 +1,31 @@
+{
+  "editor.formatOnPaste": true,
+  "editor.formatOnSaveMode": "modifications",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "Dart-Code.flutter",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "files.exclude": {
+    "**/*.freezed.dart": true,
+    "**/*.g.dart": true
+  },
+  "files.readonlyInclude": {
+    "**/*.freezed.dart": true,
+    "**/*.g.dart": true,
+    "**/*.drift.dart": true
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "Dart-Code.dart-code"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "dart.lineLength": 120,
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

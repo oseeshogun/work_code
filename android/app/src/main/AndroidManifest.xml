@@ -9,9 +9,9 @@
         </intent>
     </queries>
     <application
-        android:label="codedutravail"
+        android:label="Code Du Travail"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/work_code">
         <activity
             android:name=".MainActivity"
             android:exported="true"
