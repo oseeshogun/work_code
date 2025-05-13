@@ -1,12 +1,16 @@
-# Jetpack Compose Congo Code du Travail
+# codedutravail
 
+A new Flutter project.
 
-Ce projet open source propose une application mobile développée en utilisant Jetpack Compose, le nouveau framework de conception d'interface utilisateur Android, afin de fournir un accès convivial au Code du Travail Congolais. L'application permet aux utilisateurs de consulter les articles, chapitres et titres du Code du Travail Congolais de manière organisée et intuitive.
+## Getting Started
 
-## Comment contribuer
+This project is a starting point for a Flutter application.
 
-Nous encourageons activement la contribution de la communauté pour améliorer cette application. Si vous souhaitez contribuer, vous pouvez forker le projet et faire une PR.
+A few resources to get you started if this is your first Flutter project:
 
-## Téléchargement
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-Vous pouvez télécharger l'application sur [Google Play](https://play.google.com/store/apps/details?id=com.oseemasuaku.codedutravail) Store et commencer à explorer le Code du Travail Congolais dès maintenant !
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

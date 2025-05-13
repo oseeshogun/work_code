@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-    <background android:drawable="@color/rdc_law_background"/>
-    <foreground android:drawable="@mipmap/rdc_law_foreground"/>
-</adaptive-icon>
