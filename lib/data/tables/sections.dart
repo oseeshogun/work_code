@@ -4,6 +4,8 @@ import 'package:drift/drift.dart';
 import 'package:codedutravail/data/tables/titles.dart';
 
 class Sections extends Table {
+  IntColumn get id => integer().autoIncrement()();
+
   IntColumn get number => integer()();
 
   TextColumn get value => text()();
@@ -15,10 +17,7 @@ class Sections extends Table {
   TextColumn get articles => text().map(const ListIntConverter())();
 
   @override
-  Set<Column> get primaryKey => {number};
-
-  @override
   List<Set<Column<Object>>>? get uniqueKeys => [
-    {number, titleId},
+    {number, chapterId, titleId},
   ];
 }

@@ -25,7 +25,7 @@ class ChapterRepositoryImpl extends DatabaseAccessor<AppDatabase> with _$Chapter
       (entry) => ChaptersCompanion.insert(
         articles: entry.articles,
         value: entry.text,
-        number: Value.absentIfNull(entry.number),
+        number: entry.number,
         titleId: entry.titleNumber,
       ),
     );
@@ -38,16 +38,15 @@ class ChapterRepositoryImpl extends DatabaseAccessor<AppDatabase> with _$Chapter
   Stream<List<ChapterEntity>> streamByTitle(int titleId) {
     return (select(chapters)..where((t) => t.titleId.equals(titleId))).watch().asyncMap(
       (values) =>
-          values
-              .map(
-                (value) => ChapterEntity(
-                  number: value.number,
-                  text: value.value,
-                  titleNumber: value.titleId,
-                  articles: value.articles,
-                ),
-              )
-              .toList(),
+          values.map((value) {
+            print(value.toJson());
+            return ChapterEntity(
+              number: value.number,
+              text: value.value,
+              titleNumber: value.titleId,
+              articles: value.articles,
+            );
+          }).toList(),
     );
   }
 }

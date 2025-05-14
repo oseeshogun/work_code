@@ -10,4 +10,6 @@ mixin ArticleRepository {
   Stream<List<ArticleEntity>> search(String query);
 
   Future<ArticleEntity> getArticleById(int id);
+
+  Stream<int> articlesCount();
 }

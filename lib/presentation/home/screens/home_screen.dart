@@ -1,3 +1,4 @@
+import 'package:codedutravail/core/presentations/providers/article.dart';
 import 'package:codedutravail/domain/home/providers/read_disclaimer.dart';
 import 'package:codedutravail/presentation/home/dialogs/disclaimer_dialog.dart';
 import 'package:codedutravail/presentation/home/providers/titles.dart';
@@ -16,6 +17,7 @@ class HomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final hasReadDisclaimer = ref.watch(readDisclaimerProvider).value;
     final titlesAsync = ref.watch(titlesProvider);
+    final articleCountAsync = ref.watch(articleCountProvider);
 
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -48,10 +50,23 @@ class HomeScreen extends HookConsumerWidget {
       ),
       body: titlesAsync.when(
         data: (titles) {
-          return Visibility(
-            visible: titles.isNotEmpty,
-            replacement: const TitlesEmptyWidget(),
-            child: TitlesListWidget(titles: titles),
+          return articleCountAsync.when(
+            data: (articleCount) {
+              if (titles.isEmpty || articleCount == 0) {
+                return const TitlesEmptyWidget();
+              }
+              return TitlesListWidget(titles: titles);
+            },
+            loading: () => Visibility(
+              visible: titles.isNotEmpty,
+              replacement: const TitlesEmptyWidget(),
+              child: TitlesListWidget(titles: titles),
+            ),
+            error: (_, __) => Visibility(
+              visible: titles.isNotEmpty,
+              replacement: const TitlesEmptyWidget(),
+              child: TitlesListWidget(titles: titles),
+            ),
           );
         },
         loading: () => const TitlesLoadingWidget(),

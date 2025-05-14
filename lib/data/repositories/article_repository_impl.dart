@@ -56,4 +56,10 @@ class ArticleRepositoryImpl extends DatabaseAccessor<AppDatabase> with _$Article
     final result = await (select(articles)..where((t) => t.number.equals(id))).getSingle();
     return ArticleEntity(number: result.number, text: result.value);
   }
+
+  @override
+  Stream<int> articlesCount() {
+    final count = articles.number.count();
+    return (selectOnly(articles)..addColumns([count])).map((row) => row.read(count) ?? 0).watchSingle();
+  }
 }

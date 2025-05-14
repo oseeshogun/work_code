@@ -258,6 +258,19 @@ class $ChaptersTable extends Chapters with TableInfo<$ChaptersTable, Chapter> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $ChaptersTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   static const VerificationMeta _numberMeta = const VerificationMeta('number');
   @override
   late final GeneratedColumn<int> number = GeneratedColumn<int>(
@@ -265,7 +278,7 @@ class $ChaptersTable extends Chapters with TableInfo<$ChaptersTable, Chapter> {
     aliasedName,
     false,
     type: DriftSqlType.int,
-    requiredDuringInsert: false,
+    requiredDuringInsert: true,
   );
   static const VerificationMeta _valueMeta = const VerificationMeta('value');
   @override
@@ -300,7 +313,7 @@ class $ChaptersTable extends Chapters with TableInfo<$ChaptersTable, Chapter> {
         requiredDuringInsert: true,
       ).withConverter<Set<int>>($ChaptersTable.$converterarticles);
   @override
-  List<GeneratedColumn> get $columns => [number, value, titleId, articles];
+  List<GeneratedColumn> get $columns => [id, number, value, titleId, articles];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -313,11 +326,16 @@ class $ChaptersTable extends Chapters with TableInfo<$ChaptersTable, Chapter> {
   }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
     if (data.containsKey('number')) {
       context.handle(
         _numberMeta,
         number.isAcceptableOrUnknown(data['number']!, _numberMeta),
       );
+    } else if (isInserting) {
+      context.missing(_numberMeta);
     }
     if (data.containsKey('value')) {
       context.handle(
@@ -339,7 +357,7 @@ class $ChaptersTable extends Chapters with TableInfo<$ChaptersTable, Chapter> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {number};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   List<Set<GeneratedColumn>> get uniqueKeys => [
     {number, titleId},
@@ -348,6 +366,11 @@ class $ChaptersTable extends Chapters with TableInfo<$ChaptersTable, Chapter> {
   Chapter map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Chapter(
+      id:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}id'],
+          )!,
       number:
           attachedDatabase.typeMapping.read(
             DriftSqlType.int,
@@ -382,11 +405,13 @@ class $ChaptersTable extends Chapters with TableInfo<$ChaptersTable, Chapter> {
 }
 
 class Chapter extends DataClass implements Insertable<Chapter> {
+  final int id;
   final int number;
   final String value;
   final int titleId;
   final Set<int> articles;
   const Chapter({
+    required this.id,
     required this.number,
     required this.value,
     required this.titleId,
@@ -395,6 +420,7 @@ class Chapter extends DataClass implements Insertable<Chapter> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
     map['number'] = Variable<int>(number);
     map['value'] = Variable<String>(value);
     map['title_id'] = Variable<int>(titleId);
@@ -408,6 +434,7 @@ class Chapter extends DataClass implements Insertable<Chapter> {
 
   ChaptersCompanion toCompanion(bool nullToAbsent) {
     return ChaptersCompanion(
+      id: Value(id),
       number: Value(number),
       value: Value(value),
       titleId: Value(titleId),
@@ -421,6 +448,7 @@ class Chapter extends DataClass implements Insertable<Chapter> {
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Chapter(
+      id: serializer.fromJson<int>(json['id']),
       number: serializer.fromJson<int>(json['number']),
       value: serializer.fromJson<String>(json['value']),
       titleId: serializer.fromJson<int>(json['titleId']),
@@ -431,6 +459,7 @@ class Chapter extends DataClass implements Insertable<Chapter> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
       'number': serializer.toJson<int>(number),
       'value': serializer.toJson<String>(value),
       'titleId': serializer.toJson<int>(titleId),
@@ -439,11 +468,13 @@ class Chapter extends DataClass implements Insertable<Chapter> {
   }
 
   Chapter copyWith({
+    int? id,
     int? number,
     String? value,
     int? titleId,
     Set<int>? articles,
   }) => Chapter(
+    id: id ?? this.id,
     number: number ?? this.number,
     value: value ?? this.value,
     titleId: titleId ?? this.titleId,
@@ -451,6 +482,7 @@ class Chapter extends DataClass implements Insertable<Chapter> {
   );
   Chapter copyWithCompanion(ChaptersCompanion data) {
     return Chapter(
+      id: data.id.present ? data.id.value : this.id,
       number: data.number.present ? data.number.value : this.number,
       value: data.value.present ? data.value.value : this.value,
       titleId: data.titleId.present ? data.titleId.value : this.titleId,
@@ -461,6 +493,7 @@ class Chapter extends DataClass implements Insertable<Chapter> {
   @override
   String toString() {
     return (StringBuffer('Chapter(')
+          ..write('id: $id, ')
           ..write('number: $number, ')
           ..write('value: $value, ')
           ..write('titleId: $titleId, ')
@@ -470,11 +503,12 @@ class Chapter extends DataClass implements Insertable<Chapter> {
   }
 
   @override
-  int get hashCode => Object.hash(number, value, titleId, articles);
+  int get hashCode => Object.hash(id, number, value, titleId, articles);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Chapter &&
+          other.id == this.id &&
           other.number == this.number &&
           other.value == this.value &&
           other.titleId == this.titleId &&
@@ -482,31 +516,37 @@ class Chapter extends DataClass implements Insertable<Chapter> {
 }
 
 class ChaptersCompanion extends UpdateCompanion<Chapter> {
+  final Value<int> id;
   final Value<int> number;
   final Value<String> value;
   final Value<int> titleId;
   final Value<Set<int>> articles;
   const ChaptersCompanion({
+    this.id = const Value.absent(),
     this.number = const Value.absent(),
     this.value = const Value.absent(),
     this.titleId = const Value.absent(),
     this.articles = const Value.absent(),
   });
   ChaptersCompanion.insert({
-    this.number = const Value.absent(),
+    this.id = const Value.absent(),
+    required int number,
     required String value,
     required int titleId,
     required Set<int> articles,
-  }) : value = Value(value),
+  }) : number = Value(number),
+       value = Value(value),
        titleId = Value(titleId),
        articles = Value(articles);
   static Insertable<Chapter> custom({
+    Expression<int>? id,
     Expression<int>? number,
     Expression<String>? value,
     Expression<int>? titleId,
     Expression<String>? articles,
   }) {
     return RawValuesInsertable({
+      if (id != null) 'id': id,
       if (number != null) 'number': number,
       if (value != null) 'value': value,
       if (titleId != null) 'title_id': titleId,
@@ -515,12 +555,14 @@ class ChaptersCompanion extends UpdateCompanion<Chapter> {
   }
 
   ChaptersCompanion copyWith({
+    Value<int>? id,
     Value<int>? number,
     Value<String>? value,
     Value<int>? titleId,
     Value<Set<int>>? articles,
   }) {
     return ChaptersCompanion(
+      id: id ?? this.id,
       number: number ?? this.number,
       value: value ?? this.value,
       titleId: titleId ?? this.titleId,
@@ -531,6 +573,9 @@ class ChaptersCompanion extends UpdateCompanion<Chapter> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
     if (number.present) {
       map['number'] = Variable<int>(number.value);
     }
@@ -551,6 +596,7 @@ class ChaptersCompanion extends UpdateCompanion<Chapter> {
   @override
   String toString() {
     return (StringBuffer('ChaptersCompanion(')
+          ..write('id: $id, ')
           ..write('number: $number, ')
           ..write('value: $value, ')
           ..write('titleId: $titleId, ')
@@ -565,6 +611,19 @@ class $SectionsTable extends Sections with TableInfo<$SectionsTable, Section> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $SectionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   static const VerificationMeta _numberMeta = const VerificationMeta('number');
   @override
   late final GeneratedColumn<int> number = GeneratedColumn<int>(
@@ -572,7 +631,7 @@ class $SectionsTable extends Sections with TableInfo<$SectionsTable, Section> {
     aliasedName,
     false,
     type: DriftSqlType.int,
-    requiredDuringInsert: false,
+    requiredDuringInsert: true,
   );
   static const VerificationMeta _valueMeta = const VerificationMeta('value');
   @override
@@ -622,6 +681,7 @@ class $SectionsTable extends Sections with TableInfo<$SectionsTable, Section> {
       ).withConverter<Set<int>>($SectionsTable.$converterarticles);
   @override
   List<GeneratedColumn> get $columns => [
+    id,
     number,
     value,
     chapterId,
@@ -640,11 +700,16 @@ class $SectionsTable extends Sections with TableInfo<$SectionsTable, Section> {
   }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
     if (data.containsKey('number')) {
       context.handle(
         _numberMeta,
         number.isAcceptableOrUnknown(data['number']!, _numberMeta),
       );
+    } else if (isInserting) {
+      context.missing(_numberMeta);
     }
     if (data.containsKey('value')) {
       context.handle(
@@ -674,15 +739,20 @@ class $SectionsTable extends Sections with TableInfo<$SectionsTable, Section> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {number};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   List<Set<GeneratedColumn>> get uniqueKeys => [
-    {number, titleId},
+    {number, chapterId, titleId},
   ];
   @override
   Section map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Section(
+      id:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}id'],
+          )!,
       number:
           attachedDatabase.typeMapping.read(
             DriftSqlType.int,
@@ -722,12 +792,14 @@ class $SectionsTable extends Sections with TableInfo<$SectionsTable, Section> {
 }
 
 class Section extends DataClass implements Insertable<Section> {
+  final int id;
   final int number;
   final String value;
   final int chapterId;
   final int titleId;
   final Set<int> articles;
   const Section({
+    required this.id,
     required this.number,
     required this.value,
     required this.chapterId,
@@ -737,6 +809,7 @@ class Section extends DataClass implements Insertable<Section> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
     map['number'] = Variable<int>(number);
     map['value'] = Variable<String>(value);
     map['chapter_id'] = Variable<int>(chapterId);
@@ -751,6 +824,7 @@ class Section extends DataClass implements Insertable<Section> {
 
   SectionsCompanion toCompanion(bool nullToAbsent) {
     return SectionsCompanion(
+      id: Value(id),
       number: Value(number),
       value: Value(value),
       chapterId: Value(chapterId),
@@ -765,6 +839,7 @@ class Section extends DataClass implements Insertable<Section> {
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Section(
+      id: serializer.fromJson<int>(json['id']),
       number: serializer.fromJson<int>(json['number']),
       value: serializer.fromJson<String>(json['value']),
       chapterId: serializer.fromJson<int>(json['chapterId']),
@@ -776,6 +851,7 @@ class Section extends DataClass implements Insertable<Section> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
       'number': serializer.toJson<int>(number),
       'value': serializer.toJson<String>(value),
       'chapterId': serializer.toJson<int>(chapterId),
@@ -785,12 +861,14 @@ class Section extends DataClass implements Insertable<Section> {
   }
 
   Section copyWith({
+    int? id,
     int? number,
     String? value,
     int? chapterId,
     int? titleId,
     Set<int>? articles,
   }) => Section(
+    id: id ?? this.id,
     number: number ?? this.number,
     value: value ?? this.value,
     chapterId: chapterId ?? this.chapterId,
@@ -799,6 +877,7 @@ class Section extends DataClass implements Insertable<Section> {
   );
   Section copyWithCompanion(SectionsCompanion data) {
     return Section(
+      id: data.id.present ? data.id.value : this.id,
       number: data.number.present ? data.number.value : this.number,
       value: data.value.present ? data.value.value : this.value,
       chapterId: data.chapterId.present ? data.chapterId.value : this.chapterId,
@@ -810,6 +889,7 @@ class Section extends DataClass implements Insertable<Section> {
   @override
   String toString() {
     return (StringBuffer('Section(')
+          ..write('id: $id, ')
           ..write('number: $number, ')
           ..write('value: $value, ')
           ..write('chapterId: $chapterId, ')
@@ -820,11 +900,13 @@ class Section extends DataClass implements Insertable<Section> {
   }
 
   @override
-  int get hashCode => Object.hash(number, value, chapterId, titleId, articles);
+  int get hashCode =>
+      Object.hash(id, number, value, chapterId, titleId, articles);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Section &&
+          other.id == this.id &&
           other.number == this.number &&
           other.value == this.value &&
           other.chapterId == this.chapterId &&
@@ -833,12 +915,14 @@ class Section extends DataClass implements Insertable<Section> {
 }
 
 class SectionsCompanion extends UpdateCompanion<Section> {
+  final Value<int> id;
   final Value<int> number;
   final Value<String> value;
   final Value<int> chapterId;
   final Value<int> titleId;
   final Value<Set<int>> articles;
   const SectionsCompanion({
+    this.id = const Value.absent(),
     this.number = const Value.absent(),
     this.value = const Value.absent(),
     this.chapterId = const Value.absent(),
@@ -846,16 +930,19 @@ class SectionsCompanion extends UpdateCompanion<Section> {
     this.articles = const Value.absent(),
   });
   SectionsCompanion.insert({
-    this.number = const Value.absent(),
+    this.id = const Value.absent(),
+    required int number,
     required String value,
     required int chapterId,
     required int titleId,
     required Set<int> articles,
-  }) : value = Value(value),
+  }) : number = Value(number),
+       value = Value(value),
        chapterId = Value(chapterId),
        titleId = Value(titleId),
        articles = Value(articles);
   static Insertable<Section> custom({
+    Expression<int>? id,
     Expression<int>? number,
     Expression<String>? value,
     Expression<int>? chapterId,
@@ -863,6 +950,7 @@ class SectionsCompanion extends UpdateCompanion<Section> {
     Expression<String>? articles,
   }) {
     return RawValuesInsertable({
+      if (id != null) 'id': id,
       if (number != null) 'number': number,
       if (value != null) 'value': value,
       if (chapterId != null) 'chapter_id': chapterId,
@@ -872,6 +960,7 @@ class SectionsCompanion extends UpdateCompanion<Section> {
   }
 
   SectionsCompanion copyWith({
+    Value<int>? id,
     Value<int>? number,
     Value<String>? value,
     Value<int>? chapterId,
@@ -879,6 +968,7 @@ class SectionsCompanion extends UpdateCompanion<Section> {
     Value<Set<int>>? articles,
   }) {
     return SectionsCompanion(
+      id: id ?? this.id,
       number: number ?? this.number,
       value: value ?? this.value,
       chapterId: chapterId ?? this.chapterId,
@@ -890,6 +980,9 @@ class SectionsCompanion extends UpdateCompanion<Section> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
     if (number.present) {
       map['number'] = Variable<int>(number.value);
     }
@@ -913,6 +1006,7 @@ class SectionsCompanion extends UpdateCompanion<Section> {
   @override
   String toString() {
     return (StringBuffer('SectionsCompanion(')
+          ..write('id: $id, ')
           ..write('number: $number, ')
           ..write('value: $value, ')
           ..write('chapterId: $chapterId, ')
@@ -1506,13 +1600,15 @@ typedef $$TitlesTableProcessedTableManager =
     >;
 typedef $$ChaptersTableCreateCompanionBuilder =
     ChaptersCompanion Function({
-      Value<int> number,
+      Value<int> id,
+      required int number,
       required String value,
       required int titleId,
       required Set<int> articles,
     });
 typedef $$ChaptersTableUpdateCompanionBuilder =
     ChaptersCompanion Function({
+      Value<int> id,
       Value<int> number,
       Value<String> value,
       Value<int> titleId,
@@ -1570,6 +1666,11 @@ class $$ChaptersTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<int> get number => $composableBuilder(
     column: $table.number,
     builder: (column) => ColumnFilters(column),
@@ -1644,6 +1745,11 @@ class $$ChaptersTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get number => $composableBuilder(
     column: $table.number,
     builder: (column) => ColumnOrderings(column),
@@ -1692,6 +1798,9 @@ class $$ChaptersTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
   GeneratedColumn<int> get number =>
       $composableBuilder(column: $table.number, builder: (column) => column);
 
@@ -1778,11 +1887,13 @@ class $$ChaptersTableTableManager
               () => $$ChaptersTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
+                Value<int> id = const Value.absent(),
                 Value<int> number = const Value.absent(),
                 Value<String> value = const Value.absent(),
                 Value<int> titleId = const Value.absent(),
                 Value<Set<int>> articles = const Value.absent(),
               }) => ChaptersCompanion(
+                id: id,
                 number: number,
                 value: value,
                 titleId: titleId,
@@ -1790,11 +1901,13 @@ class $$ChaptersTableTableManager
               ),
           createCompanionCallback:
               ({
-                Value<int> number = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                required int number,
                 required String value,
                 required int titleId,
                 required Set<int> articles,
               }) => ChaptersCompanion.insert(
+                id: id,
                 number: number,
                 value: value,
                 titleId: titleId,
@@ -1890,7 +2003,8 @@ typedef $$ChaptersTableProcessedTableManager =
     >;
 typedef $$SectionsTableCreateCompanionBuilder =
     SectionsCompanion Function({
-      Value<int> number,
+      Value<int> id,
+      required int number,
       required String value,
       required int chapterId,
       required int titleId,
@@ -1898,6 +2012,7 @@ typedef $$SectionsTableCreateCompanionBuilder =
     });
 typedef $$SectionsTableUpdateCompanionBuilder =
     SectionsCompanion Function({
+      Value<int> id,
       Value<int> number,
       Value<String> value,
       Value<int> chapterId,
@@ -1956,6 +2071,11 @@ class $$SectionsTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<int> get number => $composableBuilder(
     column: $table.number,
     builder: (column) => ColumnFilters(column),
@@ -2028,6 +2148,11 @@ class $$SectionsTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get number => $composableBuilder(
     column: $table.number,
     builder: (column) => ColumnOrderings(column),
@@ -2099,6 +2224,9 @@ class $$SectionsTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
   GeneratedColumn<int> get number =>
       $composableBuilder(column: $table.number, builder: (column) => column);
 
@@ -2183,12 +2311,14 @@ class $$SectionsTableTableManager
               () => $$SectionsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
+                Value<int> id = const Value.absent(),
                 Value<int> number = const Value.absent(),
                 Value<String> value = const Value.absent(),
                 Value<int> chapterId = const Value.absent(),
                 Value<int> titleId = const Value.absent(),
                 Value<Set<int>> articles = const Value.absent(),
               }) => SectionsCompanion(
+                id: id,
                 number: number,
                 value: value,
                 chapterId: chapterId,
@@ -2197,12 +2327,14 @@ class $$SectionsTableTableManager
               ),
           createCompanionCallback:
               ({
-                Value<int> number = const Value.absent(),
+                Value<int> id = const Value.absent(),
+                required int number,
                 required String value,
                 required int chapterId,
                 required int titleId,
                 required Set<int> articles,
               }) => SectionsCompanion.insert(
+                id: id,
                 number: number,
                 value: value,
                 chapterId: chapterId,

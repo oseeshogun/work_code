@@ -35,7 +35,7 @@ class TitlesEmptyWidget extends HookConsumerWidget {
                 borderRadius: BorderRadius.circular(28.0),
                 boxShadow: [
                   BoxShadow(
-                    color: Theme.of(context).primaryColor.withOpacity(0.3),
+                    color: Theme.of(context).primaryColor.withAlpha((0.3 * 255).toInt()),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -43,7 +43,9 @@ class TitlesEmptyWidget extends HookConsumerWidget {
                 gradient: LinearGradient(
                   colors: [
                     Theme.of(context).primaryColor,
-                    Theme.of(context).primaryColor.withBlue((Theme.of(context).primaryColor.blue + 40).clamp(0, 255)),
+                    Theme.of(
+                      context,
+                    ).primaryColor.withBlue((Theme.of(context).primaryColor.b.toInt() + 40).clamp(0, 255)),
                   ],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,

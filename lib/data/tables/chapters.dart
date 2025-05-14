@@ -3,6 +3,8 @@ import 'package:drift/drift.dart';
 import 'package:codedutravail/data/tables/titles.dart';
 
 class Chapters extends Table {
+  IntColumn get id => integer().autoIncrement()();
+
   IntColumn get number => integer()();
 
   TextColumn get value => text()();
@@ -10,9 +12,6 @@ class Chapters extends Table {
   IntColumn get titleId => integer().references(Titles, #number, onDelete: KeyAction.cascade)();
 
   TextColumn get articles => text().map(const ListIntConverter())();
-
-  @override
-  Set<Column> get primaryKey => {number};
 
   @override
   List<Set<Column<Object>>>? get uniqueKeys => [

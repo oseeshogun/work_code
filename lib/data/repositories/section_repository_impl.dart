@@ -25,7 +25,7 @@ class SectionRepositoryImpl extends DatabaseAccessor<AppDatabase> with _$Section
       (entry) => SectionsCompanion.insert(
         articles: entry.articles,
         value: entry.text,
-        number: Value.absentIfNull(entry.number),
+        number: entry.number,
         chapterId: entry.chapterNumber,
         titleId: entry.titleNumber,
       ),
