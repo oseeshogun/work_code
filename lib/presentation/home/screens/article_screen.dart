@@ -55,7 +55,7 @@ class ArticleScreen extends HookConsumerWidget {
                           tooltip: 'Lire',
                         )
                       else
-                        const Icon(Icons.book, color: Colors.grey),
+                        const Icon(Icons.voice_chat, color: Colors.grey),
                     ],
                   );
                 } else if (index == 1) {
