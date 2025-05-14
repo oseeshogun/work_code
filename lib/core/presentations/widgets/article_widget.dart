@@ -1,7 +1,7 @@
 import 'package:codedutravail/core/presentations/providers/article.dart';
+import 'package:codedutravail/core/router/routes.dart';
 import 'package:codedutravail/core/utils/roman.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ArticleWidget extends HookConsumerWidget {
@@ -39,7 +39,7 @@ class ArticleWidget extends HookConsumerWidget {
 
           return InkWell(
             borderRadius: BorderRadius.circular(8.0),
-            onTap: () => context.push('/article/${article.number}'),
+            onTap: () => ArticleRoute(article.number).push(context),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(

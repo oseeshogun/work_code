@@ -16,7 +16,6 @@ class $TitlesTable extends Titles with TableInfo<$TitlesTable, Title> {
     false,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
   @override
   late final GeneratedColumnWithTypeConverter<Set<int>, String> articles =

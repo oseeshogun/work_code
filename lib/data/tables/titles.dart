@@ -2,7 +2,7 @@ import 'package:codedutravail/core/data/converters/list_int_converter.dart';
 import 'package:drift/drift.dart';
 
 class Titles extends Table {
-  late final number = integer().unique()();
+  late final number = integer()();
 
   TextColumn get title => text()();
 
