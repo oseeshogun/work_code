@@ -23,7 +23,7 @@ class HomeScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset('assets/images/drc_law.png', height: 30.0),
-        title: Text('Code du Travail'),
+        title: Text('Code du Travail', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 24.0)),
         centerTitle: true,
         actions: [
           IconButton(
@@ -31,6 +31,12 @@ class HomeScreen extends HookConsumerWidget {
               // TODO: go to search
             },
             icon: const Icon(Icons.search),
+          ),
+          IconButton(
+            onPressed: () {
+              // TODO: go to info
+            },
+            icon: const Icon(Icons.info_outline),
           ),
         ],
       ),

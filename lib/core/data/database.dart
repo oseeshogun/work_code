@@ -9,17 +9,21 @@ import 'package:drift/isolate.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/services.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:path/path.dart' as p;
 
 part 'database.g.dart';
 
+@Riverpod(keepAlive: true)
+AppDatabase db(Ref ref) => AppDatabase();
+
 @DriftDatabase(tables: [Titles, Chapters, Sections, Articles])
 class AppDatabase extends _$AppDatabase {
-  
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
-  
+
   @override
   int get schemaVersion => 1;
 }

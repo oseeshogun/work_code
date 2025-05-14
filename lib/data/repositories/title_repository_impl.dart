@@ -3,8 +3,17 @@ import 'package:codedutravail/data/tables/titles.dart';
 import 'package:codedutravail/domain/entities/title.dart';
 import 'package:codedutravail/domain/repositories/title_repository.dart';
 import 'package:drift/drift.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'title_repository_impl.g.dart';
+
+@Riverpod(keepAlive: true)
+TitleRepository titleRepository(Ref ref) {
+  final db = ref.watch(dbProvider);
+
+  return TitleRepositoryImpl(db);
+}
 
 @DriftAccessor(tables: [Titles])
 class TitleRepositoryImpl extends DatabaseAccessor<AppDatabase> with _$TitleRepositoryImplMixin, TitleRepository {
