@@ -1,5 +1,10 @@
 import 'package:codedutravail/domain/home/providers/read_disclaimer.dart';
 import 'package:codedutravail/presentation/home/dialogs/disclaimer_dialog.dart';
+import 'package:codedutravail/presentation/home/providers/titles.dart';
+import 'package:codedutravail/presentation/home/widgets/titles_empty_widget.dart';
+import 'package:codedutravail/presentation/home/widgets/titles_error_widget.dart';
+import 'package:codedutravail/presentation/home/widgets/titles_list_widget.dart';
+import 'package:codedutravail/presentation/home/widgets/titles_loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,6 +15,7 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final hasReadDisclaimer = ref.watch(readDisclaimerProvider).value;
+    final titlesAsync = ref.watch(titlesProvider);
 
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -40,7 +46,19 @@ class HomeScreen extends HookConsumerWidget {
           ),
         ],
       ),
-      body: SizedBox(),
+      body: titlesAsync.when(
+        data: (titles) {
+          return Visibility(
+            visible: titles.isNotEmpty,
+            replacement: const TitlesEmptyWidget(),
+            child: TitlesListWidget(titles: titles),
+          );
+        },
+        loading: () => const TitlesLoadingWidget(),
+        error:
+            (error, stackTrace) =>
+                TitlesErrorWidget(errorMessage: error.toString(), onRetry: () => ref.invalidate(titlesProvider)),
+      ),
     );
   }
 }

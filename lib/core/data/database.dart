@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:codedutravail/core/data/converters/list_int_converter.dart';
 import 'package:codedutravail/data/tables/articles.dart';
 import 'package:codedutravail/data/tables/chapters.dart';
 import 'package:codedutravail/data/tables/sections.dart';
@@ -18,7 +19,14 @@ import 'package:path/path.dart' as p;
 part 'database.g.dart';
 
 @Riverpod(keepAlive: true)
-AppDatabase db(Ref ref) => AppDatabase();
+AppDatabase db(Ref ref) => AppDatabase(
+  DatabaseConnection.delayed(
+    Future.sync(() async {
+      final isolate = await createIsolateWithSpawn();
+      return isolate.connect(singleClientMode: true);
+    }),
+  ),
+);
 
 @DriftDatabase(tables: [Titles, Chapters, Sections, Articles])
 class AppDatabase extends _$AppDatabase {
