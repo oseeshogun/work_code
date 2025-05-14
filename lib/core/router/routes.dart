@@ -18,5 +18,5 @@ class ArticleRoute extends GoRouteData {
   ArticleRoute(this.number);
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const ArticleScreen();
+  Widget build(BuildContext context, GoRouterState state) => ArticleScreen(number: number);
 }

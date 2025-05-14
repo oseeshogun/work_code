@@ -57,6 +57,7 @@ dependencies:
   flutter_svg: ^2.1.0
   sqlite3_flutter_libs: ^0.5.32
   adaptive_dialog: ^2.4.1
+  flutter_tts: ^4.2.2
 
 dev_dependencies:
   flutter_test:
