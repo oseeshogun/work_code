@@ -38,15 +38,16 @@ class ChapterRepositoryImpl extends DatabaseAccessor<AppDatabase> with _$Chapter
   Stream<List<ChapterEntity>> streamByTitle(int titleId) {
     return (select(chapters)..where((t) => t.titleId.equals(titleId))).watch().asyncMap(
       (values) =>
-          values.map((value) {
-            print(value.toJson());
-            return ChapterEntity(
-              number: value.number,
-              text: value.value,
-              titleNumber: value.titleId,
-              articles: value.articles,
-            );
-          }).toList(),
+          values
+              .map(
+                (value) => ChapterEntity(
+                  number: value.number,
+                  text: value.value,
+                  titleNumber: value.titleId,
+                  articles: value.articles,
+                ),
+              )
+              .toList(),
     );
   }
 }
