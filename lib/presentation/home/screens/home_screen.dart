@@ -1,4 +1,5 @@
 import 'package:codedutravail/core/presentations/providers/article.dart';
+import 'package:codedutravail/core/router/routes.dart';
 import 'package:codedutravail/domain/home/providers/read_disclaimer.dart';
 import 'package:codedutravail/presentation/home/dialogs/disclaimer_dialog.dart';
 import 'package:codedutravail/presentation/home/providers/titles.dart';
@@ -41,9 +42,7 @@ class HomeScreen extends HookConsumerWidget {
             icon: const Icon(Icons.search),
           ),
           IconButton(
-            onPressed: () {
-              // TODO: go to info
-            },
+            onPressed: () => InfoRoute().push(context),
             icon: const Icon(Icons.info_outline),
           ),
         ],

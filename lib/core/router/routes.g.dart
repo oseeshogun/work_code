@@ -6,7 +6,7 @@ part of 'routes.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$homeRoute, $articleRoute];
+List<RouteBase> get $appRoutes => [$homeRoute, $articleRoute, $infoRoute];
 
 RouteBase get $homeRoute =>
     GoRouteData.$route(path: '/', factory: $HomeRouteExtension._fromState);
@@ -39,6 +39,24 @@ extension $ArticleRouteExtension on ArticleRoute {
   String get location => GoRouteData.$location(
     '/article/${Uri.encodeComponent(number.toString())}',
   );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $infoRoute =>
+    GoRouteData.$route(path: '/about', factory: $InfoRouteExtension._fromState);
+
+extension $InfoRouteExtension on InfoRoute {
+  static InfoRoute _fromState(GoRouterState state) => InfoRoute();
+
+  String get location => GoRouteData.$location('/about');
 
   void go(BuildContext context) => context.go(location);
 
