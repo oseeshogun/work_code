@@ -1,6 +1,6 @@
+import 'package:codedutravail/core/router/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class InfoScreen extends HookConsumerWidget {
@@ -37,9 +37,7 @@ class InfoScreen extends HookConsumerWidget {
             ListTile(
               title: const Text('À propos du Code du Travail'),
               leading: const Icon(Icons.corporate_fare),
-              onTap: () {
-                context.go('/about');
-              },
+              onTap: () => AboutRoute().push(context),
             ),
             const SizedBox(height: 10),
             Padding(

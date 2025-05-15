@@ -1,3 +1,4 @@
+import 'package:codedutravail/presentation/home/screens/about_work_code.dart';
 import 'package:codedutravail/presentation/home/screens/article_screen.dart';
 import 'package:codedutravail/presentation/home/screens/home_screen.dart';
 import 'package:codedutravail/presentation/home/screens/info_screen.dart';
@@ -22,8 +23,14 @@ class ArticleRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => ArticleScreen(number: number);
 }
 
-@TypedGoRoute<InfoRoute>(path: '/about')
+@TypedGoRoute<InfoRoute>(path: '/info')
 class InfoRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) => const InfoScreen();
+}
+
+@TypedGoRoute<AboutRoute>(path: '/about')
+class AboutRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) => const AboutWorkCode();
 }
