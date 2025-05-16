@@ -53,8 +53,8 @@ class AiSearchScreen extends HookConsumerWidget {
             Expanded(
               child:
                   chats.value.isEmpty
-                      ? const Center(
-                        child: Text('Posez une question pour commencer', style: TextStyle(color: Colors.grey)),
+                      ? Center(
+                        child: Text('Posez une question pour commencer', style: TextStyle(color: Theme.of(context).hintColor)),
                       )
                       : ListView.builder(
                         controller: scrollController,
@@ -72,7 +72,7 @@ class AiSearchScreen extends HookConsumerWidget {
                                 margin: const EdgeInsets.only(bottom: 8.0),
                                 padding: const EdgeInsets.all(12.0),
                                 decoration: BoxDecoration(
-                                  color: Colors.blue.shade100,
+                                  color: Theme.of(context).brightness == Brightness.dark ? Colors.blue.shade800 : Colors.blue.shade100,
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: Text(entry.key),
@@ -86,7 +86,7 @@ class AiSearchScreen extends HookConsumerWidget {
                                 margin: const EdgeInsets.only(bottom: 16.0),
                                 padding: const EdgeInsets.all(12.0),
                                 decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
+                                  color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade200,
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 constraints: BoxConstraints(
@@ -101,14 +101,29 @@ class AiSearchScreen extends HookConsumerWidget {
                                     h2: Theme.of(context).textTheme.titleMedium,
                                     h3: Theme.of(context).textTheme.titleSmall,
                                     code: TextStyle(
-                                      backgroundColor: Colors.grey.shade300,
+                                      backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade700 : Colors.grey.shade300,
                                       fontFamily: 'monospace',
                                       fontSize: 14,
                                     ),
                                     codeblockDecoration: BoxDecoration(
-                                      color: Colors.grey.shade300,
+                                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade700 : Colors.grey.shade300,
                                       borderRadius: BorderRadius.circular(4),
                                     ),
+                                    blockquote: TextStyle(
+                                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade300 : Colors.grey.shade700,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                    blockquoteDecoration: BoxDecoration(
+                                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade900 : Colors.grey.shade100,
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border(
+                                        left: BorderSide(
+                                          color: Theme.of(context).brightness == Brightness.dark ? Colors.blue.shade700 : Colors.blue.shade300,
+                                          width: 4,
+                                        ),
+                                      ),
+                                    ),
+                                    blockquotePadding: const EdgeInsets.only(left: 16, top: 8, bottom: 8, right: 8),
                                   ),
                                 ),
                               ),
@@ -117,7 +132,7 @@ class AiSearchScreen extends HookConsumerWidget {
                         },
                       ),
             ),
-            if (thinking.value) _buildThinkingIndicator(),
+            if (thinking.value) _buildThinkingIndicator(context),
             const SizedBox(height: 16),
             sendChatMessageAsync.when(
               data:
@@ -158,20 +173,20 @@ class AiSearchScreen extends HookConsumerWidget {
     );
   }
 
-  Widget _buildThinkingIndicator() {
+  Widget _buildThinkingIndicator(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8.0),
         padding: const EdgeInsets.all(12.0),
-        decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(12.0)),
+        decoration: BoxDecoration(color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade200, borderRadius: BorderRadius.circular(12.0)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          children: const [
+          children: [
             _DotPulse(delay: 0),
-            SizedBox(width: 4),
+            const SizedBox(width: 4),
             _DotPulse(delay: 300),
-            SizedBox(width: 4),
+            const SizedBox(width: 4),
             _DotPulse(delay: 600),
           ],
         ),
@@ -269,7 +284,7 @@ class AnimatedGradientBorderTextField extends StatelessWidget {
                   end: Alignment.bottomRight,
                 )
                 : null,
-        border: Border.all(color: isFocused ? Colors.transparent : Colors.grey.shade300, width: 2),
+        border: Border.all(color: isFocused ? Colors.transparent : Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade700 : Colors.grey.shade300, width: 2),
       ),
       child: Padding(
         padding: const EdgeInsets.all(2.0),
@@ -293,7 +308,7 @@ class AnimatedGradientBorderTextField extends StatelessWidget {
                   labelText: labelText,
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   alignLabelWithHint: false,
-                  labelStyle: TextStyle(color: isFocused ? Colors.blue : Colors.grey, fontWeight: FontWeight.bold),
+                  labelStyle: TextStyle(color: isFocused ? Theme.of(context).colorScheme.primary : Theme.of(context).hintColor, fontWeight: FontWeight.bold),
                 ),
                 onSubmitted: onSubmit,
               ),
@@ -322,7 +337,7 @@ class AnimatedGradientBorderTextField extends StatelessWidget {
                                     end: Alignment.bottomRight,
                                   )
                                   : null,
-                          color: isFocused ? null : Colors.grey.shade400,
+                          color: isFocused ? null : Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade600 : Colors.grey.shade400,
                           shape: BoxShape.circle,
                         ),
                         child: Transform.rotate(
