@@ -1,8 +1,10 @@
 import 'package:codedutravail/core/presentations/widgets/article_widget.dart';
 import 'package:codedutravail/core/utils/roman.dart';
 import 'package:codedutravail/domain/entities/chapter.dart';
+import 'package:codedutravail/domain/entities/section.dart';
 import 'package:codedutravail/domain/entities/title.dart';
 import 'package:codedutravail/presentation/home/providers/chapters.dart';
+import 'package:codedutravail/presentation/home/providers/sections.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -97,13 +99,15 @@ class TitleExpansionTile extends HookConsumerWidget {
   }
 }
 
-class ChapterExpansionTile extends StatelessWidget {
+class ChapterExpansionTile extends HookConsumerWidget {
   final ChapterEntity chapter;
 
   const ChapterExpansionTile({super.key, required this.chapter});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sectionsAsync = ref.watch(sectionsProvider(chapter.titleNumber, chapter.number));
+    
     return Padding(
       padding: const EdgeInsets.only(bottom: 4.0),
       child: ExpansionTile(
@@ -116,7 +120,7 @@ class ChapterExpansionTile extends StatelessWidget {
         subtitle: Text(chapter.text, maxLines: 2, overflow: TextOverflow.ellipsis),
         childrenPadding: const EdgeInsets.fromLTRB(16.0, 0.0, 8.0, 8.0),
         children: [
-          if (chapter.articles.isNotEmpty) ...[
+          if (chapter.articles.isNotEmpty) ...[            
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Align(
@@ -136,7 +140,81 @@ class ChapterExpansionTile extends StatelessWidget {
                       .toList(),
             ),
           ],
-          // TODO: Add sections here when needed
+          sectionsAsync.when(
+            data: (sections) {
+              if (sections.isEmpty) {
+                return const SizedBox.shrink();
+              }
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text('Sections:', style: const TextStyle(fontWeight: FontWeight.w500)),
+                  ),
+                  ...sections.map((section) => SectionExpansionTile(section: section)),
+                ],
+              );
+            },
+            loading: () => const Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                child: SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2.0)),
+              ),
+            ),
+            error: (error, _) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(
+                'Erreur lors du chargement des sections: ${error.toString()}',
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SectionExpansionTile extends StatelessWidget {
+  final SectionEntity section;
+
+  const SectionExpansionTile({super.key, required this.section});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4.0),
+      child: ExpansionTile(
+        tilePadding: const EdgeInsets.symmetric(horizontal: 8.0),
+        backgroundColor: Colors.transparent,
+        collapsedBackgroundColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(side: BorderSide.none),
+        collapsedShape: const RoundedRectangleBorder(side: BorderSide.none),
+        title: Text('Section ${section.number.roman}', style: const TextStyle(fontWeight: FontWeight.w500)),
+        subtitle: Text(section.text, maxLines: 2, overflow: TextOverflow.ellipsis),
+        childrenPadding: const EdgeInsets.fromLTRB(16.0, 0.0, 8.0, 8.0),
+        children: [
+          if (section.articles.isNotEmpty) ...[
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text('Articles:', style: const TextStyle(fontWeight: FontWeight.w500)),
+              ),
+            ),
+            Column(
+              children:
+                  section.articles
+                      .map(
+                        (articleNumber) => Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: ArticleWidget(number: articleNumber, maxLines: 3),
+                        ),
+                      )
+                      .toList(),
+            ),
+          ],
         ],
       ),
     );
