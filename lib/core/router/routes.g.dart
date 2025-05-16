@@ -11,6 +11,7 @@ List<RouteBase> get $appRoutes => [
   $articleRoute,
   $infoRoute,
   $aboutRoute,
+  $aiSearchRoute,
 ];
 
 RouteBase get $homeRoute =>
@@ -83,6 +84,27 @@ extension $AboutRouteExtension on AboutRoute {
   static AboutRoute _fromState(GoRouterState state) => AboutRoute();
 
   String get location => GoRouteData.$location('/about');
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $aiSearchRoute => GoRouteData.$route(
+  path: '/ai_search',
+
+  factory: $AiSearchRouteExtension._fromState,
+);
+
+extension $AiSearchRouteExtension on AiSearchRoute {
+  static AiSearchRoute _fromState(GoRouterState state) => AiSearchRoute();
+
+  String get location => GoRouteData.$location('/ai_search');
 
   void go(BuildContext context) => context.go(location);
 

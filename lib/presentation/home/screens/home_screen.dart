@@ -36,9 +36,7 @@ class HomeScreen extends HookConsumerWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {
-              // TODO: go to search
-            },
+            onPressed: () => AiSearchRoute().push(context),
             icon: const Icon(Icons.search),
           ),
           IconButton(
