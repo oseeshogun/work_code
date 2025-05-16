@@ -2,6 +2,7 @@ import 'package:codedutravail/core/domain/errors/exceptions.dart';
 import 'package:codedutravail/core/domain/errors/failures.dart';
 import 'package:codedutravail/core/utils/logger.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fpdart/fpdart.dart';
 
 import 'failures/https.dart';
@@ -26,7 +27,11 @@ mixin ErrorWrapper<T> {
 
 abstract class FailureResolver {
   static Left<Failure, T> resolveLeft<T>(Object err, StackTrace st) {
+    // Log error to console
     AppLogger.error('Error: $err', error: err, stackTrace: st);
+    
+    // Report error to Firebase Crashlytics
+    _reportToCrashlytics(err, st);
 
     if (err is DioException) {
       if (err.response == null) {
@@ -62,5 +67,35 @@ abstract class FailureResolver {
       return Left(UnauthorizedFailure(null));
     }
     return Left(UnknownFailure(err as Exception));
+  }
+  
+  /// Reports errors to Firebase Crashlytics
+  static void _reportToCrashlytics(Object error, StackTrace stackTrace) {
+    try {
+      // Get the Crashlytics instance
+      final crashlytics = FirebaseCrashlytics.instance;
+      
+      // Add custom keys to provide more context
+      if (error is DioException) {
+        crashlytics.setCustomKey('error_type', 'network_error');
+        crashlytics.setCustomKey('status_code', error.response?.statusCode ?? 'unknown');
+        crashlytics.setCustomKey('url', error.requestOptions.uri.toString());
+        crashlytics.setCustomKey('method', error.requestOptions.method);
+      } else {
+        crashlytics.setCustomKey('error_type', error.runtimeType.toString());
+      }
+      
+      // Record the error
+      crashlytics.recordError(
+        error,
+        stackTrace,
+        reason: 'Error caught by ErrorWrapper',
+        // Mark as non-fatal since the app can continue
+        fatal: false,
+      );
+    } catch (e) {
+      // If reporting to Crashlytics fails, just log it
+      AppLogger.error('Failed to report to Crashlytics: $e');
+    }
   }
 }
