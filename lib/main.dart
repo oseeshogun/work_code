@@ -1,6 +1,7 @@
 import 'package:codedutravail/core/providers/analytics.dart';
 import 'package:codedutravail/core/router/router.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,7 +10,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:codedutravail/firebase_options.dart';
 
-// TODO: add ads
 // TODO: add ads to have extra query and sessions
 // TODO: no ads on first day of use
 
@@ -31,6 +31,9 @@ Future<void> main() async {
 
   // Configure Crashlytics
   await _initializeCrashlytics();
+
+  // Initialize Google Mobile Ads SDK
+  await MobileAds.instance.initialize();
 
   // Log app open event
   await FirebaseAnalytics.instance.logAppOpen();
