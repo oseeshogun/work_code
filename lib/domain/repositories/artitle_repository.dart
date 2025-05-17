@@ -3,9 +3,9 @@ import 'package:codedutravail/domain/entities/article.dart';
 mixin ArticleRepository {
   Future<void> insertAll(List<ArticleEntity> entries);
 
-  Stream<ArticleEntity> streamArticleById(int id);
+  Stream<List<ArticleEntity>> streamAll();
 
-  Stream<List<ArticleEntity>> search(String query);
+  Stream<ArticleEntity> streamArticleById(int id);
 
   Future<ArticleEntity> getArticleById(int id);
 

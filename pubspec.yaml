@@ -64,6 +64,9 @@ dependencies:
   firebase_vertexai: ^1.6.0
   flutter_markdown: ^0.6.18
   connectivity_plus: ^6.1.4
+  string_extensions: ^0.7.3
+  diacritic: ^0.1.6
+  fuzzy: ^0.5.1
 
 dev_dependencies:
   flutter_test:

@@ -5,6 +5,8 @@ class Articles extends Table {
 
   TextColumn get value => text()();
 
+  TextColumn get valueSlug => text()();
+
   @override
   Set<Column> get primaryKey => {number};
 }

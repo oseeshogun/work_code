@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ArticleEntity {
 
- int get number; String get text;
+ int get number; String get text; String get slug;
 /// Create a copy of ArticleEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $ArticleEntityCopyWith<ArticleEntity> get copyWith => _$ArticleEntityCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ArticleEntity&&(identical(other.number, number) || other.number == number)&&(identical(other.text, text) || other.text == text));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ArticleEntity&&(identical(other.number, number) || other.number == number)&&(identical(other.text, text) || other.text == text)&&(identical(other.slug, slug) || other.slug == slug));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,number,text);
+int get hashCode => Object.hash(runtimeType,number,text,slug);
 
 @override
 String toString() {
-  return 'ArticleEntity(number: $number, text: $text)';
+  return 'ArticleEntity(number: $number, text: $text, slug: $slug)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $ArticleEntityCopyWith<$Res>  {
   factory $ArticleEntityCopyWith(ArticleEntity value, $Res Function(ArticleEntity) _then) = _$ArticleEntityCopyWithImpl;
 @useResult
 $Res call({
- int number, String text
+ int number, String text, String slug
 });
 
 
@@ -63,10 +63,11 @@ class _$ArticleEntityCopyWithImpl<$Res>
 
 /// Create a copy of ArticleEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? number = null,Object? text = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? number = null,Object? text = null,Object? slug = null,}) {
   return _then(_self.copyWith(
 number: null == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
 as int,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
+as String,slug: null == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -78,11 +79,12 @@ as String,
 
 
 class _ArticleEntity implements ArticleEntity {
-  const _ArticleEntity({required this.number, required this.text});
+  const _ArticleEntity({required this.number, required this.text, required this.slug});
   
 
 @override final  int number;
 @override final  String text;
+@override final  String slug;
 
 /// Create a copy of ArticleEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -94,16 +96,16 @@ _$ArticleEntityCopyWith<_ArticleEntity> get copyWith => __$ArticleEntityCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ArticleEntity&&(identical(other.number, number) || other.number == number)&&(identical(other.text, text) || other.text == text));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ArticleEntity&&(identical(other.number, number) || other.number == number)&&(identical(other.text, text) || other.text == text)&&(identical(other.slug, slug) || other.slug == slug));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,number,text);
+int get hashCode => Object.hash(runtimeType,number,text,slug);
 
 @override
 String toString() {
-  return 'ArticleEntity(number: $number, text: $text)';
+  return 'ArticleEntity(number: $number, text: $text, slug: $slug)';
 }
 
 
@@ -114,7 +116,7 @@ abstract mixin class _$ArticleEntityCopyWith<$Res> implements $ArticleEntityCopy
   factory _$ArticleEntityCopyWith(_ArticleEntity value, $Res Function(_ArticleEntity) _then) = __$ArticleEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int number, String text
+ int number, String text, String slug
 });
 
 
@@ -131,10 +133,11 @@ class __$ArticleEntityCopyWithImpl<$Res>
 
 /// Create a copy of ArticleEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? number = null,Object? text = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? number = null,Object? text = null,Object? slug = null,}) {
   return _then(_ArticleEntity(
 number: null == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
 as int,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
+as String,slug: null == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

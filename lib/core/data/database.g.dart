@@ -1039,8 +1039,19 @@ class $ArticlesTable extends Articles with TableInfo<$ArticlesTable, Article> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _valueSlugMeta = const VerificationMeta(
+    'valueSlug',
+  );
   @override
-  List<GeneratedColumn> get $columns => [number, value];
+  late final GeneratedColumn<String> valueSlug = GeneratedColumn<String>(
+    'value_slug',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [number, value, valueSlug];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1067,6 +1078,14 @@ class $ArticlesTable extends Articles with TableInfo<$ArticlesTable, Article> {
     } else if (isInserting) {
       context.missing(_valueMeta);
     }
+    if (data.containsKey('value_slug')) {
+      context.handle(
+        _valueSlugMeta,
+        valueSlug.isAcceptableOrUnknown(data['value_slug']!, _valueSlugMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_valueSlugMeta);
+    }
     return context;
   }
 
@@ -1086,6 +1105,11 @@ class $ArticlesTable extends Articles with TableInfo<$ArticlesTable, Article> {
             DriftSqlType.string,
             data['${effectivePrefix}value'],
           )!,
+      valueSlug:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}value_slug'],
+          )!,
     );
   }
 
@@ -1098,17 +1122,27 @@ class $ArticlesTable extends Articles with TableInfo<$ArticlesTable, Article> {
 class Article extends DataClass implements Insertable<Article> {
   final int number;
   final String value;
-  const Article({required this.number, required this.value});
+  final String valueSlug;
+  const Article({
+    required this.number,
+    required this.value,
+    required this.valueSlug,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['number'] = Variable<int>(number);
     map['value'] = Variable<String>(value);
+    map['value_slug'] = Variable<String>(valueSlug);
     return map;
   }
 
   ArticlesCompanion toCompanion(bool nullToAbsent) {
-    return ArticlesCompanion(number: Value(number), value: Value(value));
+    return ArticlesCompanion(
+      number: Value(number),
+      value: Value(value),
+      valueSlug: Value(valueSlug),
+    );
   }
 
   factory Article.fromJson(
@@ -1119,6 +1153,7 @@ class Article extends DataClass implements Insertable<Article> {
     return Article(
       number: serializer.fromJson<int>(json['number']),
       value: serializer.fromJson<String>(json['value']),
+      valueSlug: serializer.fromJson<String>(json['valueSlug']),
     );
   }
   @override
@@ -1127,15 +1162,20 @@ class Article extends DataClass implements Insertable<Article> {
     return <String, dynamic>{
       'number': serializer.toJson<int>(number),
       'value': serializer.toJson<String>(value),
+      'valueSlug': serializer.toJson<String>(valueSlug),
     };
   }
 
-  Article copyWith({int? number, String? value}) =>
-      Article(number: number ?? this.number, value: value ?? this.value);
+  Article copyWith({int? number, String? value, String? valueSlug}) => Article(
+    number: number ?? this.number,
+    value: value ?? this.value,
+    valueSlug: valueSlug ?? this.valueSlug,
+  );
   Article copyWithCompanion(ArticlesCompanion data) {
     return Article(
       number: data.number.present ? data.number.value : this.number,
       value: data.value.present ? data.value.value : this.value,
+      valueSlug: data.valueSlug.present ? data.valueSlug.value : this.valueSlug,
     );
   }
 
@@ -1143,46 +1183,59 @@ class Article extends DataClass implements Insertable<Article> {
   String toString() {
     return (StringBuffer('Article(')
           ..write('number: $number, ')
-          ..write('value: $value')
+          ..write('value: $value, ')
+          ..write('valueSlug: $valueSlug')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(number, value);
+  int get hashCode => Object.hash(number, value, valueSlug);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Article &&
           other.number == this.number &&
-          other.value == this.value);
+          other.value == this.value &&
+          other.valueSlug == this.valueSlug);
 }
 
 class ArticlesCompanion extends UpdateCompanion<Article> {
   final Value<int> number;
   final Value<String> value;
+  final Value<String> valueSlug;
   const ArticlesCompanion({
     this.number = const Value.absent(),
     this.value = const Value.absent(),
+    this.valueSlug = const Value.absent(),
   });
   ArticlesCompanion.insert({
     this.number = const Value.absent(),
     required String value,
-  }) : value = Value(value);
+    required String valueSlug,
+  }) : value = Value(value),
+       valueSlug = Value(valueSlug);
   static Insertable<Article> custom({
     Expression<int>? number,
     Expression<String>? value,
+    Expression<String>? valueSlug,
   }) {
     return RawValuesInsertable({
       if (number != null) 'number': number,
       if (value != null) 'value': value,
+      if (valueSlug != null) 'value_slug': valueSlug,
     });
   }
 
-  ArticlesCompanion copyWith({Value<int>? number, Value<String>? value}) {
+  ArticlesCompanion copyWith({
+    Value<int>? number,
+    Value<String>? value,
+    Value<String>? valueSlug,
+  }) {
     return ArticlesCompanion(
       number: number ?? this.number,
       value: value ?? this.value,
+      valueSlug: valueSlug ?? this.valueSlug,
     );
   }
 
@@ -1195,6 +1248,9 @@ class ArticlesCompanion extends UpdateCompanion<Article> {
     if (value.present) {
       map['value'] = Variable<String>(value.value);
     }
+    if (valueSlug.present) {
+      map['value_slug'] = Variable<String>(valueSlug.value);
+    }
     return map;
   }
 
@@ -1202,7 +1258,8 @@ class ArticlesCompanion extends UpdateCompanion<Article> {
   String toString() {
     return (StringBuffer('ArticlesCompanion(')
           ..write('number: $number, ')
-          ..write('value: $value')
+          ..write('value: $value, ')
+          ..write('valueSlug: $valueSlug')
           ..write(')'))
         .toString();
   }
@@ -2424,9 +2481,17 @@ typedef $$SectionsTableProcessedTableManager =
       PrefetchHooks Function({bool chapterId, bool titleId})
     >;
 typedef $$ArticlesTableCreateCompanionBuilder =
-    ArticlesCompanion Function({Value<int> number, required String value});
+    ArticlesCompanion Function({
+      Value<int> number,
+      required String value,
+      required String valueSlug,
+    });
 typedef $$ArticlesTableUpdateCompanionBuilder =
-    ArticlesCompanion Function({Value<int> number, Value<String> value});
+    ArticlesCompanion Function({
+      Value<int> number,
+      Value<String> value,
+      Value<String> valueSlug,
+    });
 
 class $$ArticlesTableFilterComposer
     extends Composer<_$AppDatabase, $ArticlesTable> {
@@ -2444,6 +2509,11 @@ class $$ArticlesTableFilterComposer
 
   ColumnFilters<String> get value => $composableBuilder(
     column: $table.value,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get valueSlug => $composableBuilder(
+    column: $table.valueSlug,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -2466,6 +2536,11 @@ class $$ArticlesTableOrderingComposer
     column: $table.value,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get valueSlug => $composableBuilder(
+    column: $table.valueSlug,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ArticlesTableAnnotationComposer
@@ -2482,6 +2557,9 @@ class $$ArticlesTableAnnotationComposer
 
   GeneratedColumn<String> get value =>
       $composableBuilder(column: $table.value, builder: (column) => column);
+
+  GeneratedColumn<String> get valueSlug =>
+      $composableBuilder(column: $table.valueSlug, builder: (column) => column);
 }
 
 class $$ArticlesTableTableManager
@@ -2514,12 +2592,22 @@ class $$ArticlesTableTableManager
               ({
                 Value<int> number = const Value.absent(),
                 Value<String> value = const Value.absent(),
-              }) => ArticlesCompanion(number: number, value: value),
+                Value<String> valueSlug = const Value.absent(),
+              }) => ArticlesCompanion(
+                number: number,
+                value: value,
+                valueSlug: valueSlug,
+              ),
           createCompanionCallback:
               ({
                 Value<int> number = const Value.absent(),
                 required String value,
-              }) => ArticlesCompanion.insert(number: number, value: value),
+                required String valueSlug,
+              }) => ArticlesCompanion.insert(
+                number: number,
+                value: value,
+                valueSlug: valueSlug,
+              ),
           withReferenceMapper:
               (p0) =>
                   p0

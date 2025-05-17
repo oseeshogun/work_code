@@ -14,6 +14,7 @@ import 'package:codedutravail/domain/repositories/title_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:string_extensions/string_extensions.dart';
 import 'package:yaml/yaml.dart';
 
 part 'register_data_offline.g.dart';
@@ -78,7 +79,7 @@ class RegisterDataOnOfflineUseCase extends UseCase<void> {
 
       final articleNumber = int.parse(key.replaceFirst('article_', ''));
 
-      articles.add(ArticleEntity(number: articleNumber, text: value));
+      articles.add(ArticleEntity(number: articleNumber, text: value, slug: value.toLowerCase().toSlug));
     }
 
     // Process titles, chapters, and sections
