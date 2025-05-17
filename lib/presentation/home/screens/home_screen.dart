@@ -3,7 +3,10 @@ import 'package:codedutravail/core/router/routes.dart';
 import 'package:codedutravail/data/repositories/article_repository_impl.dart';
 import 'package:codedutravail/domain/home/providers/read_disclaimer.dart';
 import 'package:codedutravail/presentation/home/dialogs/disclaimer_dialog.dart';
+import 'package:codedutravail/presentation/home/providers/article_of_day_visibility.dart';
+import 'package:codedutravail/presentation/home/providers/article_of_the_day.dart';
 import 'package:codedutravail/presentation/home/providers/titles.dart';
+import 'package:codedutravail/presentation/home/widgets/article_of_the_day_card.dart';
 import 'package:codedutravail/presentation/home/widgets/article_search_delegate.dart';
 import 'package:codedutravail/presentation/home/widgets/titles_empty_widget.dart';
 import 'package:codedutravail/presentation/home/widgets/titles_error_widget.dart';
@@ -21,6 +24,8 @@ class HomeScreen extends HookConsumerWidget {
     final hasReadDisclaimer = ref.watch(readDisclaimerProvider).value;
     final titlesAsync = ref.watch(titlesProvider);
     final articleCountAsync = ref.watch(articleCountProvider);
+    final articleOfTheDayAsync = ref.watch(articleOfTheDayProvider);
+    final articleVisibilityAsync = ref.watch(articleOfDayVisibilityProvider);
 
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -50,33 +55,60 @@ class HomeScreen extends HookConsumerWidget {
           IconButton(onPressed: () => InfoRoute().push(context), icon: const Icon(Icons.info_outline)),
         ],
       ),
-      body: titlesAsync.when(
-        data: (titles) {
-          return articleCountAsync.when(
-            data: (articleCount) {
-              if (titles.isEmpty || articleCount == 0) {
-                return const TitlesEmptyWidget();
-              }
-              return TitlesListWidget(titles: titles);
-            },
-            loading:
-                () => Visibility(
-                  visible: titles.isNotEmpty,
-                  replacement: const TitlesEmptyWidget(),
-                  child: TitlesListWidget(titles: titles),
-                ),
-            error:
-                (_, __) => Visibility(
-                  visible: titles.isNotEmpty,
-                  replacement: const TitlesEmptyWidget(),
-                  child: TitlesListWidget(titles: titles),
-                ),
-          );
-        },
-        loading: () => const TitlesLoadingWidget(),
-        error:
-            (error, stackTrace) =>
-                TitlesErrorWidget(errorMessage: error.toString(), onRetry: () => ref.invalidate(titlesProvider)),
+      body: Column(
+        children: [
+          // Article of the Day section
+          articleVisibilityAsync.when(
+            data: (isVisible) => isVisible
+                ? articleOfTheDayAsync.when(
+                    data: (article) => ArticleOfTheDayCard(
+                      article: article,
+                      onClose: () {
+                        ref.read(articleOfDayVisibilityProvider.notifier).hideForToday();
+                      },
+                    ),
+                    loading: () => const SizedBox(
+                      height: 150,
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                    error: (_, __) => const SizedBox(), // Hide on error
+                  )
+                : const SizedBox(), // Hide if user closed it
+            loading: () => const SizedBox(),
+            error: (_, __) => const SizedBox(),
+          ),
+          
+          // Titles list section
+          Expanded(
+            child: titlesAsync.when(
+              data: (titles) {
+                return articleCountAsync.when(
+                  data: (articleCount) {
+                    if (titles.isEmpty || articleCount == 0) {
+                      return const TitlesEmptyWidget();
+                    }
+                    return TitlesListWidget(titles: titles);
+                  },
+                  loading: () => Visibility(
+                    visible: titles.isNotEmpty,
+                    replacement: const TitlesEmptyWidget(),
+                    child: TitlesListWidget(titles: titles),
+                  ),
+                  error: (_, __) => Visibility(
+                    visible: titles.isNotEmpty,
+                    replacement: const TitlesEmptyWidget(),
+                    child: TitlesListWidget(titles: titles),
+                  ),
+                );
+              },
+              loading: () => const TitlesLoadingWidget(),
+              error: (error, stackTrace) => TitlesErrorWidget(
+                errorMessage: error.toString(), 
+                onRetry: () => ref.invalidate(titlesProvider)
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
