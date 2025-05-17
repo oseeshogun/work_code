@@ -9,8 +9,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:codedutravail/firebase_options.dart';
 
-// TODO: sessions limits, 2 per day
-// TODO: query limits, 10 per chat
 // TODO: add ads
 // TODO: add ads to have extra query and sessions
 // TODO: no ads on first day of use
