@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:codedutravail/core/domain/errors/session_limit_exception.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobile_device_identifier/mobile_device_identifier.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -41,7 +42,7 @@ class LimitsService {
     return '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
   }
 
-  /// Checks if the user has reached the daily session limit
+  /// Checks if the user has reached the daily session limit, considering both regular and reward-based sessions
   Future<bool> hasReachedDailySessionLimit() async {
     final docRef = await _getDeviceDocRef();
     final today = _getTodayDateString();
@@ -55,7 +56,10 @@ class LimitsService {
     final dailyData = data[today] as Map<String, dynamic>? ?? {};
 
     final sessionsCount = dailyData['sessions'] as int? ?? 0;
-    return sessionsCount >= maxSessionsPerDay;
+    final rewardSessions = dailyData['reward_sessions'] as int? ?? 0;
+    final totalAllowedSessions = maxSessionsPerDay + rewardSessions;
+    
+    return sessionsCount >= totalAllowedSessions;
   }
 
   /// Checks if the user has reached the daily session limit and throws a SessionLimitException if they have
@@ -154,5 +158,56 @@ class LimitsService {
     final queryCount = sessionData['queries'] as int? ?? 0;
 
     return maxQueriesPerChat - queryCount;
+  }
+  
+  /// Adds an extra session for today when a user watches a reward ad
+  /// Returns true if the extra session was successfully added
+  Future<bool> addExtraSessionFromRewardAd() async {
+    try {
+      final docRef = await _getDeviceDocRef();
+      final today = _getTodayDateString();
+      
+      // Get current sessions count
+      final docSnapshot = await docRef.get();
+      if (!docSnapshot.exists) {
+        // If no document exists yet, create it with a counter for reward-based sessions
+        await docRef.set({
+          today: {
+            'sessions': 0,
+            'reward_sessions': 1,
+          },
+        });
+        return true;
+      }
+      
+      // Update the document with an extra reward session
+      await docRef.set({
+        today: {
+          'reward_sessions': FieldValue.increment(1),
+        },
+      }, SetOptions(merge: true));
+      
+      return true;
+    } catch (e) {
+      debugPrint('Error adding extra session from reward ad: $e');
+      return false;
+    }
+  }
+  
+  /// Gets the total available sessions for today (including regular and reward-based)
+  Future<int> getTotalAvailableSessionsToday() async {
+    final docRef = await _getDeviceDocRef();
+    final today = _getTodayDateString();
+
+    final docSnapshot = await docRef.get();
+    if (!docSnapshot.exists) {
+      return maxSessionsPerDay;
+    }
+
+    final data = docSnapshot.data() as Map<String, dynamic>;
+    final dailyData = data[today] as Map<String, dynamic>? ?? {};
+
+    final rewardSessions = dailyData['reward_sessions'] as int? ?? 0;
+    return maxSessionsPerDay + rewardSessions;
   }
 }

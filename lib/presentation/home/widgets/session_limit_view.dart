@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// A widget that displays a nice UI when the daily session limit is exceeded
-class SessionLimitView extends StatelessWidget {
+class SessionLimitView extends ConsumerWidget {
   final VoidCallback? onRetry;
+  final VoidCallback? onWatchAd;
 
-  const SessionLimitView({super.key, this.onRetry});
+  const SessionLimitView({super.key, this.onRetry, this.onWatchAd});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -37,6 +39,18 @@ class SessionLimitView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
+          if (onWatchAd != null)
+            ElevatedButton.icon(
+              onPressed: onWatchAd,
+              icon: const Icon(Icons.video_library),
+              label: const Text('Regarder une publicité pour une session supplémentaire'),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                backgroundColor: Colors.amber.shade700,
+                foregroundColor: Colors.white,
+              ),
+            ),
+          const SizedBox(height: 16),
           if (onRetry != null)
             ElevatedButton.icon(
               onPressed: onRetry,
