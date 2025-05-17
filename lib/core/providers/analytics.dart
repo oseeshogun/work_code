@@ -1,5 +1,5 @@
-import 'package:codedutravail/core/analytics/analytics_service.dart';
-import 'package:codedutravail/core/crashlytics/crashlytics_service.dart';
+import 'package:codedutravail/core/services/analytics_service.dart';
+import 'package:codedutravail/core/services/crashlytics_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';

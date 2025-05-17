@@ -50,3 +50,6 @@ lib/firebase_options.dart
 
 # Generated files
 **/*.g.dart
+
+## Ads
+**/ads_config.dart
