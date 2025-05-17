@@ -1,4 +1,3 @@
-import 'package:codedutravail/core/data/database.dart';
 import 'package:codedutravail/core/presentations/providers/article.dart';
 import 'package:codedutravail/core/router/routes.dart';
 import 'package:codedutravail/data/repositories/article_repository_impl.dart';
@@ -13,7 +12,6 @@ import 'package:codedutravail/presentation/home/widgets/titles_loading_widget.da
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:drift_db_viewer/drift_db_viewer.dart';
 
 class HomeScreen extends HookConsumerWidget {
   const HomeScreen({super.key});
@@ -79,13 +77,6 @@ class HomeScreen extends HookConsumerWidget {
         error:
             (error, stackTrace) =>
                 TitlesErrorWidget(errorMessage: error.toString(), onRetry: () => ref.invalidate(titlesProvider)),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          final db = ref.read(dbProvider);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DriftDbViewer(db)));
-        },
-        child: Icon(Icons.data_array),
       ),
     );
   }
