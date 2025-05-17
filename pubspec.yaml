@@ -63,6 +63,7 @@ dependencies:
   firebase_crashlytics: ^4.3.5
   firebase_vertexai: ^1.6.0
   flutter_markdown: ^0.6.18
+  connectivity_plus: ^6.1.4
 
 dev_dependencies:
   flutter_test:

@@ -37,14 +37,14 @@ class ArticleRepositoryImpl extends DatabaseAccessor<AppDatabase> with _$Article
   }
 
   @override
-  Stream<List<ArticleEntity>> streamArticles(List<int> ids) {
-    return (select(articles)..where(
-      (t) => t.number.isIn(ids),
-    )).watch().map((values) => values.map((value) => ArticleEntity(number: value.number, text: value.value)).toList());
-  }
-
-  @override
   Stream<List<ArticleEntity>> search(String query) {
+    if (query.isEmpty) {
+      return Stream.value([]);
+    }
+    if (query.split(',').every((i) => int.tryParse(i) != null)) {
+      final ids = query.split(',').map((i) => int.parse(i)).toList();
+      return (select(articles)..where((t) => t.number.isIn(ids))).watch().map((values) => values.map((value) => ArticleEntity(number: value.number, text: value.value)).toList());
+    }
     final lowerQuery = query.toLowerCase();
     return (select(articles)..where(
       (t) => t.value.lower().contains(lowerQuery),

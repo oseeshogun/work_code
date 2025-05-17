@@ -5,8 +5,6 @@ mixin ArticleRepository {
 
   Stream<ArticleEntity> streamArticleById(int id);
 
-  Stream<List<ArticleEntity>> streamArticles(List<int> ids);
-
   Stream<List<ArticleEntity>> search(String query);
 
   Future<ArticleEntity> getArticleById(int id);

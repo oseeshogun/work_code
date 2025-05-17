@@ -35,14 +35,11 @@ class HomeScreen extends HookConsumerWidget {
         title: Text('Code du Travail', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 24.0)),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () => AiSearchRoute().push(context),
-            icon: const Icon(Icons.search),
-          ),
-          IconButton(
-            onPressed: () => InfoRoute().push(context),
-            icon: const Icon(Icons.info_outline),
-          ),
+          IconButton(onPressed: () {
+            // TODO: show search delete
+          }, icon: const Icon(Icons.search)),
+          IconButton(onPressed: () => AiSearchRoute().push(context), icon: const Icon(Icons.assistant)),
+          IconButton(onPressed: () => InfoRoute().push(context), icon: const Icon(Icons.info_outline)),
         ],
       ),
       body: titlesAsync.when(
@@ -54,16 +51,18 @@ class HomeScreen extends HookConsumerWidget {
               }
               return TitlesListWidget(titles: titles);
             },
-            loading: () => Visibility(
-              visible: titles.isNotEmpty,
-              replacement: const TitlesEmptyWidget(),
-              child: TitlesListWidget(titles: titles),
-            ),
-            error: (_, __) => Visibility(
-              visible: titles.isNotEmpty,
-              replacement: const TitlesEmptyWidget(),
-              child: TitlesListWidget(titles: titles),
-            ),
+            loading:
+                () => Visibility(
+                  visible: titles.isNotEmpty,
+                  replacement: const TitlesEmptyWidget(),
+                  child: TitlesListWidget(titles: titles),
+                ),
+            error:
+                (_, __) => Visibility(
+                  visible: titles.isNotEmpty,
+                  replacement: const TitlesEmptyWidget(),
+                  child: TitlesListWidget(titles: titles),
+                ),
           );
         },
         loading: () => const TitlesLoadingWidget(),
