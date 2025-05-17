@@ -1,4 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:codedutravail/core/services/ads/ads_service.dart';
 import 'package:codedutravail/domain/usecases/limited_send_chat_message.dart';
 import 'package:codedutravail/presentation/home/providers/limited_chat_session.dart';
 import 'package:codedutravail/presentation/home/widgets/animated_gradient_border_text_field.dart';
@@ -24,6 +25,20 @@ class AiSearchScreen extends HookConsumerWidget {
     final thinking = useState(false);
     final chats = useState<Map<String, GenerateContentResponse>>({});
     final scrollController = useScrollController();
+    final adsService = ref.watch(adsServiceProvider);
+    
+    // Show interstitial ad when the screen is first built
+    useEffect(() {
+      // Use addPostFrameCallback to ensure the ad is shown after the UI is fully built
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // First load the interstitial ad
+        adsService.loadInterstitialAd().then((_) {
+          // Then show it after it's loaded
+          adsService.showInterstitialAd();
+        });
+      });
+      return null;
+    }, []);
 
     // Auto-scroll to bottom when new messages arrive
     useEffect(() {
