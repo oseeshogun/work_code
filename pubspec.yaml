@@ -66,6 +66,8 @@ dependencies:
   string_extensions: ^0.7.3
   diacritic: ^0.1.6
   fuzzy: ^0.5.1
+  mobile_device_identifier: ^0.0.3
+  cloud_firestore: ^5.6.7
 
 dev_dependencies:
   flutter_test:
