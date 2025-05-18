@@ -13,7 +13,6 @@ Future<FlutterTts> tts(Ref ref) async {
   await flutterTts.setVolume(1.0);
   await flutterTts.setPitch(1.0);
   
-  // Register a dispose callback to properly clean up the TTS instance
   ref.onDispose(() {
     flutterTts.stop();
   });

@@ -2,7 +2,6 @@ extension ToRoman on int {
   String get roman => _toRoman(this);
 }
 
-/// Converts an integer to a Roman numeral string
 String _toRoman(int number) {
   if (number <= 0 || number > 3999) {
     return number.toString();

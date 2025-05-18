@@ -10,35 +10,21 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:codedutravail/firebase_options.dart';
 
-/// Initialize Firebase Crashlytics
-Future<void> _initializeCrashlytics() async {
-  // Enable collection of crash reports
-  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  
-  // Set user identifiers for crash reports (optional)
-  // This could be set after user login if you have user authentication
-  await FirebaseCrashlytics.instance.setUserIdentifier('anonymous_user');
-}
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Configure Crashlytics
-  await _initializeCrashlytics();
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
 
-  // Initialize Google Mobile Ads SDK
+  await FirebaseCrashlytics.instance.setUserIdentifier('anonymous_user');
+
   await MobileAds.instance.initialize();
 
-  // Log app open event
   await FirebaseAnalytics.instance.logAppOpen();
 
-  // Catch Flutter errors and report to Crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  
-  // Catch async errors that aren't caught by the Flutter framework
+
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
@@ -55,9 +41,8 @@ class MyApp extends HookConsumerWidget {
     final router = ref.watch(routerProvider);
     final analytics = ref.watch(analyticsProvider);
 
-    // Configure analytics collection
     analytics.setAnalyticsCollectionEnabled(true);
-    
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),

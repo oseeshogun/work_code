@@ -1,3 +1,4 @@
+import 'package:codedutravail/core/domain/errors/session_limit_exception.dart';
 import 'package:codedutravail/core/domain/usecases/usecase.dart';
 import 'package:codedutravail/core/services/limits_service.dart';
 import 'package:firebase_vertexai/firebase_vertexai.dart';
@@ -33,7 +34,7 @@ class LimitedSendChatMessageUseCase extends UseCaseFamily<GenerateContentRespons
     // Check if query limit is reached
     final hasReachedLimit = await _limitsService.hasReachedQueryLimit(_sessionId);
     if (hasReachedLimit) {
-      throw Exception('Query limit reached for this session.');
+      throw SessionLimitException();
     }
 
     // Record the query

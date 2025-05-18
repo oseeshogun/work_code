@@ -1,5 +1,7 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:codedutravail/core/services/ads/ads_service.dart';
+import 'package:codedutravail/core/domain/errors/session_limit_exception.dart';
+import 'package:codedutravail/core/providers/ads/interstitial_ad.dart';
+import 'package:codedutravail/core/providers/ads/rewarded_add.dart';
 import 'package:codedutravail/core/services/limits_service.dart';
 import 'package:codedutravail/domain/usecases/limited_send_chat_message.dart';
 import 'package:codedutravail/presentation/home/providers/limited_chat_session.dart';
@@ -15,94 +17,42 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 class AiSearchScreen extends HookConsumerWidget {
   const AiSearchScreen({super.key});
 
-  // Handle watching a reward ad to gain an extra session
-  void _handleWatchRewardAd(BuildContext context, WidgetRef ref) async {
-    final adsService = ref.read(adsServiceProvider);
-    final limitsService = ref.read(limitsServiceProvider);
-
-    // Show loading indicator
-    showDialog(
-      context: ref.context,
-      barrierDismissible: false,
-      builder:
-          (context) => const AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [CircularProgressIndicator(), SizedBox(height: 16), Text('Chargement de la publicité...')],
-            ),
-          ),
-    );
-
-    // Show the rewarded ad
-    final result = await adsService.showRewardedAd(
-      onRewarded: () async {
-        // Add an extra session when the user earns the reward
-        await limitsService.addExtraSessionFromRewardAd();
-      },
-    );
-
-    // Close the loading dialog
-    if (context.mounted) Navigator.of(context).pop();
-
-    if (result && context.mounted) {
-      // Show success message
-      showDialog(
-        context: context,
-        builder:
-            (context) => AlertDialog(
-              title: const Text('Félicitations!'),
-              content: const Text('Vous avez gagné une session supplémentaire!'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    // Refresh the session provider to try again
-                    final _ = ref.refresh(limitedChatSessionProvider);
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
-      );
-    } else if (context.mounted) {
-      // Show error message
-      showDialog(
-        context: context,
-        builder:
-            (context) => AlertDialog(
-              title: const Text('Erreur'),
-              content: const Text("Impossible de charger la publicité. Veuillez réessayer plus tard."),
-              actions: [TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('OK'))],
-            ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final limitedSendChatMessageAsync = ref.watch(limitedSendChatMessageProvider);
-    final remainingQueriesAsync = ref.watch(remainingQueriesProvider);
-    final remainingSessionsAsync = ref.watch(remainingSessionsProvider);
+    final remainingQueries = ref.watch(remainingQueriesProvider).value ?? 0;
+    final remainingSessions = ref.watch(remainingSessionsProvider).value ?? 0;
     final textController = useTextEditingController();
     final focusNode = useFocusNode();
     final isFocused = useState(false);
     final thinking = useState(false);
     final chats = useState<Map<String, GenerateContentResponse>>({});
     final scrollController = useScrollController();
-    final adsService = ref.watch(adsServiceProvider);
+    final interstitialAdShown = useState(false);
+    final interstitialAd = ref.watch(interstitialAdNotifierProvider);
+    final rewardedAd = ref.watch(rewardedAdNotifierProvider);
+    final loadingReward = useState(false);
+
+    showRewardedAd() {
+      rewardedAd?.setImmersiveMode(true);
+      rewardedAd!.show(
+        onUserEarnedReward: (_, reward) async {
+          if (context.mounted) loadingReward.value = true;
+          await ref.read(limitsServiceProvider).addExtraSessionFromRewardAd();
+          ref.invalidate(limitedChatSessionProvider);
+          if (context.mounted) loadingReward.value = false;
+        },
+      );
+    }
 
     // Show interstitial ad when the screen is first built
     useEffect(() {
-      // Use addPostFrameCallback to ensure the ad is shown after the UI is fully built
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        // First load the interstitial ad
-        adsService.loadInterstitialAd().then((_) {
-          // Then show it after it's loaded
-          adsService.showInterstitialAd();
-        });
-      });
+      if (interstitialAd != null && !interstitialAdShown.value) {
+        interstitialAd.show();
+        interstitialAdShown.value = true;
+      }
       return null;
-    }, []);
+    }, [interstitialAd]);
 
     // Auto-scroll to bottom when new messages arrive
     useEffect(() {
@@ -145,41 +95,24 @@ class AiSearchScreen extends HookConsumerWidget {
                 ),
                 child: ListView.builder(
                   controller: scrollController,
-                  itemCount: chats.value.length * 2, // Each entry has a question and answer
+                  itemCount: chats.value.length * 2,
                   itemBuilder: (context, index) {
                     final isQuestion = index % 2 == 0;
                     final entryIndex = index ~/ 2;
                     final entry = chats.value.entries.elementAt(entryIndex);
 
-                    if (isQuestion) {
-                      // Question bubble
-                      return Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          margin: const EdgeInsets.only(bottom: 8.0),
-                          padding: const EdgeInsets.all(12.0),
-                          decoration: BoxDecoration(
-                            color:
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.blue.shade800
-                                    : Colors.blue.shade100,
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          child: Text(entry.key),
-                        ),
-                      );
-                    } else {
-                      // Response bubble
-                      return Align(
+                    return Visibility(
+                      visible: isQuestion,
+                      replacement: Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
                           margin: const EdgeInsets.only(bottom: 16.0),
                           padding: const EdgeInsets.all(12.0),
                           decoration: BoxDecoration(
-                            color:
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.grey.shade800
-                                    : Colors.grey.shade200,
+                            color: switch (Theme.of(context).brightness) {
+                              Brightness.dark => Colors.grey.shade800,
+                              Brightness.light => Colors.grey.shade200,
+                            },
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
@@ -192,39 +125,39 @@ class AiSearchScreen extends HookConsumerWidget {
                               h2: Theme.of(context).textTheme.titleMedium,
                               h3: Theme.of(context).textTheme.titleSmall,
                               code: TextStyle(
-                                backgroundColor:
-                                    Theme.of(context).brightness == Brightness.dark
-                                        ? Colors.grey.shade700
-                                        : Colors.grey.shade300,
+                                backgroundColor: switch (Theme.of(context).brightness) {
+                                  Brightness.dark => Colors.grey.shade700,
+                                  Brightness.light => Colors.grey.shade300,
+                                },
                                 fontFamily: 'monospace',
                                 fontSize: 14,
                               ),
                               codeblockDecoration: BoxDecoration(
-                                color:
-                                    Theme.of(context).brightness == Brightness.dark
-                                        ? Colors.grey.shade700
-                                        : Colors.grey.shade300,
+                                color: switch (Theme.of(context).brightness) {
+                                  Brightness.dark => Colors.grey.shade700,
+                                  Brightness.light => Colors.grey.shade300,
+                                },
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               blockquote: TextStyle(
-                                color:
-                                    Theme.of(context).brightness == Brightness.dark
-                                        ? Colors.grey.shade300
-                                        : Colors.grey.shade700,
+                                color: switch (Theme.of(context).brightness) {
+                                  Brightness.dark => Colors.grey.shade300,
+                                  Brightness.light => Colors.grey.shade700,
+                                },
                                 fontStyle: FontStyle.italic,
                               ),
                               blockquoteDecoration: BoxDecoration(
-                                color:
-                                    Theme.of(context).brightness == Brightness.dark
-                                        ? Colors.grey.shade900
-                                        : Colors.grey.shade100,
+                                color: switch (Theme.of(context).brightness) {
+                                  Brightness.dark => Colors.grey.shade900,
+                                  Brightness.light => Colors.grey.shade100,
+                                },
                                 borderRadius: BorderRadius.circular(4),
                                 border: Border(
                                   left: BorderSide(
-                                    color:
-                                        Theme.of(context).brightness == Brightness.dark
-                                            ? Colors.blue.shade700
-                                            : Colors.blue.shade300,
+                                    color: switch (Theme.of(context).brightness) {
+                                      Brightness.dark => Colors.blue.shade700,
+                                      Brightness.light => Colors.blue.shade300,
+                                    },
                                     width: 4,
                                   ),
                                 ),
@@ -233,8 +166,23 @@ class AiSearchScreen extends HookConsumerWidget {
                             ),
                           ),
                         ),
-                      );
-                    }
+                      ),
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 8.0),
+                          padding: const EdgeInsets.all(12.0),
+                          decoration: BoxDecoration(
+                            color: switch (Theme.of(context).brightness) {
+                              Brightness.dark => Colors.blue.shade800,
+                              Brightness.light => Colors.blue.shade100,
+                            },
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: Text(entry.key),
+                        ),
+                      ),
+                    );
                   },
                 ),
               ),
@@ -243,34 +191,28 @@ class AiSearchScreen extends HookConsumerWidget {
             const SizedBox(height: 16),
             Column(
               children: [
-                // Display remaining queries and sessions
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      remainingQueriesAsync.when(
-                        data:
-                            (count) => Text(
-                              'Requêtes restantes: $count/10',
-                              style: TextStyle(fontSize: 12, color: count < 3 ? Colors.red : Colors.grey),
+                limitedSendChatMessageAsync.when(
+                  data:
+                      (sendMessageUseCase) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Requêtes restantes: $remainingQueries/10',
+                              style: TextStyle(fontSize: 12, color: remainingQueries < 3 ? Colors.red : Colors.grey),
                             ),
-                        loading: () => const SizedBox.shrink(),
-                        error: (_, __) => const SizedBox.shrink(),
-                      ),
-                      remainingSessionsAsync.when(
-                        data:
-                            (count) => Text(
-                              'Sessions restantes: $count/2',
-                              style: TextStyle(fontSize: 12, color: count < 1 ? Colors.red : Colors.grey),
+                            Text(
+                              'Sessions restantes: $remainingSessions/2',
+                              style: TextStyle(fontSize: 12, color: remainingSessions < 1 ? Colors.red : Colors.grey),
                             ),
-                        loading: () => const SizedBox.shrink(),
-                        error: (_, __) => const SizedBox.shrink(),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (e, st) => SizedBox(),
                 ),
-                // Input field with limits
+                loadingReward.value ? const Center(child: CircularProgressIndicator()) : SizedBox(),
                 limitedSendChatMessageAsync.when(
                   data:
                       (sendMessageUseCase) => AnimatedGradientBorderTextField(
@@ -287,46 +229,45 @@ class AiSearchScreen extends HookConsumerWidget {
                           if (message.trim().isEmpty) return;
 
                           // Check remaining queries
-                          remainingQueriesAsync.whenData((remaining) {
-                            if (remaining <= 0) {
-                              showOkAlertDialog(
-                                context: context,
-                                title: 'Limite atteinte',
-                                message: 'Vous avez atteint la limite de requêtes pour cette session.',
-                              );
-                              return;
-                            }
+                          if (remainingQueries <= 0) {
+                            showOkAlertDialog(
+                              context: context,
+                              title: 'Limite atteinte',
+                              message: 'Vous avez atteint la limite de requêtes pour cette session.',
+                            );
+                            return;
+                          }
 
-                            thinking.value = true;
-                            // Send the message with limits check
-                            sendMessageUseCase.call(message).then((value) {
-                              thinking.value = false;
-                              value.fold(
-                                (l) {
-                                  showOkAlertDialog(context: context, title: 'Erreur', message: l.message);
-                                },
-                                (r) {
-                                  textController.clear();
-                                  chats.value = {...chats.value, message: r};
-                                  // Refresh the remaining queries count
-                                  final _ = ref.refresh(remainingQueriesProvider);
-                                },
-                              );
-                            });
+                          thinking.value = true;
+                          // Send the message with limits check
+                          sendMessageUseCase.call(message).then((value) {
+                            thinking.value = false;
+                            value.fold(
+                              (l) {
+                                showOkAlertDialog(context: context, title: 'Erreur', message: l.message);
+                              },
+                              (r) {
+                                textController.clear();
+                                chats.value = {...chats.value, message: r};
+                                // Refresh the remaining queries count
+                                final _ = ref.refresh(remainingQueriesProvider);
+                              },
+                            );
                           });
                         },
                       ),
                   loading: () => const Center(child: CircularProgressIndicator()),
                   error: (e, st) {
-                    // Check if this is a session limit exception
-                    if (e.toString().contains('limit') || e.toString().contains('session')) {
-                      return SessionLimitView(onRetry: null, onWatchAd: () => _handleWatchRewardAd(context, ref));
+                    if (e is SessionLimitException) {
+                      return SessionLimitView(
+                        onRetry: null,
+                        onWatchAd: rewardedAd != null ? () => showRewardedAd() : null,
+                      );
                     }
 
-                    // For other errors
                     return Column(
                       children: [
-                        Text('Erreur: ${e.toString()}', style: TextStyle(color: Colors.red)),
+                        Text('Erreur: ${e.runtimeType.toString()}', style: TextStyle(color: Colors.red)),
                         const SizedBox(height: 8),
                         ElevatedButton(
                           onPressed: () {
