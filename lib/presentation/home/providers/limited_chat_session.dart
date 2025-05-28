@@ -1,6 +1,6 @@
 import 'package:codedutravail/core/services/limits_service.dart';
 import 'package:codedutravail/presentation/home/providers/ai.dart';
-import 'package:firebase_vertexai/firebase_vertexai.dart';
+import 'package:firebase_ai/firebase_ai.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

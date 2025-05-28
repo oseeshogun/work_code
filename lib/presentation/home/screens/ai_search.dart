@@ -8,7 +8,7 @@ import 'package:codedutravail/presentation/home/providers/limited_chat_session.d
 import 'package:codedutravail/presentation/home/widgets/animated_gradient_border_text_field.dart';
 import 'package:codedutravail/presentation/home/widgets/session_limit_view.dart';
 import 'package:codedutravail/presentation/home/widgets/thinking_indicator.dart';
-import 'package:firebase_vertexai/firebase_vertexai.dart';
+import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

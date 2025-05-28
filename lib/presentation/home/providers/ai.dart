@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:firebase_vertexai/firebase_vertexai.dart';
+import 'package:firebase_ai/firebase_ai.dart';
 
 part 'ai.g.dart';
 
@@ -12,7 +12,7 @@ Future<String> systemPrompt(Ref ref) => rootBundle.loadString('assets/system_pro
 Future<GenerativeModel> geminiModel(Ref ref) async {
   final systemPrompt = await ref.watch(systemPromptProvider.future);
 
-  final model = FirebaseVertexAI.instance.generativeModel(
+  final model = FirebaseAI.vertexAI().generativeModel(
     model: 'gemini-2.0-flash',
     systemInstruction: Content.system(systemPrompt),
   );

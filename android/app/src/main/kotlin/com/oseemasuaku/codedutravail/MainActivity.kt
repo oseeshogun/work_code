@@ -1,4 +1,4 @@
-package com.oseemasuaku.codedutravail.codedutravail
+package com.oseemasuaku.codedutravail
 
 import io.flutter.embedding.android.FlutterActivity
 
