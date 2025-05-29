@@ -209,10 +209,10 @@ class AiSearchScreen extends HookConsumerWidget {
                           ],
                         ),
                       ),
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () => const SizedBox(), // Hide the loader here
                   error: (e, st) => SizedBox(),
                 ),
-                loadingReward.value ? const Center(child: CircularProgressIndicator()) : SizedBox(),
+                loadingReward.value ? const SizedBox() : SizedBox(), // Hide the reward loader
                 limitedSendChatMessageAsync.when(
                   data:
                       (sendMessageUseCase) => AnimatedGradientBorderTextField(
@@ -257,7 +257,17 @@ class AiSearchScreen extends HookConsumerWidget {
                           });
                         },
                       ),
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () => AnimatedGradientBorderTextField(
+                        thinking: true, // Always show thinking indicator when loading
+                        controller: textController,
+                        focusNode: focusNode,
+                        isFocused: isFocused.value,
+                        minLines: 3,
+                        maxLines: 4,
+                        hintText: 'Posez votre question ici...',
+                        labelText: 'AI Search',
+                        onSubmit: (_) {}, // Empty function since we're loading
+                      ),
                   error: (e, st) {
                     if (e is SessionLimitException) {
                       return SessionLimitView(
