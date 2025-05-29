@@ -1,7 +1,7 @@
-import 'package:codedutravail/core/presentations/widgets/article_widget.dart';
+import 'package:codedutravail/presentation/widgets/article_widget.dart';
 import 'package:codedutravail/domain/entities/article.dart';
 import 'package:codedutravail/domain/repositories/artitle_repository.dart';
-import 'package:codedutravail/presentation/home/providers/search.dart';
+import 'package:codedutravail/presentation/providers/search.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

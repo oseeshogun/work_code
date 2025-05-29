@@ -1,8 +1,8 @@
-import 'package:codedutravail/presentation/home/screens/about_work_code.dart';
-import 'package:codedutravail/presentation/home/screens/article_screen.dart';
-import 'package:codedutravail/presentation/home/screens/ai_search.dart';
-import 'package:codedutravail/presentation/home/screens/home_screen.dart';
-import 'package:codedutravail/presentation/home/screens/info_screen.dart';
+import 'package:codedutravail/presentation/screens/about_work_code.dart';
+import 'package:codedutravail/presentation/screens/article_screen.dart';
+import 'package:codedutravail/presentation/screens/ai_search.dart';
+import 'package:codedutravail/presentation/screens/home_screen.dart';
+import 'package:codedutravail/presentation/screens/info_screen.dart';
 import 'package:flutter/material.dart' show BuildContext, Widget;
 import 'package:go_router/go_router.dart';
 

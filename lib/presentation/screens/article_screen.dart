@@ -1,7 +1,7 @@
-import 'package:codedutravail/presentation/home/providers/articles/article.dart';
-import 'package:codedutravail/core/providers/ads/banner_ad.dart';
-import 'package:codedutravail/core/providers/flutter_tts.dart';
-import 'package:codedutravail/presentation/home/widgets/banner_ad_widget.dart';
+import 'package:codedutravail/presentation/providers/articles/article.dart';
+import 'package:codedutravail/core/presentations/providers/ads/banner_ad.dart';
+import 'package:codedutravail/core/presentations/providers/flutter_tts.dart';
+import 'package:codedutravail/presentation/widgets/banner_ad_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

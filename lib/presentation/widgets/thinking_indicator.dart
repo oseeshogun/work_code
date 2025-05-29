@@ -1,4 +1,4 @@
-import 'package:codedutravail/presentation/home/widgets/dot_pulse.dart';
+import 'package:codedutravail/presentation/widgets/dot_pulse.dart';
 import 'package:flutter/material.dart';
 
 class ThinkingIndicator extends StatelessWidget {

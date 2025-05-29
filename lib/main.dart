@@ -1,4 +1,4 @@
-import 'package:codedutravail/core/providers/analytics.dart';
+import 'package:codedutravail/core/presentations/providers/analytics.dart';
 import 'package:codedutravail/core/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';

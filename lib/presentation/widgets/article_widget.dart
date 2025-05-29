@@ -1,4 +1,4 @@
-import 'package:codedutravail/presentation/home/providers/articles/article.dart';
+import 'package:codedutravail/presentation/providers/articles/article.dart';
 import 'package:codedutravail/core/router/routes.dart';
 import 'package:codedutravail/core/utils/roman.dart';
 import 'package:flutter/material.dart';

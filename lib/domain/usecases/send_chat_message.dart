@@ -1,7 +1,7 @@
 import 'package:codedutravail/core/domain/usecases/usecase.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:codedutravail/presentation/home/providers/ai/ai.dart';
+import 'package:codedutravail/presentation/providers/ai/ai.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'send_chat_message.g.dart';
