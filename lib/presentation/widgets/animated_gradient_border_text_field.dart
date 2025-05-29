@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:codedutravail/presentation/widgets/thinking_indicator.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedGradientBorderTextField extends StatelessWidget {
@@ -79,12 +80,14 @@ class AnimatedGradientBorderTextField extends StatelessWidget {
                 ),
                 onSubmitted: onSubmit,
               ),
-              if (!thinking)
                 Positioned(
                   right: 8,
                   bottom: 8,
                   child: Material(
                     color: Colors.transparent,
+                  child: Visibility(
+                    visible: !thinking,
+                    replacement: const ThinkingIndicator(),
                     child: InkWell(
                       borderRadius: BorderRadius.circular(20),
                       onTap: () {
@@ -115,6 +118,7 @@ class AnimatedGradientBorderTextField extends StatelessWidget {
                         child: Transform.rotate(
                           angle: -math.pi / 6, // Negative pi/4 (-45 degrees)
                           child: const Icon(Icons.send_rounded, color: Colors.white, size: 20),
+                        ),
                         ),
                       ),
                     ),

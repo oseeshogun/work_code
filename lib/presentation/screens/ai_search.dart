@@ -10,6 +10,7 @@ import 'package:codedutravail/presentation/widgets/session_limit_view.dart';
 import 'package:codedutravail/presentation/widgets/thinking_indicator.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -21,7 +22,6 @@ class AiSearchScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final limitedSendChatMessageAsync = ref.watch(limitedSendChatMessageProvider);
     final remainingQueries = ref.watch(remainingQueriesProvider).value ?? 0;
-    final remainingSessions = ref.watch(remainingSessionsProvider).value ?? 0;
     final textController = useTextEditingController();
     final focusNode = useFocusNode();
     final isFocused = useState(false);
@@ -87,10 +87,16 @@ class AiSearchScreen extends HookConsumerWidget {
             Expanded(
               child: Visibility(
                 visible: chats.value.isNotEmpty,
-                replacement: Center(
-                  child: Text(
-                    'Posez une question pour commencer',
-                    style: TextStyle(color: Theme.of(context).hintColor),
+                replacement: SizedBox(
+                  height: double.infinity,
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset('assets/svgs/Android-pana.svg', height: 150),
+                      const SizedBox(height: 20),
+                      Text('Posez une question pour commencer', style: TextStyle(color: Theme.of(context).hintColor)),
+                    ],
                   ),
                 ),
                 child: ListView.builder(
@@ -199,12 +205,8 @@ class AiSearchScreen extends HookConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Requêtes restantes: $remainingQueries/10',
+                              'Requêtes restantes: $remainingQueries/${LimitsService.maxQueriesPerChat}',
                               style: TextStyle(fontSize: 12, color: remainingQueries < 3 ? Colors.red : Colors.grey),
-                            ),
-                            Text(
-                              'Sessions restantes: $remainingSessions/2',
-                              style: TextStyle(fontSize: 12, color: remainingSessions < 1 ? Colors.red : Colors.grey),
                             ),
                           ],
                         ),

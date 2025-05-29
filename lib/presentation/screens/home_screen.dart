@@ -50,7 +50,6 @@ class HomeScreen extends HookConsumerWidget {
             },
             icon: const Icon(Icons.search),
           ),
-          IconButton(onPressed: () => AiSearchRoute().push(context), icon: const Icon(Icons.assistant)),
           IconButton(onPressed: () => InfoRoute().push(context), icon: const Icon(Icons.info_outline)),
         ],
       ),
@@ -75,6 +74,13 @@ class HomeScreen extends HookConsumerWidget {
                 : const SizedBox(), // Hide if user closed it
             loading: () => const SizedBox(),
             error: (_, __) => const SizedBox(),
+          ),
+
+          // AI Search section
+          ElevatedButton.icon(
+            onPressed: () => AiSearchRoute().push(context),
+            icon: const Icon(Icons.assistant),
+            label: const Text('Recherche par IA'),
           ),
           
           // Titles list section
