@@ -1,4 +1,4 @@
-import 'package:codedutravail/core/presentations/providers/analytics.dart';
+import 'package:codedutravail/core/presentations/providers/dependencies.dart';
 import 'package:codedutravail/core/router/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

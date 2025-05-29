@@ -1,8 +1,12 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
-part 'analytics.g.dart';
+part 'dependencies.g.dart';
+
+@Riverpod(keepAlive: true)
+Future<SharedPreferences> prefs(Ref ref) => SharedPreferences.getInstance();
 
 @Riverpod(keepAlive: true)
 FirebaseAnalytics analytics(Ref ref) {

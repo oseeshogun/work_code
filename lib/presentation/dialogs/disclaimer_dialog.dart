@@ -1,4 +1,4 @@
-import 'package:codedutravail/core/presentations/providers/preferences.dart';
+import 'package:codedutravail/core/presentations/providers/dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
