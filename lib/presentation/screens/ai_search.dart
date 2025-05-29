@@ -7,7 +7,6 @@ import 'package:codedutravail/domain/usecases/limited_send_chat_message.dart';
 import 'package:codedutravail/presentation/providers/ai/limited_chat_session.dart';
 import 'package:codedutravail/presentation/widgets/animated_gradient_border_text_field.dart';
 import 'package:codedutravail/presentation/widgets/session_limit_view.dart';
-import 'package:codedutravail/presentation/widgets/thinking_indicator.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -193,7 +192,6 @@ class AiSearchScreen extends HookConsumerWidget {
                 ),
               ),
             ),
-            if (thinking.value) ThinkingIndicator(),
             const SizedBox(height: 16),
             Column(
               children: [
@@ -240,6 +238,7 @@ class AiSearchScreen extends HookConsumerWidget {
                             return;
                           }
 
+                          textController.clear();
                           thinking.value = true;
                           // Send the message with limits check
                           sendMessageUseCase.call(message).then((value) {
@@ -247,9 +246,9 @@ class AiSearchScreen extends HookConsumerWidget {
                             value.fold(
                               (l) {
                                 showOkAlertDialog(context: context, title: 'Erreur', message: l.message);
+                                textController.text = message;
                               },
                               (r) {
-                                textController.clear();
                                 chats.value = {...chats.value, message: r};
                                 // Refresh the remaining queries count
                                 final _ = ref.refresh(remainingQueriesProvider);
