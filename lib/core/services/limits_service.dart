@@ -16,10 +16,10 @@ class LimitsService {
   final MobileDeviceIdentifier _deviceIdentifier = MobileDeviceIdentifier();
 
   /// Maximum number of sessions allowed per day
-  static const int maxSessionsPerDay = 2;
+  static const int maxSessionsPerDay = 10;
 
   /// Maximum number of queries allowed per chat session
-  static const int maxQueriesPerChat = 10;
+  static const int maxQueriesPerChat = 15;
 
   /// Collection name for storing usage data
   static const String _usageCollection = 'usage';
