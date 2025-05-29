@@ -1,4 +1,4 @@
-import 'package:codedutravail/core/presentations/providers/article.dart';
+import 'package:codedutravail/presentation/home/providers/articles/article.dart';
 import 'package:codedutravail/core/providers/ads/banner_ad.dart';
 import 'package:codedutravail/core/providers/flutter_tts.dart';
 import 'package:codedutravail/presentation/home/widgets/banner_ad_widget.dart';

@@ -4,7 +4,7 @@ import 'package:codedutravail/core/providers/ads/interstitial_ad.dart';
 import 'package:codedutravail/core/providers/ads/rewarded_add.dart';
 import 'package:codedutravail/core/services/limits_service.dart';
 import 'package:codedutravail/domain/usecases/limited_send_chat_message.dart';
-import 'package:codedutravail/presentation/home/providers/limited_chat_session.dart';
+import 'package:codedutravail/presentation/home/providers/ai/limited_chat_session.dart';
 import 'package:codedutravail/presentation/home/widgets/animated_gradient_border_text_field.dart';
 import 'package:codedutravail/presentation/home/widgets/session_limit_view.dart';
 import 'package:codedutravail/presentation/home/widgets/thinking_indicator.dart';

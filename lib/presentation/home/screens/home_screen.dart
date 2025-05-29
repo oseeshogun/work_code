@@ -1,11 +1,10 @@
-import 'package:codedutravail/core/presentations/providers/article.dart';
+import 'package:codedutravail/presentation/home/providers/articles/article.dart';
 import 'package:codedutravail/core/router/routes.dart';
 import 'package:codedutravail/data/repositories/article_repository_impl.dart';
 import 'package:codedutravail/domain/home/providers/read_disclaimer.dart';
 import 'package:codedutravail/presentation/home/dialogs/disclaimer_dialog.dart';
-import 'package:codedutravail/presentation/home/providers/article_of_day_visibility.dart';
-import 'package:codedutravail/presentation/home/providers/article_of_the_day.dart';
-import 'package:codedutravail/presentation/home/providers/titles.dart';
+import 'package:codedutravail/presentation/home/providers/articles/article_of_the_day.dart';
+import 'package:codedutravail/presentation/home/providers/articles/titles.dart';
 import 'package:codedutravail/presentation/home/widgets/article_of_the_day_card.dart';
 import 'package:codedutravail/presentation/home/widgets/article_search_delegate.dart';
 import 'package:codedutravail/presentation/home/widgets/titles_empty_widget.dart';

@@ -1,4 +1,4 @@
-import 'package:codedutravail/core/data/converters/list_int_converter.dart';
+import 'package:codedutravail/data/converters/list_int_converter.dart';
 import 'package:codedutravail/data/tables/chapters.dart';
 import 'package:drift/drift.dart';
 import 'package:codedutravail/data/tables/titles.dart';

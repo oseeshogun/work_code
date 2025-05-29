@@ -1,4 +1,4 @@
-import 'package:codedutravail/core/data/database.dart';
+import 'package:codedutravail/data/database.dart';
 import 'package:codedutravail/data/tables/articles.dart';
 import 'package:codedutravail/domain/entities/article.dart';
 import 'package:codedutravail/domain/repositories/artitle_repository.dart';
