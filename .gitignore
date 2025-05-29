@@ -52,4 +52,4 @@ lib/firebase_options.dart
 **/*.g.dart
 
 ## Ads
-**/ads_config.dart
+.env.json

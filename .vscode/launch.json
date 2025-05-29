@@ -7,19 +7,21 @@
     {
       "name": "agora_mall",
       "request": "launch",
-      "type": "dart",
+      "type": "dart"
     },
     {
       "name": "agora_mall (profile mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile",
+      "toolArgs": ["--dart-define-from-file", ".env.json"]
     },
     {
       "name": "agora_mall (release mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release",
+      "toolArgs": ["--dart-define-from-file", ".env.json"]
     }
   ]
 }

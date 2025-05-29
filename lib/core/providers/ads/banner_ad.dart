@@ -1,4 +1,4 @@
-import 'package:codedutravail/core/services/ads/ads_config.dart';
+import 'package:codedutravail/core/config/ads_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
