@@ -1,10 +1,9 @@
 import 'package:codedutravail/core/presentations/providers/article.dart';
+import 'package:codedutravail/core/providers/ads/banner_ad.dart';
 import 'package:codedutravail/core/providers/flutter_tts.dart';
-import 'package:codedutravail/core/services/ads/ads_service.dart';
 import 'package:codedutravail/presentation/home/widgets/banner_ad_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ArticleScreen extends HookConsumerWidget {
@@ -16,18 +15,12 @@ class ArticleScreen extends HookConsumerWidget {
     final articleAsyncValue = ref.watch(articleProvider(number));
     final tts = ref.watch(ttsProvider).value;
     final isReading = useState(false);
-    // Using the provider directly since we don't need to watch for changes
-    final adsService = AdsService();
-    final bannerAdState = useState<BannerAd?>(null);
+    final bannerAd = ref.watch(bannerAdNotifierProvider);
     
     // Load the banner ad when the screen is first built
     useEffect(() {
-      adsService.loadBannerAd().then((ad) {
-        if (ad != null) {
-          bannerAdState.value = ad;
-        }
-      });
-      return () => bannerAdState.value?.dispose();
+      bannerAd.load();
+      return () => bannerAd.dispose();
     }, []);
 
     speak(String text) {
@@ -93,7 +86,7 @@ class ArticleScreen extends HookConsumerWidget {
           ),
           
           // Banner ad at the bottom
-          BannerAdWidget(ad: bannerAdState.value),
+          BannerAdWidget(ad: bannerAd),
         ],
       ),
     );

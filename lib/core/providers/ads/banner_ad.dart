@@ -1,13 +1,15 @@
-import 'dart:async';
-
 import 'package:codedutravail/core/services/ads/ads_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class AdsService {
-  /// Load a banner ad
-  Future<BannerAd?> loadBannerAd() async {
-    final bannerAd = BannerAd(
+part 'banner_ad.g.dart';
+
+@riverpod
+class BannerAdNotifier extends _$BannerAdNotifier {
+  @override
+  BannerAd build() {
+    return BannerAd(
       adUnitId: AdsConfig.bannerAdUnitId,
       size: AdSize.banner,
       request: const AdRequest(),
@@ -25,15 +27,5 @@ class AdsService {
         },
       ),
     );
-
-    try {
-      await bannerAd.load();
-      return bannerAd;
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error loading banner ad: $e');
-      }
-      return null;
-    }
   }
 }

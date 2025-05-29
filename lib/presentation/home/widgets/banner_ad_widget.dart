@@ -12,6 +12,7 @@ class BannerAdWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("=====> $ad");
     if (ad == null) {
       return const SizedBox(height: 50);
     }
