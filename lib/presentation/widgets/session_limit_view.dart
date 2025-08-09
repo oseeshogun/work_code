@@ -3,9 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SessionLimitView extends ConsumerWidget {
   final VoidCallback? onRetry;
-  final VoidCallback? onWatchAd;
 
-  const SessionLimitView({super.key, this.onRetry, this.onWatchAd});
+  const SessionLimitView({super.key, this.onRetry});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,17 +28,6 @@ class SessionLimitView extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 24),
-        if (onWatchAd != null)
-          ElevatedButton.icon(
-            onPressed: onWatchAd,
-            icon: const Icon(Icons.card_giftcard),
-            label: Text('Regarder une publicité pour une session supplémentaire', textAlign: TextAlign.center),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              backgroundColor: Colors.amber.shade700,
-              foregroundColor: Colors.white,
-            ),
-          ),
         const SizedBox(height: 16),
         if (onRetry != null)
           ElevatedButton.icon(

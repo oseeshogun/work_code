@@ -1,6 +1,5 @@
 import 'package:codedutravail/presentation/screens/about_work_code.dart';
 import 'package:codedutravail/presentation/screens/article_screen.dart';
-import 'package:codedutravail/presentation/screens/ai_search.dart';
 import 'package:codedutravail/presentation/screens/home_screen.dart';
 import 'package:codedutravail/presentation/screens/info_screen.dart';
 import 'package:flutter/material.dart' show BuildContext, Widget;
@@ -34,10 +33,4 @@ class InfoRoute extends GoRouteData {
 class AboutRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) => const AboutWorkCode();
-}
-
-@TypedGoRoute<AiSearchRoute>(path: '/ai_search')
-class AiSearchRoute extends GoRouteData {
-  @override
-  Widget build(BuildContext context, GoRouterState state) => const AiSearchScreen();
 }

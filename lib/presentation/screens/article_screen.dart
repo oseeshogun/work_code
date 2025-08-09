@@ -1,7 +1,5 @@
 import 'package:codedutravail/presentation/providers/articles/article.dart';
-import 'package:codedutravail/core/presentations/providers/ads/banner_ad.dart';
 import 'package:codedutravail/core/presentations/providers/flutter_tts.dart';
-import 'package:codedutravail/presentation/widgets/banner_ad_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -15,13 +13,6 @@ class ArticleScreen extends HookConsumerWidget {
     final articleAsyncValue = ref.watch(articleProvider(number));
     final tts = ref.watch(ttsProvider).value;
     final isReading = useState(false);
-    final bannerAd = ref.watch(bannerAdNotifierProvider);
-    
-    // Load the banner ad when the screen is first built
-    useEffect(() {
-      bannerAd.load();
-      return () => bannerAd.dispose();
-    }, []);
 
     speak(String text) {
       isReading.value = tts != null;
@@ -84,9 +75,6 @@ class ArticleScreen extends HookConsumerWidget {
               error: (error, stack) => Center(child: Text('Error: $error')),
             ),
           ),
-          
-          // Banner ad at the bottom
-          BannerAdWidget(ad: bannerAd),
         ],
       ),
     );

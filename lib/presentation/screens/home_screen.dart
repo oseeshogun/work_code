@@ -55,35 +55,25 @@ class HomeScreen extends HookConsumerWidget {
       ),
       body: Column(
         children: [
-          // Article of the Day section
           articleVisibilityAsync.when(
-            data: (isVisible) => isVisible
-                ? articleOfTheDayAsync.when(
-                    data: (article) => ArticleOfTheDayCard(
-                      article: article,
-                      onClose: () {
-                        ref.read(articleOfDayVisibilityProvider.notifier).hideForToday();
-                      },
-                    ),
-                    loading: () => const SizedBox(
-                      height: 150,
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
-                    error: (_, __) => const SizedBox(), // Hide on error
-                  )
-                : const SizedBox(), // Hide if user closed it
+            data:
+                (isVisible) =>
+                    isVisible
+                        ? articleOfTheDayAsync.when(
+                          data:
+                              (article) => ArticleOfTheDayCard(
+                                article: article,
+                                onClose: () {
+                                  ref.read(articleOfDayVisibilityProvider.notifier).hideForToday();
+                                },
+                              ),
+                          loading: () => const SizedBox(height: 150, child: Center(child: CircularProgressIndicator())),
+                          error: (_, __) => const SizedBox(),
+                        )
+                        : const SizedBox(),
             loading: () => const SizedBox(),
             error: (_, __) => const SizedBox(),
           ),
-
-          // AI Search section
-          ElevatedButton.icon(
-            onPressed: () => AiSearchRoute().push(context),
-            icon: const Icon(Icons.assistant),
-            label: const Text('Recherche par IA'),
-          ),
-          
-          // Titles list section
           Expanded(
             child: titlesAsync.when(
               data: (titles) {
@@ -94,23 +84,24 @@ class HomeScreen extends HookConsumerWidget {
                     }
                     return TitlesListWidget(titles: titles);
                   },
-                  loading: () => Visibility(
-                    visible: titles.isNotEmpty,
-                    replacement: const TitlesEmptyWidget(),
-                    child: TitlesListWidget(titles: titles),
-                  ),
-                  error: (_, __) => Visibility(
-                    visible: titles.isNotEmpty,
-                    replacement: const TitlesEmptyWidget(),
-                    child: TitlesListWidget(titles: titles),
-                  ),
+                  loading:
+                      () => Visibility(
+                        visible: titles.isNotEmpty,
+                        replacement: const TitlesEmptyWidget(),
+                        child: TitlesListWidget(titles: titles),
+                      ),
+                  error:
+                      (_, __) => Visibility(
+                        visible: titles.isNotEmpty,
+                        replacement: const TitlesEmptyWidget(),
+                        child: TitlesListWidget(titles: titles),
+                      ),
                 );
               },
               loading: () => const TitlesLoadingWidget(),
-              error: (error, stackTrace) => TitlesErrorWidget(
-                errorMessage: error.toString(), 
-                onRetry: () => ref.invalidate(titlesProvider)
-              ),
+              error:
+                  (error, stackTrace) =>
+                      TitlesErrorWidget(errorMessage: error.toString(), onRetry: () => ref.invalidate(titlesProvider)),
             ),
           ),
         ],

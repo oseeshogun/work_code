@@ -1,7 +1,6 @@
 import 'package:codedutravail/core/presentations/providers/dependencies.dart';
 import 'package:codedutravail/core/router/router.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,8 +17,6 @@ Future<void> main() async {
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
 
   await FirebaseCrashlytics.instance.setUserIdentifier('anonymous_user');
-
-  await MobileAds.instance.initialize();
 
   await FirebaseAnalytics.instance.logAppOpen();
 
