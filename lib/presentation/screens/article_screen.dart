@@ -1,4 +1,4 @@
-import 'package:codedutravail/presentation/providers/articles/article.dart';
+import 'package:codedutravail/domain/providers/articles/article.dart';
 import 'package:codedutravail/core/presentations/providers/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

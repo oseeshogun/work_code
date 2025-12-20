@@ -1,5 +1,5 @@
-import 'package:codedutravail/data/database.dart';
-import 'package:codedutravail/data/tables/articles.dart';
+import 'package:codedutravail/data/local/database.dart';
+import 'package:codedutravail/data/local/tables/articles.dart';
 import 'package:codedutravail/domain/entities/article.dart';
 import 'package:codedutravail/domain/repositories/artitle_repository.dart';
 import 'package:diacritic/diacritic.dart';

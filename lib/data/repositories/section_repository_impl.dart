@@ -1,5 +1,5 @@
-import 'package:codedutravail/data/database.dart';
-import 'package:codedutravail/data/tables/sections.dart';
+import 'package:codedutravail/data/local/database.dart';
+import 'package:codedutravail/data/local/tables/sections.dart';
 import 'package:codedutravail/domain/entities/section.dart';
 import 'package:codedutravail/domain/repositories/section_repository.dart';
 import 'package:drift/drift.dart';

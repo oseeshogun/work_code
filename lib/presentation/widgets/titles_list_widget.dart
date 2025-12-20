@@ -3,8 +3,8 @@ import 'package:codedutravail/core/utils/roman.dart';
 import 'package:codedutravail/domain/entities/chapter.dart';
 import 'package:codedutravail/domain/entities/section.dart';
 import 'package:codedutravail/domain/entities/title.dart';
-import 'package:codedutravail/presentation/providers/articles/chapters.dart';
-import 'package:codedutravail/presentation/providers/articles/sections.dart';
+import 'package:codedutravail/domain/providers/articles/chapters.dart';
+import 'package:codedutravail/domain/providers/articles/sections.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

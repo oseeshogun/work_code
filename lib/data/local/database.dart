@@ -1,10 +1,9 @@
 import 'dart:io';
 
-import 'package:codedutravail/data/converters/list_int_converter.dart';
-import 'package:codedutravail/data/tables/articles.dart';
-import 'package:codedutravail/data/tables/chapters.dart';
-import 'package:codedutravail/data/tables/sections.dart';
-import 'package:codedutravail/data/tables/titles.dart';
+import 'package:codedutravail/data/local/tables/articles.dart';
+import 'package:codedutravail/data/local/tables/chapters.dart';
+import 'package:codedutravail/data/local/tables/sections.dart';
+import 'package:codedutravail/data/local/tables/titles.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
 import 'package:drift/native.dart';

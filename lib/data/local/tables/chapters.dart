@@ -1,6 +1,6 @@
-import 'package:codedutravail/data/converters/list_int_converter.dart';
+import 'package:codedutravail/data/local/converters/list_int_converter.dart';
 import 'package:drift/drift.dart';
-import 'package:codedutravail/data/tables/titles.dart';
+import 'package:codedutravail/data/local/tables/titles.dart';
 
 class Chapters extends Table {
   IntColumn get id => integer().autoIncrement()();
