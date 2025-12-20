@@ -4,7 +4,6 @@ import 'package:codedutravail/domain/entities/article.dart';
 import 'package:codedutravail/domain/repositories/artitle_repository.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:drift/drift.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:string_extensions/string_extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

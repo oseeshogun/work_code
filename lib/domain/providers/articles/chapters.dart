@@ -1,6 +1,5 @@
 import 'package:codedutravail/data/repositories/chapter_repository_impl.dart';
 import 'package:codedutravail/domain/entities/chapter.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'chapters.g.dart';

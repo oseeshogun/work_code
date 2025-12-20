@@ -45,7 +45,7 @@ class _DisclaimerDialog extends HookConsumerWidget {
                       child: const Text('J\'ai compris'),
                     ),
                   ),
-              error: (_, __) => const Center(child: Text('Erreur lors de la lecture des préférences.')),
+              error: (_, _) => const Center(child: Text('Erreur lors de la lecture des préférences.')),
               loading: () => const Center(child: CircularProgressIndicator()),
             ),
           ],

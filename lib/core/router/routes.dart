@@ -8,13 +8,13 @@ import 'package:go_router/go_router.dart';
 part 'routes.g.dart';
 
 @TypedGoRoute<HomeRoute>(path: '/')
-class HomeRoute extends GoRouteData {
+class HomeRoute extends GoRouteData with $HomeRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) => const HomeScreen();
 }
 
 @TypedGoRoute<ArticleRoute>(path: '/article/:number')
-class ArticleRoute extends GoRouteData {
+class ArticleRoute extends GoRouteData with $ArticleRoute {
   final int number;
 
   ArticleRoute(this.number);
@@ -24,13 +24,13 @@ class ArticleRoute extends GoRouteData {
 }
 
 @TypedGoRoute<InfoRoute>(path: '/info')
-class InfoRoute extends GoRouteData {
+class InfoRoute extends GoRouteData with $InfoRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) => const InfoScreen();
 }
 
 @TypedGoRoute<AboutRoute>(path: '/about')
-class AboutRoute extends GoRouteData {
+class AboutRoute extends GoRouteData with $AboutRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) => const AboutWorkCode();
 }

@@ -1,5 +1,4 @@
 import 'package:codedutravail/core/presentations/providers/dependencies.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'read_disclaimer.g.dart';

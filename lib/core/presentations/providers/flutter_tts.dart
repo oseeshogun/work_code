@@ -1,5 +1,4 @@
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'flutter_tts.g.dart';

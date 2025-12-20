@@ -68,11 +68,11 @@ class HomeScreen extends HookConsumerWidget {
                                 },
                               ),
                           loading: () => const SizedBox(height: 150, child: Center(child: CircularProgressIndicator())),
-                          error: (_, __) => const SizedBox(),
+                          error: (_, _) => const SizedBox(),
                         )
                         : const SizedBox(),
             loading: () => const SizedBox(),
-            error: (_, __) => const SizedBox(),
+            error: (_, _) => const SizedBox(),
           ),
           Expanded(
             child: titlesAsync.when(
@@ -91,7 +91,7 @@ class HomeScreen extends HookConsumerWidget {
                         child: TitlesListWidget(titles: titles),
                       ),
                   error:
-                      (_, __) => Visibility(
+                      (_, _) => Visibility(
                         visible: titles.isNotEmpty,
                         replacement: const TitlesEmptyWidget(),
                         child: TitlesListWidget(titles: titles),

@@ -3,7 +3,6 @@ import 'package:codedutravail/data/local/tables/titles.dart';
 import 'package:codedutravail/domain/entities/title.dart';
 import 'package:codedutravail/domain/repositories/title_repository.dart';
 import 'package:drift/drift.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'title_repository_impl.g.dart';
