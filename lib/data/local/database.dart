@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:codedutravail/data/local/converters/list_int_converter.dart';
 import 'package:codedutravail/data/local/tables/articles.dart';
 import 'package:codedutravail/data/local/tables/chapters.dart';
 import 'package:codedutravail/data/local/tables/sections.dart';
