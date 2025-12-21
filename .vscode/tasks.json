@@ -41,6 +41,15 @@
       "group": "build",
       "label": "flutter: flutter build appbundle --release --dart-define-from-file .env.json",
       "detail": ""
+    },
+    {
+      "type": "dart",
+      "command": "dart",
+      "args": ["run", "drift_dev", "make-migrations"],
+      "problemMatcher": ["$dart-build_runner"],
+      "group": "build",
+      "label": "dart: dart run drift_dev make-migrations",
+      "detail": ""
     }
   ]
 }
