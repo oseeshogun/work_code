@@ -25,6 +25,7 @@ class HomeScreen extends HookConsumerWidget {
     final articleCountAsync = ref.watch(articleCountProvider);
     final articleOfTheDayAsync = ref.watch(articleOfTheDayProvider);
     final articleVisibilityAsync = ref.watch(articleOfDayVisibilityProvider);
+    final favoriteArticlesAsync = ref.watch(favoriteArticlesProvider);
 
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -73,6 +74,39 @@ class HomeScreen extends HookConsumerWidget {
                         : const SizedBox(),
             loading: () => const SizedBox(),
             error: (_, _) => const SizedBox(),
+          ),
+          favoriteArticlesAsync.when(
+            data: (favoriteArticles) {
+              return Visibility(
+                visible: favoriteArticles.isNotEmpty,
+                child: SizedBox(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: favoriteArticles.length,
+                    itemBuilder: (context, index) {
+                      final article = favoriteArticles[index];
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: InkWell(
+                          onTap: () => ArticleRoute(article.number).push(context),
+                          child: Chip(
+                            label: Text('⭐ Article ${article.number}'),
+                            deleteIcon: const Icon(Icons.close),
+                            onDeleted: () {
+                              ref.read(articleRepositoryProvider).toggleArticleToFavorite(article.number);
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+            loading: () => const SizedBox.shrink(),
+            error: (_, _) => const SizedBox.shrink(),
           ),
           Expanded(
             child: titlesAsync.when(

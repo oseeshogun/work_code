@@ -5,6 +5,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'article.g.dart';
 
 @riverpod
+Stream<List<ArticleEntity>> favoriteArticles(Ref ref) {
+  final repository = ref.watch(articleRepositoryProvider);
+  return repository.streamFavoriteArticles();
+}
+
+@riverpod
 Stream<ArticleEntity> article(Ref ref, int number) {
   final repository = ref.watch(articleRepositoryProvider);
   return repository.streamArticleById(number);

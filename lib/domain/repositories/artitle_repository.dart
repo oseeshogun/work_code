@@ -12,4 +12,6 @@ mixin ArticleRepository {
   Stream<int> articlesCount();
 
   Future<void> toggleArticleToFavorite(int articleNumber);
+
+  Stream<List<ArticleEntity>> streamFavoriteArticles();
 }
