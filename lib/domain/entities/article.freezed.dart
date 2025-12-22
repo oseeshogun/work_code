@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ArticleEntity {
 
- int get number; String get text; String get slug;
+ int get number; String get text; String get slug; bool get isFavorite;
 /// Create a copy of ArticleEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ArticleEntityCopyWith<ArticleEntity> get copyWith => _$ArticleEntityCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ArticleEntity&&(identical(other.number, number) || other.number == number)&&(identical(other.text, text) || other.text == text)&&(identical(other.slug, slug) || other.slug == slug));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ArticleEntity&&(identical(other.number, number) || other.number == number)&&(identical(other.text, text) || other.text == text)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.isFavorite, isFavorite) || other.isFavorite == isFavorite));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,number,text,slug);
+int get hashCode => Object.hash(runtimeType,number,text,slug,isFavorite);
 
 @override
 String toString() {
-  return 'ArticleEntity(number: $number, text: $text, slug: $slug)';
+  return 'ArticleEntity(number: $number, text: $text, slug: $slug, isFavorite: $isFavorite)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ArticleEntityCopyWith<$Res>  {
   factory $ArticleEntityCopyWith(ArticleEntity value, $Res Function(ArticleEntity) _then) = _$ArticleEntityCopyWithImpl;
 @useResult
 $Res call({
- int number, String text, String slug
+ int number, String text, String slug, bool isFavorite
 });
 
 
@@ -62,12 +62,13 @@ class _$ArticleEntityCopyWithImpl<$Res>
 
 /// Create a copy of ArticleEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? number = null,Object? text = null,Object? slug = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? number = null,Object? text = null,Object? slug = null,Object? isFavorite = null,}) {
   return _then(_self.copyWith(
 number: null == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
 as int,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
 as String,slug: null == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
-as String,
+as String,isFavorite: null == isFavorite ? _self.isFavorite : isFavorite // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int number,  String text,  String slug)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int number,  String text,  String slug,  bool isFavorite)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ArticleEntity() when $default != null:
-return $default(_that.number,_that.text,_that.slug);case _:
+return $default(_that.number,_that.text,_that.slug,_that.isFavorite);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.number,_that.text,_that.slug);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int number,  String text,  String slug)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int number,  String text,  String slug,  bool isFavorite)  $default,) {final _that = this;
 switch (_that) {
 case _ArticleEntity():
-return $default(_that.number,_that.text,_that.slug);case _:
+return $default(_that.number,_that.text,_that.slug,_that.isFavorite);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +194,10 @@ return $default(_that.number,_that.text,_that.slug);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int number,  String text,  String slug)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int number,  String text,  String slug,  bool isFavorite)?  $default,) {final _that = this;
 switch (_that) {
 case _ArticleEntity() when $default != null:
-return $default(_that.number,_that.text,_that.slug);case _:
+return $default(_that.number,_that.text,_that.slug,_that.isFavorite);case _:
   return null;
 
 }
@@ -208,12 +209,13 @@ return $default(_that.number,_that.text,_that.slug);case _:
 
 
 class _ArticleEntity implements ArticleEntity {
-  const _ArticleEntity({required this.number, required this.text, required this.slug});
+  const _ArticleEntity({required this.number, required this.text, required this.slug, this.isFavorite = false});
   
 
 @override final  int number;
 @override final  String text;
 @override final  String slug;
+@override@JsonKey() final  bool isFavorite;
 
 /// Create a copy of ArticleEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -225,16 +227,16 @@ _$ArticleEntityCopyWith<_ArticleEntity> get copyWith => __$ArticleEntityCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ArticleEntity&&(identical(other.number, number) || other.number == number)&&(identical(other.text, text) || other.text == text)&&(identical(other.slug, slug) || other.slug == slug));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ArticleEntity&&(identical(other.number, number) || other.number == number)&&(identical(other.text, text) || other.text == text)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.isFavorite, isFavorite) || other.isFavorite == isFavorite));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,number,text,slug);
+int get hashCode => Object.hash(runtimeType,number,text,slug,isFavorite);
 
 @override
 String toString() {
-  return 'ArticleEntity(number: $number, text: $text, slug: $slug)';
+  return 'ArticleEntity(number: $number, text: $text, slug: $slug, isFavorite: $isFavorite)';
 }
 
 
@@ -245,7 +247,7 @@ abstract mixin class _$ArticleEntityCopyWith<$Res> implements $ArticleEntityCopy
   factory _$ArticleEntityCopyWith(_ArticleEntity value, $Res Function(_ArticleEntity) _then) = __$ArticleEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int number, String text, String slug
+ int number, String text, String slug, bool isFavorite
 });
 
 
@@ -262,12 +264,13 @@ class __$ArticleEntityCopyWithImpl<$Res>
 
 /// Create a copy of ArticleEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? number = null,Object? text = null,Object? slug = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? number = null,Object? text = null,Object? slug = null,Object? isFavorite = null,}) {
   return _then(_ArticleEntity(
 number: null == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
 as int,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
 as String,slug: null == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
-as String,
+as String,isFavorite: null == isFavorite ? _self.isFavorite : isFavorite // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

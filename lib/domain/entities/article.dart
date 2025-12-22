@@ -4,5 +4,10 @@ part 'article.freezed.dart';
 
 @freezed
 abstract class ArticleEntity with _$ArticleEntity {
-  const factory ArticleEntity({required int number, required String text, required String slug}) = _ArticleEntity;
+  const factory ArticleEntity({
+    required int number,
+    required String text,
+    required String slug,
+    @Default(false) bool isFavorite,
+  }) = _ArticleEntity;
 }

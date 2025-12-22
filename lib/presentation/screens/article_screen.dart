@@ -1,3 +1,5 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:codedutravail/data/repositories/article_repository_impl.dart';
 import 'package:codedutravail/domain/providers/articles/article.dart';
 import 'package:codedutravail/core/presentations/providers/flutter_tts.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ class ArticleScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final articleRepository = ref.read(articleRepositoryProvider);
     final articleAsyncValue = ref.watch(articleProvider(number));
     final tts = ref.watch(ttsProvider).value;
     final isReading = useState(false);
@@ -32,6 +35,27 @@ class ArticleScreen extends HookConsumerWidget {
         actions: [
           if (isReading.value)
             IconButton(icon: const Icon(Icons.close), onPressed: () => tts?.stop(), tooltip: 'Stop Reading'),
+          articleAsyncValue.when(
+            error: (error, stackTrace) => SizedBox.shrink(),
+            loading: () => SizedBox.shrink(),
+            data: (article) {
+              final icon = article.isFavorite ? Icons.favorite : Icons.favorite_border;
+              return IconButton(
+                onPressed: () {
+                  articleRepository.toggleArticleToFavorite(article.number).catchError((_) {
+                    if (context.mounted) {
+                      showOkAlertDialog(
+                        context: context,
+                        message: 'Une erreur est survenue lors de l\'ajout aux favoris.',
+                      );
+                    }
+                  });
+                },
+                icon: Icon(icon),
+                tooltip: article.isFavorite ? 'Already in Favorites' : 'Add to Favorites',
+              );
+            },
+          ),
         ],
       ),
       body: Column(

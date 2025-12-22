@@ -10,4 +10,6 @@ mixin ArticleRepository {
   Future<ArticleEntity> getArticleById(int id);
 
   Stream<int> articlesCount();
+
+  Future<void> toggleArticleToFavorite(int articleNumber);
 }

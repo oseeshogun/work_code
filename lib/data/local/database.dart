@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:codedutravail/data/local/converters/list_int_converter.dart';
+import 'package:codedutravail/data/local/database.steps.dart';
 import 'package:codedutravail/data/local/tables/articles.dart';
 import 'package:codedutravail/data/local/tables/chapters.dart';
 import 'package:codedutravail/data/local/tables/sections.dart';
@@ -10,7 +11,6 @@ import 'package:drift/isolate.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/services.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sqlite3/sqlite3.dart';
@@ -33,7 +33,25 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(onUpgrade: _schemaUpgrade);
+  }
+}
+
+extension Migrations on GeneratedDatabase {
+  // Extracting the `stepByStep` call into a static field or method ensures that you're not
+  // accidentally referring to the current database schema (via a getter on the database class).
+  // This ensures that each step brings the database into the correct snapshot.
+  OnUpgrade get _schemaUpgrade => stepByStep(
+    from1To2: (m, schema) async {
+      await m.addColumn(schema.articles, schema.articles.isFavorite);
+
+      await m.createAll();
+    },
+  );
 }
 
 Future<DriftIsolate> createIsolateWithSpawn() async {

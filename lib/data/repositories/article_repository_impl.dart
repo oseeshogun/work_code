@@ -36,15 +36,13 @@ class ArticleRepositoryImpl extends DatabaseAccessor<AppDatabase> with _$Article
 
   @override
   Stream<ArticleEntity> streamArticleById(int id) {
-    return (select(articles)..where(
-      (t) => t.number.equals(id),
-    )).watchSingle().map((value) => ArticleEntity(number: value.number, text: value.value, slug: value.valueSlug));
+    return (select(articles)..where((t) => t.number.equals(id))).watchSingle().map((value) => value.toEntity());
   }
 
   @override
   Future<ArticleEntity> getArticleById(int id) async {
     final result = await (select(articles)..where((t) => t.number.equals(id))).getSingle();
-    return ArticleEntity(number: result.number, text: result.value, slug: result.valueSlug);
+    return result.toEntity();
   }
 
   @override
@@ -55,9 +53,19 @@ class ArticleRepositoryImpl extends DatabaseAccessor<AppDatabase> with _$Article
 
   @override
   Stream<List<ArticleEntity>> streamAll() {
-    return (select(articles)).watch().map(
-      (values) =>
-          values.map((value) => ArticleEntity(number: value.number, text: value.value, slug: value.valueSlug)).toList(),
-    );
+    return (select(articles)).watch().map((values) => values.map((value) => value.toEntity()).toList());
+  }
+
+  @override
+  Future<void> toggleArticleToFavorite(int articleNumber) {
+    return (update(articles)..where(
+      (t) => t.number.equals(articleNumber),
+    )).write(ArticlesCompanion.custom(isFavorite: articles.isFavorite.not()));
+  }
+}
+
+extension ArticleToEntity on Article {
+  ArticleEntity toEntity() {
+    return ArticleEntity(number: number, text: value, slug: valueSlug, isFavorite: isFavorite);
   }
 }

@@ -7,6 +7,8 @@ class Articles extends Table {
 
   TextColumn get valueSlug => text()();
 
+  BoolColumn get isFavorite => boolean().withDefault(const Constant(false))();
+
   @override
   Set<Column> get primaryKey => {number};
 }
