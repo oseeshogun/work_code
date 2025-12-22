@@ -1,36 +1,33 @@
 import 'dart:math' as math;
 
-import 'package:codedutravail/presentation/widgets/thinking_indicator.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedGradientBorderTextField extends StatelessWidget {
-  final TextEditingController? controller;
-  final FocusNode? focusNode;
+  final TextEditingController controller;
+  final FocusNode focusNode;
   final bool isFocused;
   final int minLines;
   final int maxLines;
-  final String? hintText;
-  final String? labelText;
-  final Function(String)? onSubmit;
+  final String hintText;
+  final String labelText;
+  final Function(String) onSubmit;
   final bool thinking;
 
   const AnimatedGradientBorderTextField({
     super.key,
-    this.controller,
-    this.focusNode,
-    this.isFocused = false,
+    required this.controller,
+    required this.focusNode,
+    required this.isFocused,
     this.minLines = 1,
     this.maxLines = 1,
-    this.hintText,
-    this.labelText,
-    this.onSubmit,
+    required this.hintText,
+    required this.labelText,
+    required this.onSubmit,
     this.thinking = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    
-
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
@@ -65,7 +62,7 @@ class AnimatedGradientBorderTextField extends StatelessWidget {
                 focusNode: focusNode,
                 minLines: minLines,
                 maxLines: maxLines,
-                textCapitalization: TextCapitalization.sentences,
+                autofocus: true,
                 decoration: InputDecoration(
                   hintText: hintText,
                   contentPadding: const EdgeInsets.fromLTRB(16, 16, 48, 16), // Add right padding for the button
@@ -80,20 +77,18 @@ class AnimatedGradientBorderTextField extends StatelessWidget {
                 ),
                 onSubmitted: onSubmit,
               ),
-              Positioned(
-                right: 8,
-                bottom: 8,
-                child: Material(
-                  color: Colors.transparent,
-                  child: Visibility(
-                    visible: !thinking,
-                    replacement: const ThinkingIndicator(),
+              if (!thinking)
+                Positioned(
+                  right: 8,
+                  bottom: 8,
+                  child: Material(
+                    color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(20),
                       onTap: () {
                         // Handle submit action
-                        if (controller?.text.trim().isNotEmpty == true) {
-                          onSubmit?.call(controller?.text ?? '');
+                        if (controller.text.trim().isNotEmpty) {
+                          onSubmit(controller.text);
                         }
                       },
                       child: Container(
@@ -121,7 +116,6 @@ class AnimatedGradientBorderTextField extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
