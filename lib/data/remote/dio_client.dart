@@ -37,7 +37,7 @@ abstract class DioClient {
         logPrint: (object) => debugPrint(object.toString()),
         filter: (options, args) {
           // debugPrint requests of these urls
-          final List<String> urls = [''];
+          final List<String> urls = [];
           if (urls.any((url) => options.uri.path.contains(url))) return true;
 
           return !args.isResponse;
