@@ -11,6 +11,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+const int _kListMaxLength = 10;
+
 class AiAgentScreen extends HookConsumerWidget {
   const AiAgentScreen({super.key});
 
@@ -21,6 +23,7 @@ class AiAgentScreen extends HookConsumerWidget {
     final scrollController = useScrollController();
     final isFocused = useState(false);
     final messagesList = useState<AgentMessagesList>(AgentMessagesList(list: []));
+    final limitReached = useMemoized(() => messagesList.value.list.length >= _kListMaxLength, [messagesList.value]);
     final aiResponseAsync = messagesList.value.list.isEmpty
         ? AsyncValue.data(null)
         : ref.watch(streamAiResponsesProvider(messagesList.value));
@@ -117,27 +120,36 @@ class AiAgentScreen extends HookConsumerWidget {
               AiAnswerBubble(text: aiResponseAsync.value!.token),
             const SizedBox(height: 12.0),
 
-            AnimatedGradientBorderTextField(
-              controller: textController,
-              isFocused: isFocused.value,
-              focusNode: focusNode,
-              thinking: aiResponseAsync.isLoading,
-              minLines: 2,
-              maxLines: 6,
-              hintText: 'Posez votre question sur le Code du travail...',
-              labelText: 'Votre question',
-              onSubmit: (value) {
-                // Handle question submission
-                final message = AgentMessage(content: value, role: AgentMessageType.user);
-                messagesList.value = AgentMessagesList(
-                  list: [
-                    ...messagesList.value.list,
-                    if (aiResponseAsync.value != null)
-                      AgentMessage(content: aiResponseAsync.value!.token, role: AgentMessageType.assistant),
-                    message,
-                  ],
-                );
-              },
+            Visibility(
+              visible: !limitReached,
+              replacement: const Text(
+                'Vous avez atteint le nombre maximum de questions autorisées. '
+                'Veuillez revenir en arrière et commencer une nouvelle session.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.redAccent),
+              ),
+              child: AnimatedGradientBorderTextField(
+                controller: textController,
+                isFocused: isFocused.value,
+                focusNode: focusNode,
+                thinking: aiResponseAsync.isLoading,
+                minLines: 2,
+                maxLines: 6,
+                hintText: 'Posez votre question sur le Code du travail...',
+                labelText: 'Votre question',
+                onSubmit: (value) {
+                  // Handle question submission
+                  final message = AgentMessage(content: value, role: AgentMessageType.user);
+                  messagesList.value = AgentMessagesList(
+                    list: [
+                      ...messagesList.value.list,
+                      if (aiResponseAsync.value != null)
+                        AgentMessage(content: aiResponseAsync.value!.token, role: AgentMessageType.assistant),
+                      message,
+                    ],
+                  );
+                },
+              ),
             ),
             const SizedBox(height: 4.0),
             Text(

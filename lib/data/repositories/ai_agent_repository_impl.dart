@@ -49,7 +49,7 @@ class AiAgentRepositoryImpl implements AiAgentRepository {
           
           return AiResponse(
             token: switch (token == messages.last.content){
-              true => "...",
+              true => "Réfléxion...",
               false => switch (token is String) {
                 true => token,
                 false => token is List<dynamic> ? token.first['text'] : '',
