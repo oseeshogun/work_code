@@ -64,8 +64,3 @@ class AiAgentRepositoryImpl implements AiAgentRepository {
   }
 }
 
-/*
-{event: token, data: {"token": "Salut "}}
-{event: token, data: {"token": "Salut! Comment puis-je vous aider aujourd'hui?"}}
-{event: done, data: {"status": "done"}}
-*/

@@ -36,10 +36,10 @@
         "appbundle",
         "--release",
         "--dart-define-from-file",
-        ".env.json"
+        "env/release.json"
       ],
       "group": "build",
-      "label": "flutter: flutter build appbundle --release --dart-define-from-file .env.json",
+      "label": "flutter: flutter build appbundle --release --dart-define-from-file env/release.json",
       "detail": ""
     },
     {
