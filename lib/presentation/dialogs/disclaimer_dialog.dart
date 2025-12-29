@@ -29,7 +29,9 @@ class _DisclaimerDialog extends HookConsumerWidget {
             const Text('CLAUSE DE NON-RESPONSABILITÉ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
             const Text(
-              'Cette application n\'est affiliée à aucune entité gouvernementale et ne représente pas un département gouvernemental officiel. Les informations contenues dans cette application sont fournies uniquement à titre informatif et ne doivent pas être considérées comme des conseils juridiques. Bien que nous nous efforcions de fournir des informations précises et à jour, nous ne garantissons pas leur exactitude, exhaustivité ou actualité. Pour des conseils juridiques spécifiques ou des informations officielles, veuillez consulter directement les sources gouvernementales appropriées ou un conseiller juridique qualifié.',
+              'Cette application n\'est pas une application officielle du gouvernement. Elle ne représente aucun gouvernement, ministère ou institution publique et n’est affiliée à aucune entité gouvernementale.\n\n'
+              'Les informations fournies dans cette application sont proposées à titre informatif et éducatif uniquement. Elles ne constituent pas des conseils juridiques. Bien que nous nous efforcions de fournir un contenu fidèle au texte disponible, aucune garantie n’est donnée quant à l’exactitude, l’exhaustivité ou l’actualité des informations.\n\n'
+              'Pour toute interprétation officielle ou pour des conseils juridiques spécifiques, il est recommandé de consulter les autorités compétentes ou un professionnel du droit qualifié.',
               style: TextStyle(fontSize: 14),
             ),
             const SizedBox(height: 24),
