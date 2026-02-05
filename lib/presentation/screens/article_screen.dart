@@ -6,6 +6,7 @@ import 'package:codedutravail/core/router/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ArticleScreen extends HookConsumerWidget {
   final int number;
@@ -17,6 +18,9 @@ class ArticleScreen extends HookConsumerWidget {
     final articleAsyncValue = ref.watch(articleProvider(number));
     final tts = ref.watch(ttsProvider).value;
     final isReading = useState(false);
+
+    const packageName = 'com.oseemasuaku.codedutravail';
+    final androidUrl = 'https://play.google.com/store/apps/details?id=$packageName';
 
     speak(String text) {
       isReading.value = tts != null;
@@ -40,20 +44,37 @@ class ArticleScreen extends HookConsumerWidget {
             error: (error, stackTrace) => SizedBox.shrink(),
             loading: () => SizedBox.shrink(),
             data: (article) {
-              final icon = article.isFavorite ? Icons.favorite : Icons.favorite_border;
-              return IconButton(
-                onPressed: () {
-                  articleRepository.toggleArticleToFavorite(article.number).catchError((_) {
-                    if (context.mounted) {
-                      showOkAlertDialog(
-                        context: context,
-                        message: 'Une erreur est survenue lors de l\'ajout aux favoris.',
+              return Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      final box = context.findRenderObject() as RenderBox?;
+                      final origin = box != null ? box.localToGlobal(Offset.zero) & box.size : null;
+                      SharePlus.instance.share(
+                        ShareParams(
+                          text: 'Article ${article.number} - Code du Travail\n\n${article.text}\n\n$androidUrl',
+                          sharePositionOrigin: origin,
+                        ),
                       );
-                    }
-                  });
-                },
-                icon: Icon(icon),
-                tooltip: article.isFavorite ? 'Already in Favorites' : 'Add to Favorites',
+                    },
+                    icon: const Icon(Icons.share),
+                    tooltip: 'Partager l\'article',
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      articleRepository.toggleArticleToFavorite(article.number).catchError((_) {
+                        if (context.mounted) {
+                          showOkAlertDialog(
+                            context: context,
+                            message: 'Une erreur est survenue lors de l\'ajout aux favoris.',
+                          );
+                        }
+                      });
+                    },
+                    icon: Icon(article.isFavorite ? Icons.favorite : Icons.favorite_border),
+                    tooltip: article.isFavorite ? 'Déjà dans les favoris' : 'Ajouter aux favoris',
+                  ),
+                ],
               );
             },
           ),

@@ -73,10 +73,4 @@ class MyApp extends HookConsumerWidget {
 // 📱 USER EXPERIENCE (UX)
 // - TODO : Annotations & Highlights: Highlight sentences and save to "My Notes".
 // - TODO : Customizable Reader: Adjust font size, spacing, and weight.
-// - TODO : Interactive Glossary: Tooltip definitions for complex legal terms.
-// - TODO : Dark/Light Mode Toggle: Explicit setting in the UI.
-//
-// 📄 CONTENT & SHARING
-// - TODO : Share as PDF/Image: Format articles for sharing via WhatsApp/Email.
-// - TODO : Related Articles: Links to cited or topic-related articles.
-// - TODO : Offline Download Manager: Indicators and force-sync for the database.
+
