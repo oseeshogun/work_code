@@ -1,4 +1,4 @@
 class Config {
-  static const int kDailyChatLimit = 2;
-  static const int kChatMessagesMaxLength = 10;
+  static const int kDailyChatLimit = 4;
+  static const int kChatMessagesMaxLength = 6;
 }

@@ -128,18 +128,17 @@ class AiAgentScreen extends HookConsumerWidget {
 
             Visibility(
               visible: !limitReached,
-              replacement: Text(
-                dailyLimitReachedAsync.value == true
-                    ? 'Vous avez atteint votre limite journalière de sessions de chat (2 sessions maximum).'
-                    : 'Vous avez atteint le nombre maximum de questions autorisées pour cette session.',
+              replacement: const Text(
+                'Vous avez atteint le nombre maximum de questions autorisées pour cette session.',
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.redAccent),
+                style: TextStyle(color: Colors.redAccent),
               ),
               child: dailyLimitReachedAsync.when(
                 data: (isDailyLimitReached) => Visibility(
-                  visible: !isDailyLimitReached,
+                  visible: !isDailyLimitReached || messagesList.value.list.isNotEmpty,
                   replacement: const Text(
                     'Vous avez atteint votre limite journalière de sessions de chat (2 sessions maximum).',
+
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.redAccent),
                   ),
