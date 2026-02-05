@@ -56,21 +56,3 @@ class MyApp extends HookConsumerWidget {
     );
   }
 }
-
-// TODO: Future Features roadmap
-//
-// 🤖 AI ENHANCEMENTS
-// - TODO : Contextual Chat: "Ask Assistant" button on Article Screen for specific content questions.
-// - TODO : AI Summary: One-tap button to summarize long legal articles.
-// - TODO : Voice Commands: Voice-to-text questions for hands-free navigation.
-// - TODO : Smart Search: Semantic search for natural language queries (e.g., "What happens if I'm fired?").
-//
-// 🔍 SEARCH & NAVIGATION
-// - TODO : Interactive Table of Contents: Hierarchical tree view to browse the Code structurally.
-// - TODO : Recent History: "Recently Viewed" section on home screen.
-// - TODO : Advanced Filtering: Filter by Active/Repealed or specific legal domains.
-//
-// 📱 USER EXPERIENCE (UX)
-// - TODO : Annotations & Highlights: Highlight sentences and save to "My Notes".
-// - TODO : Customizable Reader: Adjust font size, spacing, and weight.
-
