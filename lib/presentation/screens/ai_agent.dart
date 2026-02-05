@@ -11,7 +11,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-const int _kListMaxLength = 10;
+import 'package:codedutravail/core/config/config.dart';
+import 'package:codedutravail/domain/usecases/increment_daily_chat_use.dart';
+
 
 class AiAgentScreen extends HookConsumerWidget {
   const AiAgentScreen({super.key});
@@ -23,7 +25,11 @@ class AiAgentScreen extends HookConsumerWidget {
     final scrollController = useScrollController();
     final isFocused = useState(false);
     final messagesList = useState<AgentMessagesList>(AgentMessagesList(list: []));
-    final limitReached = useMemoized(() => messagesList.value.list.length >= _kListMaxLength, [messagesList.value]);
+    final limitReached = useMemoized(() => messagesList.value.list.length >= Config.kChatMessagesMaxLength, [
+      messagesList.value,
+    ]);
+    final dailyLimitReachedAsync = ref.watch(doesReachDailyChatLimitProvider);
+
     final aiResponseAsync = messagesList.value.list.isEmpty
         ? AsyncValue.data(null)
         : ref.watch(streamAiResponsesProvider(messagesList.value));
@@ -122,33 +128,51 @@ class AiAgentScreen extends HookConsumerWidget {
 
             Visibility(
               visible: !limitReached,
-              replacement: const Text(
-                'Vous avez atteint le nombre maximum de questions autorisées. '
-                'Veuillez revenir en arrière et commencer une nouvelle session.',
+              replacement: Text(
+                dailyLimitReachedAsync.value == true
+                    ? 'Vous avez atteint votre limite journalière de sessions de chat (2 sessions maximum).'
+                    : 'Vous avez atteint le nombre maximum de questions autorisées pour cette session.',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.redAccent),
+                style: const TextStyle(color: Colors.redAccent),
               ),
-              child: AnimatedGradientBorderTextField(
-                controller: textController,
-                isFocused: isFocused.value,
-                focusNode: focusNode,
-                thinking: aiResponseAsync.isLoading,
-                minLines: 2,
-                maxLines: 6,
-                hintText: 'Posez votre question sur le Code du travail...',
-                labelText: 'Votre question',
-                onSubmit: (value) {
-                  // Handle question submission
-                  final message = AgentMessage(content: value, role: AgentMessageType.user);
-                  messagesList.value = AgentMessagesList(
-                    list: [
-                      ...messagesList.value.list,
-                      if (aiResponseAsync.value != null)
-                        AgentMessage(content: aiResponseAsync.value!.token, role: AgentMessageType.assistant),
-                      message,
-                    ],
-                  );
-                },
+              child: dailyLimitReachedAsync.when(
+                data: (isDailyLimitReached) => Visibility(
+                  visible: !isDailyLimitReached,
+                  replacement: const Text(
+                    'Vous avez atteint votre limite journalière de sessions de chat (2 sessions maximum).',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.redAccent),
+                  ),
+                  child: AnimatedGradientBorderTextField(
+                    controller: textController,
+                    isFocused: isFocused.value,
+                    focusNode: focusNode,
+                    thinking: aiResponseAsync.isLoading,
+                    minLines: 2,
+                    maxLines: 6,
+                    hintText: 'Posez votre question sur le Code du travail...',
+                    labelText: 'Votre question',
+                    onSubmit: (value) {
+                      // Handle question submission
+                      if (messagesList.value.list.isEmpty) {
+                        ref.read(incrementDailyChatProvider).execute();
+                        ref.invalidate(doesReachDailyChatLimitProvider);
+                      }
+
+                      final message = AgentMessage(content: value, role: AgentMessageType.user);
+                      messagesList.value = AgentMessagesList(
+                        list: [
+                          ...messagesList.value.list,
+                          if (aiResponseAsync.value != null)
+                            AgentMessage(content: aiResponseAsync.value!.token, role: AgentMessageType.assistant),
+                          message,
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                error: (error, stack) => const SizedBox.shrink(),
+                loading: () => const SizedBox.shrink(),
               ),
             ),
             const SizedBox(height: 4.0),

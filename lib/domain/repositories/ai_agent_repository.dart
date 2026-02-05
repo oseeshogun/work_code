@@ -3,4 +3,8 @@ import 'package:codedutravail/domain/entities/ai_response.dart';
 
 abstract interface class AiAgentRepository {
   Stream<AiResponse> getAgentResponse({required List<AgentMessage> messages});
+
+  Future<bool> doesReachDailyChatLimit();
+
+  Future<void> incrementDailyChatCount();
 }

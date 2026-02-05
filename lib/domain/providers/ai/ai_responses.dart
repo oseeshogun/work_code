@@ -11,3 +11,10 @@ Stream<AiResponse> streamAiResponses(Ref ref, AgentMessagesList messages) {
 
   return repository.getAgentResponse(messages: messages.list);
 }
+
+@riverpod
+Future<bool> doesReachDailyChatLimit(Ref ref) {
+  final repository = ref.watch(aiAgentRepositoryProvider);
+
+  return repository.doesReachDailyChatLimit();
+}
