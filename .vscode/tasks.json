@@ -31,13 +31,7 @@
     {
       "type": "flutter",
       "command": "flutter",
-      "args": [
-        "build",
-        "appbundle",
-        "--release",
-        "--dart-define-from-file",
-        "env/release.json"
-      ],
+      "args": ["build", "appbundle", "--release"],
       "group": "build",
       "label": "flutter: flutter build appbundle --release",
       "detail": ""
