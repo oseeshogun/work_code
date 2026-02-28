@@ -1,5 +1,4 @@
 import 'package:codedutravail/presentation/screens/about_work_code.dart';
-import 'package:codedutravail/presentation/screens/ai_agent.dart';
 import 'package:codedutravail/presentation/screens/article_screen.dart';
 import 'package:codedutravail/presentation/screens/home_screen.dart';
 import 'package:codedutravail/presentation/screens/info_screen.dart';
@@ -36,9 +35,3 @@ class AboutRoute extends GoRouteData with $AboutRoute {
   Widget build(BuildContext context, GoRouterState state) => const AboutWorkCode();
 }
 
-
-@TypedGoRoute<AiAgentRoute>(path: '/ai-agent')
-class AiAgentRoute extends GoRouteData with $AiAgentRoute {
-  @override
-  Widget build(BuildContext context, GoRouterState state) => const AiAgentScreen();
-}

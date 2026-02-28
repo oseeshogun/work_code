@@ -57,21 +57,18 @@ class HomeScreen extends HookConsumerWidget {
       body: Column(
         children: [
           articleVisibilityAsync.when(
-            data:
-                (isVisible) =>
-                    isVisible
-                        ? articleOfTheDayAsync.when(
-                          data:
-                              (article) => ArticleOfTheDayCard(
-                                article: article,
-                                onClose: () {
-                                  ref.read(articleOfDayVisibilityProvider.notifier).hideForToday();
-                                },
-                              ),
-                          loading: () => const SizedBox(height: 150, child: Center(child: CircularProgressIndicator())),
-                          error: (_, _) => const SizedBox(),
-                        )
-                        : const SizedBox(),
+            data: (isVisible) => isVisible
+                ? articleOfTheDayAsync.when(
+                    data: (article) => ArticleOfTheDayCard(
+                      article: article,
+                      onClose: () {
+                        ref.read(articleOfDayVisibilityProvider.notifier).hideForToday();
+                      },
+                    ),
+                    loading: () => const SizedBox(height: 150, child: Center(child: CircularProgressIndicator())),
+                    error: (_, _) => const SizedBox(),
+                  )
+                : const SizedBox(),
             loading: () => const SizedBox(),
             error: (_, _) => const SizedBox(),
           ),
@@ -118,31 +115,24 @@ class HomeScreen extends HookConsumerWidget {
                     }
                     return TitlesListWidget(titles: titles);
                   },
-                  loading:
-                      () => Visibility(
-                        visible: titles.isNotEmpty,
-                        replacement: const TitlesEmptyWidget(),
-                        child: TitlesListWidget(titles: titles),
-                      ),
-                  error:
-                      (_, _) => Visibility(
-                        visible: titles.isNotEmpty,
-                        replacement: const TitlesEmptyWidget(),
-                        child: TitlesListWidget(titles: titles),
-                      ),
+                  loading: () => Visibility(
+                    visible: titles.isNotEmpty,
+                    replacement: const TitlesEmptyWidget(),
+                    child: TitlesListWidget(titles: titles),
+                  ),
+                  error: (_, _) => Visibility(
+                    visible: titles.isNotEmpty,
+                    replacement: const TitlesEmptyWidget(),
+                    child: TitlesListWidget(titles: titles),
+                  ),
                 );
               },
               loading: () => const TitlesLoadingWidget(),
-              error:
-                  (error, stackTrace) =>
-                      TitlesErrorWidget(errorMessage: error.toString(), onRetry: () => ref.invalidate(titlesProvider)),
+              error: (error, stackTrace) =>
+                  TitlesErrorWidget(errorMessage: error.toString(), onRetry: () => ref.invalidate(titlesProvider)),
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => AiAgentRoute().push(context),
-        child: const Icon(Icons.smart_toy),
       ),
     );
   }

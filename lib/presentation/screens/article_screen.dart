@@ -107,12 +107,6 @@ class ArticleScreen extends HookConsumerWidget {
                             else
                               const Icon(Icons.voice_chat, color: Colors.grey),
                             const Spacer(),
-                            ElevatedButton.icon(
-                              onPressed: () => AiAgentRoute().push(context),
-                              icon: const Icon(Icons.chat_bubble),
-                              label: const Text("Assistant IA"),
-                            ),
-                            const SizedBox(width: 12),
                           ],
                         );
                       } else if (index == 1) {
