@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -15,4 +16,9 @@ FirebaseAnalytics analytics(Ref ref) {
 @Riverpod(keepAlive: true)
 FirebaseAnalyticsObserver analyticsObserver(Ref ref) {
   return FirebaseAnalyticsObserver(analytics: ref.watch(analyticsProvider));
+}
+
+@Riverpod(keepAlive: true)
+FirebaseFirestore firestore(Ref ref) {
+  return FirebaseFirestore.instance;
 }
