@@ -9,7 +9,7 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
-      "toolArgs": ["--dart-define-from-file", "env/release.json"]
+      "toolArgs": ["--dart-define-from-file", "env/debug.json"]
     },
     {
       "name": "agora_mall (profile mode)",

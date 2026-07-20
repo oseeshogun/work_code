@@ -1,3 +1,4 @@
 abstract class Env {
-  static const String llmApiUrl = String.fromEnvironment('llmApiUrl');
+  static const String articleBannerAdUnitId = String.fromEnvironment('articleBannerAdUnitId');
+  static const String appOpenAdUnitId = String.fromEnvironment('appOpenAdUnitId');
 }

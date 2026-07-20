@@ -1,7 +1,10 @@
 import 'package:codedutravail/core/presentations/providers/dependencies.dart';
 import 'package:codedutravail/core/router/router.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:codedutravail/core/services/app_open_ad_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,6 +17,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  await MobileAds.instance.initialize();
 
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
 
@@ -46,6 +51,16 @@ class MyApp extends HookConsumerWidget {
     final analytics = ref.watch(analyticsProvider);
 
     analytics.setAnalyticsCollectionEnabled(true);
+
+    final appOpenAdManager = useMemoized(() => AppOpenAdManager()..loadAd());
+    final lifecycleState = useAppLifecycleState();
+
+    useEffect(() {
+      if (lifecycleState == AppLifecycleState.resumed) {
+        appOpenAdManager.showAdIfAvailable();
+      }
+      return null;
+    }, [lifecycleState]);
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,

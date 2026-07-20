@@ -55,3 +55,4 @@ lib/firebase_options.dart
 ## Ads
 .env.json
 env/release.json
+env/debug.json
