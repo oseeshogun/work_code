@@ -140,10 +140,6 @@ class HomeScreen extends HookConsumerWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => AiAgentRoute().push(context),
-        child: const Icon(Icons.smart_toy),
-      ),
     );
   }
 }

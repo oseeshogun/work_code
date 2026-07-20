@@ -1,6 +1,5 @@
 import 'package:codedutravail/core/presentations/providers/dependencies.dart';
 import 'package:codedutravail/core/router/router.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:codedutravail/core/services/app_open_ad_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -32,12 +31,6 @@ Future<void> main() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
-
-  await FirebaseAppCheck.instance.activate(
-    providerAndroid: kDebugMode
-        ? AndroidDebugProvider(debugToken: "98640F4B-D45F-4FB2-96E6-A6F92479B521")
-        : AndroidPlayIntegrityProvider(),
-  );
 
   runApp(const ProviderScope(child: MyApp()));
 }
