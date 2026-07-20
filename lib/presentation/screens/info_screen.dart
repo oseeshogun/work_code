@@ -56,6 +56,16 @@ class InfoScreen extends HookConsumerWidget {
               leading: const Icon(Icons.corporate_fare),
               onTap: () => AboutRoute().push(context),
             ),
+            ListTile(
+              title: const Text('Nos autres applications'),
+              leading: const Icon(Icons.apps),
+              onTap: () async {
+                final urlString = 'https://play.google.com/store/apps/dev?id=5877739770389993725';
+                if (await canLaunchUrlString(urlString)) {
+                  await launchUrlString(urlString);
+                }
+              },
+            ),
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(10.0),
