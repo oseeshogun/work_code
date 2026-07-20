@@ -26,9 +26,10 @@ class ArticleWidget extends HookConsumerWidget {
       elevation: 0,
       margin: const EdgeInsets.symmetric(vertical: 4.0),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(3.0),
         side: BorderSide(color: Theme.of(context).dividerColor.withAlpha((0.3 * 255).toInt())),
       ),
+      color: Colors.grey.withValues(alpha: 0.1),
       child: articleAsync.when(
         data: (article) {
           final String articleNumber = useRomanNumerals ? article.number.roman : article.number.toString();
@@ -51,7 +52,7 @@ class ArticleWidget extends HookConsumerWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: 'Article $articleNumber: ',
+                          text: 'Article $articleNumber\n',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).textTheme.bodyLarge?.color,

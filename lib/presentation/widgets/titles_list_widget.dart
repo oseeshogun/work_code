@@ -48,15 +48,14 @@ class TitleExpansionTile extends HookConsumerWidget {
         children: [
           if (title.articles.isNotEmpty)
             Column(
-              children:
-                  title.articles
-                      .map(
-                        (articleNumber) => Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: ArticleWidget(number: articleNumber, maxLines: 3),
-                        ),
-                      )
-                      .toList(),
+              children: title.articles
+                  .map(
+                    (articleNumber) => Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: ArticleWidget(number: articleNumber, maxLines: 3),
+                    ),
+                  )
+                  .toList(),
             ),
           chaptersAsync.when(
             data: (chapters) {
@@ -77,21 +76,19 @@ class TitleExpansionTile extends HookConsumerWidget {
                 ],
               );
             },
-            loading:
-                () => const Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    child: SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2.0)),
-                  ),
-                ),
-            error:
-                (error, _) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                    'Erreur lors du chargement des chapitres: ${error.toString()}',
-                    style: TextStyle(color: Theme.of(context).colorScheme.error),
-                  ),
-                ),
+            loading: () => const Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                child: SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2.0)),
+              ),
+            ),
+            error: (error, _) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(
+                'Erreur lors du chargement des chapitres: ${error.toString()}',
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
           ),
         ],
       ),
@@ -107,9 +104,13 @@ class ChapterExpansionTile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sectionsAsync = ref.watch(sectionsProvider(chapter.titleNumber, chapter.number));
-    
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4.0),
+
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(left: BorderSide(color: Colors.grey, width: 3.0)),
+      ),
+      padding: const EdgeInsets.only(bottom: 2.0),
+      margin: const EdgeInsets.symmetric(vertical: 2.0),
       child: ExpansionTile(
         tilePadding: const EdgeInsets.symmetric(horizontal: 8.0),
         backgroundColor: Colors.transparent,
@@ -120,7 +121,7 @@ class ChapterExpansionTile extends HookConsumerWidget {
         subtitle: Text(chapter.text, maxLines: 2, overflow: TextOverflow.ellipsis),
         childrenPadding: const EdgeInsets.fromLTRB(16.0, 0.0, 8.0, 8.0),
         children: [
-          if (chapter.articles.isNotEmpty) ...[            
+          if (chapter.articles.isNotEmpty) ...[
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Align(
@@ -129,15 +130,14 @@ class ChapterExpansionTile extends HookConsumerWidget {
               ),
             ),
             Column(
-              children:
-                  chapter.articles
-                      .map(
-                        (articleNumber) => Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: ArticleWidget(number: articleNumber, maxLines: 3),
-                        ),
-                      )
-                      .toList(),
+              children: chapter.articles
+                  .map(
+                    (articleNumber) => Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: ArticleWidget(number: articleNumber, maxLines: 3),
+                    ),
+                  )
+                  .toList(),
             ),
           ],
           sectionsAsync.when(
@@ -204,15 +204,14 @@ class SectionExpansionTile extends StatelessWidget {
               ),
             ),
             Column(
-              children:
-                  section.articles
-                      .map(
-                        (articleNumber) => Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: ArticleWidget(number: articleNumber, maxLines: 3),
-                        ),
-                      )
-                      .toList(),
+              children: section.articles
+                  .map(
+                    (articleNumber) => Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: ArticleWidget(number: articleNumber, maxLines: 3),
+                    ),
+                  )
+                  .toList(),
             ),
           ],
         ],
