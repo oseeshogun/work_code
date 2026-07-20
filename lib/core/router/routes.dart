@@ -34,4 +34,3 @@ class AboutRoute extends GoRouteData with $AboutRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) => const AboutWorkCode();
 }
-
