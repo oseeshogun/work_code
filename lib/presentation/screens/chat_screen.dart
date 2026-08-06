@@ -104,7 +104,7 @@ class ChatScreen extends HookConsumerWidget {
                     padding: const EdgeInsets.fromLTRB(12, 4, 12, 10),
                     child: RainbowBorder(
                       animate: chatState.isLoading,
-                      backgroundColor: Colors.white,
+                      backgroundColor: theme.colorScheme.surface,
                       radius: 24,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(14, 10, 10, 6),

@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 part 'session_limit.g.dart';
 
-const int maxSessionsPerDay = 2;
+const int maxSessionsPerDay = 3;
 const int bonusSessionsPerAd = 3;
 const Duration bonusSessionsDuration = Duration(hours: 36);
 
