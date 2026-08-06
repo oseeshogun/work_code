@@ -58,7 +58,7 @@ class AiAgentService {
     _tools ??= _buildTools();
   }
 
-  Future<Map<String, dynamic>> _callApi() async {
+  Future<Map<String, dynamic>> _callApi({String toolChoice = 'auto'}) async {
     final body = jsonEncode({
       'model': _model,
       'messages': [
@@ -66,7 +66,7 @@ class AiAgentService {
         ..._history,
       ],
       'tools': _tools!.map((t) => t.toJson()).toList(),
-      'tool_choice': 'auto',
+      'tool_choice': toolChoice,
     });
 
     final response = await _httpClient
@@ -110,8 +110,8 @@ class AiAgentService {
       if (finishReason == 'tool_calls' && toolCalls != null && toolCalls.isNotEmpty) {
         loopCount++;
         if (loopCount > _maxLoopCount) {
-          AppLogger.warn('[AI] max tool-call loop count ($_maxLoopCount) reached, breaking');
-          break;
+          AppLogger.warn('[AI] max tool-call loop count ($_maxLoopCount) reached, forcing a final answer');
+          return _forceFinalAnswer();
         }
 
         AppLogger.debug(
@@ -147,8 +147,27 @@ class AiAgentService {
       _history.add({'role': 'assistant', 'content': responseText});
       return responseText;
     }
+  }
 
-    throw const DeepSeekEmptyResponseException();
+  /// Called when the tool-call loop hits [_maxLoopCount] without the model
+  /// ever producing a text answer. Forces one more call with `tool_choice:
+  /// 'none'` so the model must synthesize a real answer from whatever it
+  /// already gathered in `_history`, instead of the whole turn failing.
+  Future<String> _forceFinalAnswer() async {
+    final responseJson = await _callApi(toolChoice: 'none');
+    final choices = responseJson['choices'] as List<dynamic>? ?? [];
+    if (choices.isEmpty) {
+      throw const DeepSeekEmptyResponseException();
+    }
+
+    final message = (choices.first as Map<String, dynamic>)['message'] as Map<String, dynamic>;
+    final responseText = message['content'] as String? ?? '';
+    if (responseText.isEmpty) {
+      throw const DeepSeekEmptyResponseException();
+    }
+
+    _history.add({'role': 'assistant', 'content': responseText});
+    return responseText;
   }
 
   void reset() {
