@@ -25,8 +25,8 @@ class ChatScreen extends HookConsumerWidget {
 
     useEffect(() {
       if (kDebugMode) return null;
-      final used = sessionLimitAsync.value;
-      if (!sessionConsumed.value && used != null && used < maxSessionsPerDay) {
+      final limitState = sessionLimitAsync.value;
+      if (!sessionConsumed.value && limitState != null && !limitState.isLimitReached) {
         sessionConsumed.value = true;
         Future.microtask(() => ref.read(sessionLimitProvider.notifier).consumeSession());
       }
@@ -55,7 +55,7 @@ class ChatScreen extends HookConsumerWidget {
       ref.read(chatControllerProvider.notifier).sendMessage(text);
     }
 
-    final isLimitReached = !kDebugMode && (sessionLimitAsync.value ?? 0) >= maxSessionsPerDay;
+    final isLimitReached = !kDebugMode && (sessionLimitAsync.value?.isLimitReached ?? false);
     final showEmptyState = chatState.messages.isEmpty && !chatState.isLoading;
     final itemCount = chatState.messages.length + (chatState.isLoading ? 1 : 0);
 
@@ -106,7 +106,7 @@ class ChatScreen extends HookConsumerWidget {
                       padding: const EdgeInsets.fromLTRB(12, 4, 12, 10),
                       child: RainbowBorder(
                         animate: chatState.isLoading,
-                        backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                        backgroundColor: Colors.transparent,
                         radius: 24,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(14, 10, 10, 6),
