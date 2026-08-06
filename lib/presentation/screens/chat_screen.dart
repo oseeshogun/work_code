@@ -61,100 +61,97 @@ class ChatScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Elimu')),
-      body:
-          isLimitReached
-              ? const SessionLimitView()
-              : Column(
-                children: [
-                  Expanded(
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 250),
-                      child:
-                          showEmptyState
-                              ? const ChatEmptyState(key: ValueKey('empty'))
-                              : ListView.builder(
-                                key: const ValueKey('list'),
-                                controller: scrollController,
-                                padding: const EdgeInsets.symmetric(vertical: 12),
-                                itemCount: itemCount,
-                                itemBuilder: (context, index) {
-                                  if (index < chatState.messages.length) {
-                                    return ChatMessageBubble(message: chatState.messages[index]);
-                                  }
-                                  return AiTypingIndicator(statusMessage: chatState.statusMessage);
-                                },
-                              ),
+      body: isLimitReached
+          ? const SessionLimitView()
+          : Column(
+              children: [
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    child: showEmptyState
+                        ? const ChatEmptyState(key: ValueKey('empty'))
+                        : ListView.builder(
+                            key: const ValueKey('list'),
+                            controller: scrollController,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            itemCount: itemCount,
+                            itemBuilder: (context, index) {
+                              if (index < chatState.messages.length) {
+                                return ChatMessageBubble(message: chatState.messages[index]);
+                              }
+                              return AiTypingIndicator(statusMessage: chatState.statusMessage);
+                            },
+                          ),
+                  ),
+                ),
+                if (chatState.messages.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.info_outline, size: 13, color: theme.colorScheme.outline),
+                        const SizedBox(width: 6),
+                        Text(
+                          "L'IA peut se tromper. Vérifiez les articles cités.",
+                          style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.outline),
+                        ),
+                      ],
                     ),
                   ),
-                  if (chatState.messages.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.info_outline, size: 13, color: theme.colorScheme.outline),
-                          const SizedBox(width: 6),
-                          Text(
-                            "L'IA peut se tromper. Vérifiez les articles cités.",
-                            style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.outline),
-                          ),
-                        ],
-                      ),
-                    ),
-                  SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 4, 12, 10),
-                      child: RainbowBorder(
-                        animate: chatState.isLoading,
-                        backgroundColor: Colors.transparent,
-                        radius: 24,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(14, 10, 10, 6),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              TextField(
-                                controller: textController,
-                                enabled: !chatState.isLoading,
-                                minLines: 3,
-                                maxLines: 8,
-                                textInputAction: TextInputAction.newline,
-                                style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 15),
-                                decoration: const InputDecoration(
-                                  hintText: 'Votre question...',
-                                  border: InputBorder.none,
-                                  isCollapsed: true,
-                                ),
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 4, 12, 10),
+                    child: RainbowBorder(
+                      animate: chatState.isLoading,
+                      backgroundColor: Colors.white,
+                      radius: 24,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(14, 10, 10, 6),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            TextField(
+                              controller: textController,
+                              enabled: !chatState.isLoading,
+                              minLines: 3,
+                              maxLines: 8,
+                              textInputAction: TextInputAction.newline,
+                              style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 15),
+                              decoration: const InputDecoration(
+                                hintText: 'Votre question...',
+                                border: InputBorder.none,
+                                isCollapsed: true,
                               ),
-                              const SizedBox(height: 6),
-                              AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 200),
-                                transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
-                                child:
-                                    chatState.isLoading
-                                        ? const Padding(
-                                          key: ValueKey('sending'),
-                                          padding: EdgeInsets.all(10),
-                                          child: SizedBox(
-                                            width: 22,
-                                            height: 22,
-                                            child: CircularProgressIndicator(strokeWidth: 2.5),
-                                          ),
-                                        )
-                                        : IconButton.filled(
-                                          key: const ValueKey('send'),
-                                          onPressed: send,
-                                          icon: const Icon(Icons.send),
-                                        ),
-                              ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: 6),
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 200),
+                              transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
+                              child: chatState.isLoading
+                                  ? const Padding(
+                                      key: ValueKey('sending'),
+                                      padding: EdgeInsets.all(10),
+                                      child: SizedBox(
+                                        width: 22,
+                                        height: 22,
+                                        child: CircularProgressIndicator(strokeWidth: 2.5),
+                                      ),
+                                    )
+                                  : IconButton.filled(
+                                      key: const ValueKey('send'),
+                                      onPressed: send,
+                                      icon: const Icon(Icons.send),
+                                    ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
     );
   }
 }
