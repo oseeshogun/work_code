@@ -1,5 +1,5 @@
+import 'package:codedutravail/core/utils/lexical_search.dart';
 import 'package:codedutravail/data/repositories/article_repository_impl.dart';
-import 'package:fuzzy/fuzzy.dart';
 import 'package:codedutravail/domain/entities/article.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -27,12 +27,7 @@ AsyncValue<List<ArticleEntity>> search(Ref ref, String query) {
   }
   return allArticles.when(
     data: (articles) {
-      bool filter(ArticleEntity entry) {
-        final name = '${entry.text} ${entry.slug}';
-        final fuse = Fuzzy<String>([name]);
-
-        return fuse.search(query).where((element) => element.score < 0.4).isNotEmpty;
-      }
+      bool filter(ArticleEntity entry) => matchesQuery('${entry.text} ${entry.slug}', query);
       return AsyncValue.data(articles.where(filter).toList());
     },
     loading: () => AsyncValue.loading(),
