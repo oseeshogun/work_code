@@ -58,12 +58,13 @@ class AiAgentService {
     _tools ??= _buildTools();
   }
 
-  Future<Map<String, dynamic>> _callApi({String toolChoice = 'auto'}) async {
+  Future<Map<String, dynamic>> _callApi({String toolChoice = 'auto', List<Map<String, dynamic>>? extraMessages}) async {
     final body = jsonEncode({
       'model': _model,
       'messages': [
         {'role': 'system', 'content': _systemPrompt},
         ..._history,
+        if (extraMessages != null) ...extraMessages,
       ],
       'tools': _tools!.map((t) => t.toJson()).toList(),
       'tool_choice': toolChoice,
@@ -152,9 +153,24 @@ class AiAgentService {
   /// Called when the tool-call loop hits [_maxLoopCount] without the model
   /// ever producing a text answer. Forces one more call with `tool_choice:
   /// 'none'` so the model must synthesize a real answer from whatever it
-  /// already gathered in `_history`, instead of the whole turn failing.
+  /// already gathered in `_history`, instead of the whole turn failing. If
+  /// what's gathered still isn't enough, it's told to say so briefly rather
+  /// than guess, and to invite the user to retry or ask it to keep searching.
   Future<String> _forceFinalAnswer() async {
-    final responseJson = await _callApi(toolChoice: 'none');
+    final responseJson = await _callApi(
+      toolChoice: 'none',
+      extraMessages: [
+        {
+          'role': 'user',
+          'content':
+              "Tu as atteint la limite de recherches disponibles pour cette question. Si tu as déjà trouvé assez "
+              "d'éléments, réponds normalement en citant les articles pertinents. Sinon, n'invente rien : réponds "
+              "en une ou deux phrases seulement pour dire que tu n'as pas trouvé assez d'informations dans le "
+              "corpus pour répondre avec certitude, et invite l'utilisateur à reformuler sa question ou à te "
+              "redemander de continuer la recherche.",
+        },
+      ],
+    );
     final choices = responseJson['choices'] as List<dynamic>? ?? [];
     if (choices.isEmpty) {
       throw const DeepSeekEmptyResponseException();
