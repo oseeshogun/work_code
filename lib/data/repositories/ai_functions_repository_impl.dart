@@ -67,9 +67,9 @@ class AiFunctionsRepositoryImpl with AiFunctionsRepository {
     int? titleNumber,
     int? chapterNumber,
     int? sectionNumber,
-    int limit = 5,
+    int limit = 12,
   }) async {
-    final clampedLimit = limit.clamp(1, 10);
+    final clampedLimit = limit.clamp(1, 12);
     final bound = await _resolveBound(
       titleNumber: titleNumber,
       chapterNumber: chapterNumber,

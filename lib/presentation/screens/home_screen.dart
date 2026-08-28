@@ -3,10 +3,9 @@ import 'package:codedutravail/core/router/routes.dart';
 import 'package:codedutravail/data/repositories/article_repository_impl.dart';
 import 'package:codedutravail/domain/providers/home/read_disclaimer.dart';
 import 'package:codedutravail/presentation/dialogs/disclaimer_dialog.dart';
-import 'package:codedutravail/domain/providers/articles/article_of_the_day.dart';
 import 'package:codedutravail/domain/providers/articles/titles.dart';
-import 'package:codedutravail/presentation/widgets/article_of_the_day_card.dart';
 import 'package:codedutravail/presentation/widgets/article_search_delegate.dart';
+import 'package:codedutravail/presentation/widgets/nzimbu_ad_card.dart';
 import 'package:codedutravail/presentation/widgets/titles_empty_widget.dart';
 import 'package:codedutravail/presentation/widgets/titles_error_widget.dart';
 import 'package:codedutravail/presentation/widgets/titles_list_widget.dart';
@@ -23,8 +22,6 @@ class HomeScreen extends HookConsumerWidget {
     final hasReadDisclaimer = ref.watch(readDisclaimerProvider).value;
     final titlesAsync = ref.watch(titlesProvider);
     final articleCountAsync = ref.watch(articleCountProvider);
-    final articleOfTheDayAsync = ref.watch(articleOfTheDayProvider);
-    final articleVisibilityAsync = ref.watch(articleOfDayVisibilityProvider);
     final favoriteArticlesAsync = ref.watch(favoriteArticlesProvider);
 
     useEffect(() {
@@ -61,25 +58,7 @@ class HomeScreen extends HookConsumerWidget {
       ),
       body: Column(
         children: [
-          articleVisibilityAsync.when(
-            data:
-                (isVisible) =>
-                    isVisible
-                        ? articleOfTheDayAsync.when(
-                          data:
-                              (article) => ArticleOfTheDayCard(
-                                article: article,
-                                onClose: () {
-                                  ref.read(articleOfDayVisibilityProvider.notifier).hideForToday();
-                                },
-                              ),
-                          loading: () => const SizedBox(height: 150, child: Center(child: CircularProgressIndicator())),
-                          error: (_, _) => const SizedBox(),
-                        )
-                        : const SizedBox(),
-            loading: () => const SizedBox(),
-            error: (_, _) => const SizedBox(),
-          ),
+          const NzimbuAdCard(),
           favoriteArticlesAsync.when(
             data: (favoriteArticles) {
               return Visibility(

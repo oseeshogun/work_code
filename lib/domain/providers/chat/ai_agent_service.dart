@@ -64,7 +64,7 @@ class AiAgentService {
       'messages': [
         {'role': 'system', 'content': _systemPrompt},
         ..._history,
-        if (extraMessages != null) ...extraMessages,
+        ...?extraMessages,
       ],
       'tools': _tools!.map((t) => t.toJson()).toList(),
       'tool_choice': toolChoice,
@@ -235,7 +235,7 @@ class AiAgentService {
             'section_number': _int(
               'Numéro de la section pour borner la recherche, nécessite title_number et chapter_number (optionnel)',
             ),
-            'limit': _int('Nombre maximum de résultats, défaut 5, plafonné à 10 (optionnel)'),
+            'limit': _int('Nombre maximum de résultats, défaut 12, plafonné à 12 (optionnel)'),
           },
           required: ['keywords'],
         ),
@@ -264,7 +264,7 @@ class AiAgentService {
               titleNumber: (args['title_number'] as num?)?.toInt(),
               chapterNumber: (args['chapter_number'] as num?)?.toInt(),
               sectionNumber: (args['section_number'] as num?)?.toInt(),
-              limit: (args['limit'] as num?)?.toInt() ?? 5,
+              limit: (args['limit'] as num?)?.toInt() ?? 12,
             ),
           };
 

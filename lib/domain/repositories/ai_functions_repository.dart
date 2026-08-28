@@ -6,7 +6,7 @@ mixin AiFunctionsRepository {
     int? titleNumber,
     int? chapterNumber,
     int? sectionNumber,
-    int limit = 5,
+    int limit = 12,
   });
 
   Future<Map<String, dynamic>?> getArticleByNumber(int number);
