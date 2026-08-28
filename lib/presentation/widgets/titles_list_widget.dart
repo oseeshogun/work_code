@@ -10,16 +10,21 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class TitlesListWidget extends StatelessWidget {
   final List<TitleEntity> titles;
+  final Widget? header;
 
-  const TitlesListWidget({super.key, required this.titles});
+  const TitlesListWidget({super.key, required this.titles, this.header});
 
   @override
   Widget build(BuildContext context) {
+    final hasHeader = header != null;
     return ListView.builder(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-      itemCount: titles.length,
+      itemCount: titles.length + (hasHeader ? 1 : 0),
       itemBuilder: (context, index) {
-        final title = titles[index];
+        if (hasHeader && index == 0) {
+          return header!;
+        }
+        final title = titles[index - (hasHeader ? 1 : 0)];
         return TitleExpansionTile(title: title);
       },
     );

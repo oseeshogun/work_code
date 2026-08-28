@@ -6,6 +6,7 @@ import 'package:codedutravail/presentation/dialogs/disclaimer_dialog.dart';
 import 'package:codedutravail/domain/providers/articles/titles.dart';
 import 'package:codedutravail/presentation/widgets/article_search_delegate.dart';
 import 'package:codedutravail/presentation/widgets/nzimbu_ad_card.dart';
+import 'package:codedutravail/presentation/widgets/random_ad_slot.dart';
 import 'package:codedutravail/presentation/widgets/titles_empty_widget.dart';
 import 'package:codedutravail/presentation/widgets/titles_error_widget.dart';
 import 'package:codedutravail/presentation/widgets/titles_list_widget.dart';
@@ -58,7 +59,6 @@ class HomeScreen extends HookConsumerWidget {
       ),
       body: Column(
         children: [
-          const NzimbuAdCard(),
           favoriteArticlesAsync.when(
             data: (favoriteArticles) {
               return Visibility(
@@ -100,19 +100,19 @@ class HomeScreen extends HookConsumerWidget {
                     if (titles.isEmpty || articleCount == 0) {
                       return const TitlesEmptyWidget();
                     }
-                    return TitlesListWidget(titles: titles);
+                    return TitlesListWidget(titles: titles, header: const RandomAdSlot(promo: NzimbuAdCard()));
                   },
                   loading:
                       () => Visibility(
                         visible: titles.isNotEmpty,
                         replacement: const TitlesEmptyWidget(),
-                        child: TitlesListWidget(titles: titles),
+                        child: TitlesListWidget(titles: titles, header: const RandomAdSlot(promo: NzimbuAdCard())),
                       ),
                   error:
                       (_, _) => Visibility(
                         visible: titles.isNotEmpty,
                         replacement: const TitlesEmptyWidget(),
-                        child: TitlesListWidget(titles: titles),
+                        child: TitlesListWidget(titles: titles, header: const RandomAdSlot(promo: NzimbuAdCard())),
                       ),
                 );
               },

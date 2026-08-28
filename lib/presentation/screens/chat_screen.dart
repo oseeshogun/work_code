@@ -3,6 +3,8 @@ import 'package:codedutravail/domain/providers/chat/session_limit.dart';
 import 'package:codedutravail/presentation/widgets/ai_typing_indicator.dart';
 import 'package:codedutravail/presentation/widgets/chat_empty_state.dart';
 import 'package:codedutravail/presentation/widgets/chat_message_bubble.dart';
+import 'package:codedutravail/presentation/widgets/nzimbu_banner.dart';
+import 'package:codedutravail/presentation/widgets/random_ad_slot.dart';
 import 'package:codedutravail/presentation/widgets/rainbow_border.dart';
 import 'package:codedutravail/presentation/widgets/session_limit_view.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
@@ -65,6 +67,7 @@ class ChatScreen extends HookConsumerWidget {
           ? const SessionLimitView()
           : Column(
               children: [
+                const RandomAdSlot(promo: NzimbuBanner()),
                 Expanded(
                   child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 250),
