@@ -3,6 +3,7 @@ import 'package:codedutravail/domain/providers/chat/session_limit.dart';
 import 'package:codedutravail/presentation/widgets/ai_typing_indicator.dart';
 import 'package:codedutravail/presentation/widgets/chat_empty_state.dart';
 import 'package:codedutravail/presentation/widgets/chat_message_bubble.dart';
+import 'package:codedutravail/presentation/widgets/elimu_app_bar.dart';
 import 'package:codedutravail/presentation/widgets/nzimbu_banner.dart';
 import 'package:codedutravail/presentation/widgets/random_ad_slot.dart';
 import 'package:codedutravail/presentation/widgets/rainbow_border.dart';
@@ -62,7 +63,11 @@ class ChatScreen extends HookConsumerWidget {
     final itemCount = chatState.messages.length + (chatState.isLoading ? 1 : 0);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Elimu')),
+      appBar: ElimuAppBar(
+        onReset: chatState.messages.isNotEmpty && !chatState.isLoading
+            ? () => ref.read(chatControllerProvider.notifier).reset()
+            : null,
+      ),
       body: isLimitReached
           ? const SessionLimitView()
           : Column(
