@@ -16,14 +16,15 @@ class ElimuAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.06))),
+        color: scheme.surface,
+        border: Border(bottom: BorderSide(color: scheme.onSurface.withValues(alpha: 0.08))),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
+            color: Colors.black.withValues(alpha: isDark ? 0.28 : 0.04),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -39,7 +40,7 @@ class ElimuAppBar extends StatelessWidget implements PreferredSizeWidget {
               IconButton(
                 onPressed: () => Navigator.of(context).maybePop(),
                 icon: const Icon(Icons.arrow_back),
-                color: Colors.black87,
+                color: scheme.onSurface,
                 tooltip: MaterialLocalizations.of(context).backButtonTooltip,
               ),
               _Avatar(scheme: scheme),
@@ -52,7 +53,7 @@ class ElimuAppBar extends StatelessWidget implements PreferredSizeWidget {
                     Text(
                       'Elimu',
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.black87,
+                        color: scheme.onSurface,
                         fontWeight: FontWeight.w700,
                         height: 1.1,
                       ),
@@ -67,7 +68,7 @@ class ElimuAppBar extends StatelessWidget implements PreferredSizeWidget {
                         const SizedBox(width: 6),
                         Text(
                           'Assistant IA · Code du travail',
-                          style: theme.textTheme.labelSmall?.copyWith(color: Colors.black54),
+                          style: theme.textTheme.labelSmall?.copyWith(color: scheme.onSurfaceVariant),
                         ),
                       ],
                     ),
