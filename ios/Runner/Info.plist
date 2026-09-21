@@ -26,10 +26,10 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-0000000000000~0000000000</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>Cette identification sera utilisée pour vous proposer des publicités plus pertinentes.</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Cette identification sera utilisée pour vous proposer des publicités plus pertinentes.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

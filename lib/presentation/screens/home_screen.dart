@@ -49,11 +49,6 @@ class HomeScreen extends HookConsumerWidget {
             },
             icon: const Icon(Icons.search),
           ),
-          IconButton(
-            onPressed: () => ChatRoute().push(context),
-            icon: const Icon(Icons.smart_toy_outlined),
-            tooltip: 'Elimu',
-          ),
           IconButton(onPressed: () => InfoRoute().push(context), icon: const Icon(Icons.info_outline)),
         ],
       ),
