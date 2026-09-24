@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:codedutravail/data/local/converters/list_int_converter.dart';
 import 'package:codedutravail/data/local/database.steps.dart';
+import 'package:codedutravail/data/local/tables/article_view_history.dart';
 import 'package:codedutravail/data/local/tables/articles.dart';
 import 'package:codedutravail/data/local/tables/chapters.dart';
 import 'package:codedutravail/data/local/tables/sections.dart';
@@ -28,12 +29,12 @@ AppDatabase db(Ref ref) => AppDatabase(
   ),
 );
 
-@DriftDatabase(tables: [Titles, Chapters, Sections, Articles])
+@DriftDatabase(tables: [Titles, Chapters, Sections, Articles, ArticleViewHistory])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration {
@@ -48,6 +49,11 @@ extension Migrations on GeneratedDatabase {
   OnUpgrade get _schemaUpgrade => stepByStep(
     from1To2: (m, schema) async {
       await m.addColumn(schema.articles, schema.articles.isFavorite);
+
+      await m.createAll();
+    },
+    from2To3: (m, schema) async {
+      await m.addColumn(schema.articles, schema.articles.note);
 
       await m.createAll();
     },

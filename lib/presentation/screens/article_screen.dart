@@ -1,8 +1,10 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:codedutravail/data/repositories/article_repository_impl.dart';
+import 'package:codedutravail/data/repositories/article_view_history_repository_impl.dart';
 import 'package:codedutravail/domain/providers/articles/article.dart';
 import 'package:codedutravail/core/presentations/providers/flutter_tts.dart';
 import 'package:codedutravail/core/router/routes.dart';
+import 'package:codedutravail/presentation/dialogs/article_note_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:codedutravail/presentation/widgets/article_banner_ad_widget.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -34,6 +36,11 @@ class ArticleScreen extends HookConsumerWidget {
     useEffect(() {
       return () => tts?.stop();
     }, [tts]);
+
+    useEffect(() {
+      ref.read(articleViewHistoryRepositoryProvider).recordView(number);
+      return null;
+    }, [number]);
 
     return Scaffold(
       appBar: AppBar(
@@ -74,6 +81,12 @@ class ArticleScreen extends HookConsumerWidget {
                     },
                     icon: Icon(article.isFavorite ? Icons.favorite : Icons.favorite_border),
                     tooltip: article.isFavorite ? 'Déjà dans les favoris' : 'Ajouter aux favoris',
+                  ),
+                  IconButton(
+                    onPressed:
+                        () => showArticleNoteDialog(context, articleNumber: article.number, initialNote: article.note),
+                    icon: Icon(article.note != null && article.note!.isNotEmpty ? Icons.note : Icons.note_add_outlined),
+                    tooltip: article.note != null && article.note!.isNotEmpty ? 'Modifier ma note' : 'Ajouter une note',
                   ),
                 ],
               );

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'title.dart';
@@ -9,6 +9,7 @@ part of 'title.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $TitleEntityCopyWith<TitleEntity> get copyWith => _$TitleEntityCopyWithImpl<Titl
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TitleEntity&&(identical(other.number, number) || other.number == number)&&(identical(other.text, text) || other.text == text)&&const DeepCollectionEquality().equals(other.articles, articles));
+  final _this = this as TitleEntity;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TitleEntity&&(identical(other.number, _this.number) || other.number == _this.number)&&(identical(other.text, _this.text) || other.text == _this.text)&&const DeepCollectionEquality().equals(other.articles, _this.articles));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,number,text,const DeepCollectionEquality().hash(articles));
+int get hashCode {
+  final _this = this as TitleEntity;
+  return Object.hash(runtimeType,_this.number,_this.text,const DeepCollectionEquality().hash(_this.articles));
+}
 
 @override
 String toString() {
-  return 'TitleEntity(number: $number, text: $text, articles: $articles)';
+  final _this = this as TitleEntity;
+  return 'TitleEntity(number: ${_this.number}, text: ${_this.text}, articles: ${_this.articles})';
 }
 
 
@@ -63,7 +69,7 @@ class _$TitleEntityCopyWithImpl<$Res>
 /// Create a copy of TitleEntity
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? number = null,Object? text = null,Object? articles = null,}) {
-  return _then(_self.copyWith(
+  return _then(TitleEntity(
 number: null == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
 as int,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
 as String,articles: null == articles ? _self.articles : articles // ignore: cast_nullable_to_non_nullable
@@ -208,7 +214,7 @@ return $default(_that.number,_that.text,_that.articles);case _:
 
 
 class _TitleEntity implements TitleEntity {
-  const _TitleEntity({required this.number, required this.text, required final  Set<int> articles}): _articles = articles;
+  const _TitleEntity({required this.number, required this.text, required  Set<int> articles}): _articles = articles;
   
 
 @override final  int number;
@@ -231,16 +237,18 @@ _$TitleEntityCopyWith<_TitleEntity> get copyWith => __$TitleEntityCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TitleEntity&&(identical(other.number, number) || other.number == number)&&(identical(other.text, text) || other.text == text)&&const DeepCollectionEquality().equals(other._articles, _articles));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TitleEntity&&(identical(other.number, number) || other.number == number)&&(identical(other.text, text) || other.text == text)&&const DeepCollectionEquality().equals(other.articles, _articles));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,number,text,const DeepCollectionEquality().hash(_articles));
+int get hashCode {
+    return Object.hash(runtimeType,number,text,const DeepCollectionEquality().hash(_articles));
+}
 
 @override
 String toString() {
-  return 'TitleEntity(number: $number, text: $text, articles: $articles)';
+    return 'TitleEntity(number: $number, text: $text, articles: $articles)';
 }
 
 
