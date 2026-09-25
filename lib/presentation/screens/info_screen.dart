@@ -1,4 +1,5 @@
 import 'package:codedutravail/core/router/routes.dart';
+import 'package:codedutravail/core/services/app_open_ad_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -23,6 +24,7 @@ class InfoScreen extends HookConsumerWidget {
               onTap: () async {
                 final urlString = 'https://github.com/oseeshogun/work_code';
                 if (await canLaunchUrlString(urlString)) {
+                  AppOpenAdManager.notifyAppInitiatedNavigation();
                   await launchUrlString(urlString);
                 }
               },
@@ -33,6 +35,7 @@ class InfoScreen extends HookConsumerWidget {
               onTap: () async {
                 final urlString = 'https://oseemasuaku.com';
                 if (await canLaunchUrlString(urlString)) {
+                  AppOpenAdManager.notifyAppInitiatedNavigation();
                   await launchUrlString(urlString);
                 }
               },
@@ -43,6 +46,7 @@ class InfoScreen extends HookConsumerWidget {
               trailing: const Icon(Icons.share),
               onTap: () {
                 final box = context.findRenderObject() as RenderBox?;
+                AppOpenAdManager.notifyAppInitiatedNavigation();
                 SharePlus.instance.share(
                   ShareParams(
                     text: 'Découvrez l\'application : $androidUrl',
@@ -62,6 +66,7 @@ class InfoScreen extends HookConsumerWidget {
               onTap: () async {
                 final urlString = 'https://play.google.com/store/apps/dev?id=5877739770389993725';
                 if (await canLaunchUrlString(urlString)) {
+                  AppOpenAdManager.notifyAppInitiatedNavigation();
                   await launchUrlString(urlString);
                 }
               },
@@ -89,6 +94,7 @@ class InfoScreen extends HookConsumerWidget {
                       final uriString =
                           'https://www.leganet.cd/Legislation/DroitSocial/Code%20du%20travail.%20loi.2002.htm';
                       if (await canLaunchUrlString(uriString)) {
+                        AppOpenAdManager.notifyAppInitiatedNavigation();
                         await launchUrlString(uriString);
                       }
                     },

@@ -1,3 +1,4 @@
+import 'package:codedutravail/core/services/app_open_ad_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -12,6 +13,7 @@ class NzimbuBanner extends StatelessWidget {
     return InkWell(
       onTap: () async {
         if (await canLaunchUrlString(_url)) {
+          AppOpenAdManager.notifyAppInitiatedNavigation();
           await launchUrlString(_url, mode: LaunchMode.externalApplication);
         }
       },

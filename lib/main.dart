@@ -60,7 +60,15 @@ class MyApp extends HookConsumerWidget {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       routerConfig: router,
-      builder: (context, child) => UpgradeAlert(navigatorKey: routerKey, child: child),
+      builder:
+          (context, child) => UpgradeAlert(
+            navigatorKey: routerKey,
+            onUpdate: () {
+              AppOpenAdManager.notifyAppInitiatedNavigation();
+              return true;
+            },
+            child: child,
+          ),
     );
   }
 }

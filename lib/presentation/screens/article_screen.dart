@@ -4,6 +4,7 @@ import 'package:codedutravail/data/repositories/article_view_history_repository_
 import 'package:codedutravail/domain/providers/articles/article.dart';
 import 'package:codedutravail/core/presentations/providers/flutter_tts.dart';
 import 'package:codedutravail/core/router/routes.dart';
+import 'package:codedutravail/core/services/app_open_ad_manager.dart';
 import 'package:codedutravail/presentation/dialogs/article_note_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:codedutravail/presentation/widgets/article_banner_ad_widget.dart';
@@ -58,6 +59,7 @@ class ArticleScreen extends HookConsumerWidget {
                     onPressed: () {
                       final box = context.findRenderObject() as RenderBox?;
                       final origin = box != null ? box.localToGlobal(Offset.zero) & box.size : null;
+                      AppOpenAdManager.notifyAppInitiatedNavigation();
                       SharePlus.instance.share(
                         ShareParams(
                           text: 'Article ${article.number} - Code du Travail\n\n${article.text}\n\n$androidUrl',
