@@ -43,6 +43,20 @@
       "detail": ""
     },
     {
+      "type": "flutter",
+      "command": "flutter",
+      "args": [
+        "build",
+        "ipa",
+        "--release",
+        "--dart-define-from-file",
+        "env/release.json"
+      ],
+      "group": "build",
+      "label": "flutter: flutter build ipa --release --dart-define-from-file env/release.json",
+      "detail": ""
+    },
+    {
       "type": "dart",
       "command": "dart",
       "args": ["run", "drift_dev", "make-migrations"],
