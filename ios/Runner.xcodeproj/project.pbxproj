@@ -207,6 +207,7 @@
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
+				511D4B2B595A4C2EBC1DEE2C /* Generate Missing dSYMs */,
 				50419BE30958ACA5BCE076AE /* FlutterFire: "flutterfire upload-crashlytics-symbols" */,
 			);
 			buildRules = (
@@ -345,6 +346,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
+		};
+		511D4B2B595A4C2EBC1DEE2C /* Generate Missing dSYMs */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Missing dSYMs";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Some third-party binary frameworks (Firebase / Google Mobile Ads, fetched\n# via Swift Package Manager) embed DWARF debug info directly in their binary\n# but ship no companion .dSYM. Xcode only auto-generates dSYMs for code it\n# compiles itself, so the archive ends up missing one for these, which makes\n# App Store Connect's symbol upload fail. Extract one from each such binary\n# with dsymutil so the archive's dSYMs folder has a match for every UUID.\nFRAMEWORKS_DIR=\"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nif [ -d \"${FRAMEWORKS_DIR}\" ] && [ -n \"${DWARF_DSYM_FOLDER_PATH}\" ]; then\n  mkdir -p \"${DWARF_DSYM_FOLDER_PATH}\"\n  find \"${FRAMEWORKS_DIR}\" -maxdepth 1 -name \"*.framework\" -type d | while read -r framework; do\n    name=$(basename \"${framework}\" .framework)\n    binary=\"${framework}/${name}\"\n    dsym=\"${DWARF_DSYM_FOLDER_PATH}/${name}.framework.dSYM\"\n    if [ -f \"${binary}\" ] && [ ! -d \"${dsym}\" ]; then\n      xcrun dsymutil \"${binary}\" -o \"${dsym}\" || true\n    fi\n  done\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 		50419BE30958ACA5BCE076AE /* FlutterFire: "flutterfire upload-crashlytics-symbols" */ = {
 			isa = PBXShellScriptBuildPhase;
