@@ -1,5 +1,6 @@
 import 'package:codedutravail/presentation/screens/about_work_code.dart';
 import 'package:codedutravail/presentation/screens/article_screen.dart';
+import 'package:codedutravail/presentation/screens/history_screen.dart';
 import 'package:codedutravail/presentation/screens/home_screen.dart';
 import 'package:codedutravail/presentation/screens/info_screen.dart';
 import 'package:flutter/material.dart' show BuildContext, Widget;
@@ -33,4 +34,10 @@ class InfoRoute extends GoRouteData with $InfoRoute {
 class AboutRoute extends GoRouteData with $AboutRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) => const AboutWorkCode();
+}
+
+@TypedGoRoute<HistoryRoute>(path: '/history')
+class HistoryRoute extends GoRouteData with $HistoryRoute {
+  @override
+  Widget build(BuildContext context, GoRouterState state) => const HistoryScreen();
 }

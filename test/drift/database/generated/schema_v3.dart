@@ -879,8 +879,31 @@ class Articles extends Table with TableInfo<Articles, ArticlesData> {
     requiredDuringInsert: true,
     $customConstraints: 'NOT NULL',
   );
+  late final GeneratedColumn<int> isFavorite = GeneratedColumn<int>(
+    'is_favorite',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT 0 CHECK (is_favorite IN (0, 1))',
+    defaultValue: const CustomExpression('0'),
+  );
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
   @override
-  List<GeneratedColumn> get $columns => [number, value, valueSlug];
+  List<GeneratedColumn> get $columns => [
+    number,
+    value,
+    valueSlug,
+    isFavorite,
+    note,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -904,6 +927,14 @@ class Articles extends Table with TableInfo<Articles, ArticlesData> {
         DriftSqlType.string,
         data['${effectivePrefix}value_slug'],
       )!,
+      isFavorite: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}is_favorite'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
     );
   }
 
@@ -922,10 +953,14 @@ class ArticlesData extends DataClass implements Insertable<ArticlesData> {
   final int number;
   final String value;
   final String valueSlug;
+  final int isFavorite;
+  final String? note;
   const ArticlesData({
     required this.number,
     required this.value,
     required this.valueSlug,
+    required this.isFavorite,
+    this.note,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -933,6 +968,10 @@ class ArticlesData extends DataClass implements Insertable<ArticlesData> {
     map['number'] = Variable<int>(number);
     map['value'] = Variable<String>(value);
     map['value_slug'] = Variable<String>(valueSlug);
+    map['is_favorite'] = Variable<int>(isFavorite);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
     return map;
   }
 
@@ -941,6 +980,8 @@ class ArticlesData extends DataClass implements Insertable<ArticlesData> {
       number: Value(number),
       value: Value(value),
       valueSlug: Value(valueSlug),
+      isFavorite: Value(isFavorite),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
     );
   }
 
@@ -953,6 +994,8 @@ class ArticlesData extends DataClass implements Insertable<ArticlesData> {
       number: serializer.fromJson<int>(json['number']),
       value: serializer.fromJson<String>(json['value']),
       valueSlug: serializer.fromJson<String>(json['valueSlug']),
+      isFavorite: serializer.fromJson<int>(json['isFavorite']),
+      note: serializer.fromJson<String?>(json['note']),
     );
   }
   @override
@@ -962,20 +1005,33 @@ class ArticlesData extends DataClass implements Insertable<ArticlesData> {
       'number': serializer.toJson<int>(number),
       'value': serializer.toJson<String>(value),
       'valueSlug': serializer.toJson<String>(valueSlug),
+      'isFavorite': serializer.toJson<int>(isFavorite),
+      'note': serializer.toJson<String?>(note),
     };
   }
 
-  ArticlesData copyWith({int? number, String? value, String? valueSlug}) =>
-      ArticlesData(
-        number: number ?? this.number,
-        value: value ?? this.value,
-        valueSlug: valueSlug ?? this.valueSlug,
-      );
+  ArticlesData copyWith({
+    int? number,
+    String? value,
+    String? valueSlug,
+    int? isFavorite,
+    Value<String?> note = const Value.absent(),
+  }) => ArticlesData(
+    number: number ?? this.number,
+    value: value ?? this.value,
+    valueSlug: valueSlug ?? this.valueSlug,
+    isFavorite: isFavorite ?? this.isFavorite,
+    note: note.present ? note.value : this.note,
+  );
   ArticlesData copyWithCompanion(ArticlesCompanion data) {
     return ArticlesData(
       number: data.number.present ? data.number.value : this.number,
       value: data.value.present ? data.value.value : this.value,
       valueSlug: data.valueSlug.present ? data.valueSlug.value : this.valueSlug,
+      isFavorite: data.isFavorite.present
+          ? data.isFavorite.value
+          : this.isFavorite,
+      note: data.note.present ? data.note.value : this.note,
     );
   }
 
@@ -984,46 +1040,60 @@ class ArticlesData extends DataClass implements Insertable<ArticlesData> {
     return (StringBuffer('ArticlesData(')
           ..write('number: $number, ')
           ..write('value: $value, ')
-          ..write('valueSlug: $valueSlug')
+          ..write('valueSlug: $valueSlug, ')
+          ..write('isFavorite: $isFavorite, ')
+          ..write('note: $note')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(number, value, valueSlug);
+  int get hashCode => Object.hash(number, value, valueSlug, isFavorite, note);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ArticlesData &&
           other.number == this.number &&
           other.value == this.value &&
-          other.valueSlug == this.valueSlug);
+          other.valueSlug == this.valueSlug &&
+          other.isFavorite == this.isFavorite &&
+          other.note == this.note);
 }
 
 class ArticlesCompanion extends UpdateCompanion<ArticlesData> {
   final Value<int> number;
   final Value<String> value;
   final Value<String> valueSlug;
+  final Value<int> isFavorite;
+  final Value<String?> note;
   const ArticlesCompanion({
     this.number = const Value.absent(),
     this.value = const Value.absent(),
     this.valueSlug = const Value.absent(),
+    this.isFavorite = const Value.absent(),
+    this.note = const Value.absent(),
   });
   ArticlesCompanion.insert({
     this.number = const Value.absent(),
     required String value,
     required String valueSlug,
+    this.isFavorite = const Value.absent(),
+    this.note = const Value.absent(),
   }) : value = Value(value),
        valueSlug = Value(valueSlug);
   static Insertable<ArticlesData> custom({
     Expression<int>? number,
     Expression<String>? value,
     Expression<String>? valueSlug,
+    Expression<int>? isFavorite,
+    Expression<String>? note,
   }) {
     return RawValuesInsertable({
       if (number != null) 'number': number,
       if (value != null) 'value': value,
       if (valueSlug != null) 'value_slug': valueSlug,
+      if (isFavorite != null) 'is_favorite': isFavorite,
+      if (note != null) 'note': note,
     });
   }
 
@@ -1031,11 +1101,15 @@ class ArticlesCompanion extends UpdateCompanion<ArticlesData> {
     Value<int>? number,
     Value<String>? value,
     Value<String>? valueSlug,
+    Value<int>? isFavorite,
+    Value<String?>? note,
   }) {
     return ArticlesCompanion(
       number: number ?? this.number,
       value: value ?? this.value,
       valueSlug: valueSlug ?? this.valueSlug,
+      isFavorite: isFavorite ?? this.isFavorite,
+      note: note ?? this.note,
     );
   }
 
@@ -1051,6 +1125,12 @@ class ArticlesCompanion extends UpdateCompanion<ArticlesData> {
     if (valueSlug.present) {
       map['value_slug'] = Variable<String>(valueSlug.value);
     }
+    if (isFavorite.present) {
+      map['is_favorite'] = Variable<int>(isFavorite.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
     return map;
   }
 
@@ -1059,18 +1139,249 @@ class ArticlesCompanion extends UpdateCompanion<ArticlesData> {
     return (StringBuffer('ArticlesCompanion(')
           ..write('number: $number, ')
           ..write('value: $value, ')
-          ..write('valueSlug: $valueSlug')
+          ..write('valueSlug: $valueSlug, ')
+          ..write('isFavorite: $isFavorite, ')
+          ..write('note: $note')
           ..write(')'))
         .toString();
   }
 }
 
-class DatabaseAtV1 extends GeneratedDatabase {
-  DatabaseAtV1(QueryExecutor e) : super(e);
+class ArticleViewHistory extends Table
+    with TableInfo<ArticleViewHistory, ArticleViewHistoryData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  ArticleViewHistory(this.attachedDatabase, [this._alias]);
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT',
+  );
+  late final GeneratedColumn<int> articleNumber = GeneratedColumn<int>(
+    'article_number',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES articles(number)ON DELETE CASCADE',
+  );
+  late final GeneratedColumn<int> viewedAt = GeneratedColumn<int>(
+    'viewed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, articleNumber, viewedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'article_view_history';
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {articleNumber},
+  ];
+  @override
+  ArticleViewHistoryData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ArticleViewHistoryData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      articleNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}article_number'],
+      )!,
+      viewedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}viewed_at'],
+      )!,
+    );
+  }
+
+  @override
+  ArticleViewHistory createAlias(String alias) {
+    return ArticleViewHistory(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const ['UNIQUE(article_number)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class ArticleViewHistoryData extends DataClass
+    implements Insertable<ArticleViewHistoryData> {
+  final int id;
+  final int articleNumber;
+  final int viewedAt;
+  const ArticleViewHistoryData({
+    required this.id,
+    required this.articleNumber,
+    required this.viewedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['article_number'] = Variable<int>(articleNumber);
+    map['viewed_at'] = Variable<int>(viewedAt);
+    return map;
+  }
+
+  ArticleViewHistoryCompanion toCompanion(bool nullToAbsent) {
+    return ArticleViewHistoryCompanion(
+      id: Value(id),
+      articleNumber: Value(articleNumber),
+      viewedAt: Value(viewedAt),
+    );
+  }
+
+  factory ArticleViewHistoryData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ArticleViewHistoryData(
+      id: serializer.fromJson<int>(json['id']),
+      articleNumber: serializer.fromJson<int>(json['articleNumber']),
+      viewedAt: serializer.fromJson<int>(json['viewedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'articleNumber': serializer.toJson<int>(articleNumber),
+      'viewedAt': serializer.toJson<int>(viewedAt),
+    };
+  }
+
+  ArticleViewHistoryData copyWith({
+    int? id,
+    int? articleNumber,
+    int? viewedAt,
+  }) => ArticleViewHistoryData(
+    id: id ?? this.id,
+    articleNumber: articleNumber ?? this.articleNumber,
+    viewedAt: viewedAt ?? this.viewedAt,
+  );
+  ArticleViewHistoryData copyWithCompanion(ArticleViewHistoryCompanion data) {
+    return ArticleViewHistoryData(
+      id: data.id.present ? data.id.value : this.id,
+      articleNumber: data.articleNumber.present
+          ? data.articleNumber.value
+          : this.articleNumber,
+      viewedAt: data.viewedAt.present ? data.viewedAt.value : this.viewedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ArticleViewHistoryData(')
+          ..write('id: $id, ')
+          ..write('articleNumber: $articleNumber, ')
+          ..write('viewedAt: $viewedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, articleNumber, viewedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ArticleViewHistoryData &&
+          other.id == this.id &&
+          other.articleNumber == this.articleNumber &&
+          other.viewedAt == this.viewedAt);
+}
+
+class ArticleViewHistoryCompanion
+    extends UpdateCompanion<ArticleViewHistoryData> {
+  final Value<int> id;
+  final Value<int> articleNumber;
+  final Value<int> viewedAt;
+  const ArticleViewHistoryCompanion({
+    this.id = const Value.absent(),
+    this.articleNumber = const Value.absent(),
+    this.viewedAt = const Value.absent(),
+  });
+  ArticleViewHistoryCompanion.insert({
+    this.id = const Value.absent(),
+    required int articleNumber,
+    required int viewedAt,
+  }) : articleNumber = Value(articleNumber),
+       viewedAt = Value(viewedAt);
+  static Insertable<ArticleViewHistoryData> custom({
+    Expression<int>? id,
+    Expression<int>? articleNumber,
+    Expression<int>? viewedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (articleNumber != null) 'article_number': articleNumber,
+      if (viewedAt != null) 'viewed_at': viewedAt,
+    });
+  }
+
+  ArticleViewHistoryCompanion copyWith({
+    Value<int>? id,
+    Value<int>? articleNumber,
+    Value<int>? viewedAt,
+  }) {
+    return ArticleViewHistoryCompanion(
+      id: id ?? this.id,
+      articleNumber: articleNumber ?? this.articleNumber,
+      viewedAt: viewedAt ?? this.viewedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (articleNumber.present) {
+      map['article_number'] = Variable<int>(articleNumber.value);
+    }
+    if (viewedAt.present) {
+      map['viewed_at'] = Variable<int>(viewedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ArticleViewHistoryCompanion(')
+          ..write('id: $id, ')
+          ..write('articleNumber: $articleNumber, ')
+          ..write('viewedAt: $viewedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class DatabaseAtV3 extends GeneratedDatabase {
+  DatabaseAtV3(QueryExecutor e) : super(e);
   late final Titles titles = Titles(this);
   late final Chapters chapters = Chapters(this);
   late final Sections sections = Sections(this);
   late final Articles articles = Articles(this);
+  late final ArticleViewHistory articleViewHistory = ArticleViewHistory(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1080,6 +1391,7 @@ class DatabaseAtV1 extends GeneratedDatabase {
     chapters,
     sections,
     articles,
+    articleViewHistory,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
@@ -1097,7 +1409,14 @@ class DatabaseAtV1 extends GeneratedDatabase {
       ),
       result: [TableUpdate('sections', kind: UpdateKind.delete)],
     ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'articles',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('article_view_history', kind: UpdateKind.delete)],
+    ),
   ]);
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 3;
 }

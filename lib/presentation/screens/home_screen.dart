@@ -52,6 +52,7 @@ class HomeScreen extends HookConsumerWidget {
             },
             icon: const Icon(Icons.search),
           ),
+          IconButton(onPressed: () => HistoryRoute().push(context), icon: const Icon(Icons.history)),
           IconButton(onPressed: () => InfoRoute().push(context), icon: const Icon(Icons.info_outline)),
         ],
       ),
