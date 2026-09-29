@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'section.dart';
@@ -9,6 +9,7 @@ part of 'section.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $SectionEntityCopyWith<SectionEntity> get copyWith => _$SectionEntityCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SectionEntity&&(identical(other.number, number) || other.number == number)&&(identical(other.text, text) || other.text == text)&&(identical(other.chapterNumber, chapterNumber) || other.chapterNumber == chapterNumber)&&(identical(other.titleNumber, titleNumber) || other.titleNumber == titleNumber)&&const DeepCollectionEquality().equals(other.articles, articles));
+  final _this = this as SectionEntity;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SectionEntity&&(identical(other.number, _this.number) || other.number == _this.number)&&(identical(other.text, _this.text) || other.text == _this.text)&&(identical(other.chapterNumber, _this.chapterNumber) || other.chapterNumber == _this.chapterNumber)&&(identical(other.titleNumber, _this.titleNumber) || other.titleNumber == _this.titleNumber)&&const DeepCollectionEquality().equals(other.articles, _this.articles));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,number,text,chapterNumber,titleNumber,const DeepCollectionEquality().hash(articles));
+int get hashCode {
+  final _this = this as SectionEntity;
+  return Object.hash(runtimeType,_this.number,_this.text,_this.chapterNumber,_this.titleNumber,const DeepCollectionEquality().hash(_this.articles));
+}
 
 @override
 String toString() {
-  return 'SectionEntity(number: $number, text: $text, chapterNumber: $chapterNumber, titleNumber: $titleNumber, articles: $articles)';
+  final _this = this as SectionEntity;
+  return 'SectionEntity(number: ${_this.number}, text: ${_this.text}, chapterNumber: ${_this.chapterNumber}, titleNumber: ${_this.titleNumber}, articles: ${_this.articles})';
 }
 
 
@@ -63,7 +69,7 @@ class _$SectionEntityCopyWithImpl<$Res>
 /// Create a copy of SectionEntity
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? number = null,Object? text = null,Object? chapterNumber = null,Object? titleNumber = null,Object? articles = null,}) {
-  return _then(_self.copyWith(
+  return _then(SectionEntity(
 number: null == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
 as int,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
 as String,chapterNumber: null == chapterNumber ? _self.chapterNumber : chapterNumber // ignore: cast_nullable_to_non_nullable
@@ -210,7 +216,7 @@ return $default(_that.number,_that.text,_that.chapterNumber,_that.titleNumber,_t
 
 
 class _SectionEntity implements SectionEntity {
-  const _SectionEntity({required this.number, required this.text, required this.chapterNumber, required this.titleNumber, required final  Set<int> articles}): _articles = articles;
+  const _SectionEntity({required this.number, required this.text, required this.chapterNumber, required this.titleNumber, required  Set<int> articles}): _articles = articles;
   
 
 @override final  int number;
@@ -235,16 +241,18 @@ _$SectionEntityCopyWith<_SectionEntity> get copyWith => __$SectionEntityCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SectionEntity&&(identical(other.number, number) || other.number == number)&&(identical(other.text, text) || other.text == text)&&(identical(other.chapterNumber, chapterNumber) || other.chapterNumber == chapterNumber)&&(identical(other.titleNumber, titleNumber) || other.titleNumber == titleNumber)&&const DeepCollectionEquality().equals(other._articles, _articles));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SectionEntity&&(identical(other.number, number) || other.number == number)&&(identical(other.text, text) || other.text == text)&&(identical(other.chapterNumber, chapterNumber) || other.chapterNumber == chapterNumber)&&(identical(other.titleNumber, titleNumber) || other.titleNumber == titleNumber)&&const DeepCollectionEquality().equals(other.articles, _articles));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,number,text,chapterNumber,titleNumber,const DeepCollectionEquality().hash(_articles));
+int get hashCode {
+    return Object.hash(runtimeType,number,text,chapterNumber,titleNumber,const DeepCollectionEquality().hash(_articles));
+}
 
 @override
 String toString() {
-  return 'SectionEntity(number: $number, text: $text, chapterNumber: $chapterNumber, titleNumber: $titleNumber, articles: $articles)';
+    return 'SectionEntity(number: $number, text: $text, chapterNumber: $chapterNumber, titleNumber: $titleNumber, articles: $articles)';
 }
 
 

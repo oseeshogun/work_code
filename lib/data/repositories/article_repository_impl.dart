@@ -67,10 +67,18 @@ class ArticleRepositoryImpl extends DatabaseAccessor<AppDatabase> with _$Article
   Stream<List<ArticleEntity>> streamFavoriteArticles() {
     return (select(articles)..where((t) => t.isFavorite.equals(true))).map((row) => row.toEntity()).watch();
   }
+
+  @override
+  Future<void> updateNote(int articleNumber, String? note) {
+    final trimmed = note?.trim();
+    return (update(articles)..where((t) => t.number.equals(articleNumber))).write(
+      ArticlesCompanion(note: Value(trimmed == null || trimmed.isEmpty ? null : trimmed)),
+    );
+  }
 }
 
 extension ArticleToEntity on Article {
   ArticleEntity toEntity() {
-    return ArticleEntity(number: number, text: value, slug: valueSlug, isFavorite: isFavorite);
+    return ArticleEntity(number: number, text: value, slug: valueSlug, isFavorite: isFavorite, note: note);
   }
 }

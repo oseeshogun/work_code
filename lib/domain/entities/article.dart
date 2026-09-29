@@ -9,5 +9,6 @@ abstract class ArticleEntity with _$ArticleEntity {
     required String text,
     required String slug,
     @Default(false) bool isFavorite,
+    String? note,
   }) = _ArticleEntity;
 }
