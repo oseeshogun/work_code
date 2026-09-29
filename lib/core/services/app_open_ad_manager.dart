@@ -4,6 +4,17 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class AppOpenAdManager {
   static const _maxCacheDuration = Duration(hours: 4);
 
+  static bool _suppressNextShow = false;
+
+  /// Call this right before triggering navigation the app itself starts
+  /// (e.g. opening the share sheet or an external browser link), so the app
+  /// open ad doesn't pop immediately when the user returns. Showing a
+  /// full-screen ad right after a user-initiated share/browser trip violates
+  /// AdMob's ad placement policies.
+  static void notifyAppInitiatedNavigation() {
+    _suppressNextShow = true;
+  }
+
   AppOpenAd? _appOpenAd;
   bool _isLoadingAd = false;
   bool isShowingAd = false;
@@ -37,6 +48,12 @@ class AppOpenAdManager {
   }
 
   void showAdIfAvailable() {
+    if (_suppressNextShow) {
+      _suppressNextShow = false;
+      loadAd();
+      return;
+    }
+
     if (isShowingAd || !_isAdAvailable) {
       loadAd();
       return;

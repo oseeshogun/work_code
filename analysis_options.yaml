@@ -1,20 +1,20 @@
 include: package:flutter_lints/flutter.yaml
 
+plugins:
+  riverpod_lint: 3.1.4
+
 analyzer:
-  plugins:
-    - custom_lint
   exclude:
     - lib/**.g.dart
     - lib/**.freezed.dart
     - test/drift/**
+    - build/**
+    - android/**
+    - ios/**
 
   errors:
     invalid_annotation_target: ignore
 
-custom_lint:
-  rules:
-
-  
 linter:
   rules:
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
