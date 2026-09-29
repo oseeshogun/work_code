@@ -1,4 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:codedutravail/core/constants/store_urls.dart';
 import 'package:codedutravail/data/repositories/article_repository_impl.dart';
 import 'package:codedutravail/data/repositories/article_view_history_repository_impl.dart';
 import 'package:codedutravail/domain/providers/articles/article.dart';
@@ -23,8 +24,7 @@ class ArticleScreen extends HookConsumerWidget {
     final tts = ref.watch(ttsProvider).value;
     final isReading = useState(false);
 
-    const packageName = 'com.oseemasuaku.codedutravail';
-    final androidUrl = 'https://play.google.com/store/apps/details?id=$packageName';
+    final storeUrl = StoreUrls.current;
 
     speak(String text) {
       isReading.value = tts != null;
@@ -62,7 +62,7 @@ class ArticleScreen extends HookConsumerWidget {
                       AppOpenAdManager.notifyAppInitiatedNavigation();
                       SharePlus.instance.share(
                         ShareParams(
-                          text: 'Article ${article.number} - Code du Travail\n\n${article.text}\n\n$androidUrl',
+                          text: 'Article ${article.number} - Code du Travail\n\n${article.text}\n\n$storeUrl',
                           sharePositionOrigin: origin,
                         ),
                       );
