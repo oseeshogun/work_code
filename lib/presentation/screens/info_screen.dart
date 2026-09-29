@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:codedutravail/core/constants/store_urls.dart';
 import 'package:codedutravail/core/router/routes.dart';
 import 'package:codedutravail/core/services/app_open_ad_manager.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +13,7 @@ class InfoScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const packageName = 'com.oseemasuaku.codedutravail';
-    final androidUrl = 'https://play.google.com/store/apps/details?id=$packageName';
+    final storeUrl = StoreUrls.current;
     return Scaffold(
       appBar: AppBar(title: const Text('Informations')),
       body: Padding(
@@ -42,14 +44,13 @@ class InfoScreen extends HookConsumerWidget {
             ),
             ListTile(
               title: const Text('Partager l\'application'),
-              leading: Image.asset('assets/images/google-play.png', width: 36, height: 36),
-              trailing: const Icon(Icons.share),
+              leading: const Icon(Icons.share),
               onTap: () {
                 final box = context.findRenderObject() as RenderBox?;
                 AppOpenAdManager.notifyAppInitiatedNavigation();
                 SharePlus.instance.share(
                   ShareParams(
-                    text: 'Découvrez l\'application : $androidUrl',
+                    text: 'Découvrez l\'application : $storeUrl',
                     sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                   ),
                 );
@@ -60,17 +61,18 @@ class InfoScreen extends HookConsumerWidget {
               leading: const Icon(Icons.corporate_fare),
               onTap: () => AboutRoute().push(context),
             ),
-            ListTile(
-              title: const Text('Nos autres applications'),
-              leading: const Icon(Icons.apps),
-              onTap: () async {
-                final urlString = 'https://play.google.com/store/apps/dev?id=5877739770389993725';
-                if (await canLaunchUrlString(urlString)) {
-                  AppOpenAdManager.notifyAppInitiatedNavigation();
-                  await launchUrlString(urlString);
-                }
-              },
-            ),
+            if (!Platform.isIOS)
+              ListTile(
+                title: const Text('Nos autres applications'),
+                leading: const Icon(Icons.apps),
+                onTap: () async {
+                  final urlString = 'https://play.google.com/store/apps/dev?id=5877739770389993725';
+                  if (await canLaunchUrlString(urlString)) {
+                    AppOpenAdManager.notifyAppInitiatedNavigation();
+                    await launchUrlString(urlString);
+                  }
+                },
+              ),
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(10.0),
