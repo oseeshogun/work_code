@@ -10,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:codedutravail/firebase_options.dart';
 
 Future<void> main() async {
@@ -35,6 +36,21 @@ Future<void> main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
+/// Shows the iOS App Tracking Transparency prompt before any SDK that could
+/// collect data (Firebase Analytics, AdMob) is started.
+Future<void> _requestTrackingPermission() async {
+  if (defaultTargetPlatform != TargetPlatform.iOS) return;
+  try {
+    if (await AppTrackingTransparency.trackingAuthorizationStatus == TrackingStatus.notDetermined) {
+      // The prompt is ignored unless the app is active, so give the UI a moment.
+      await Future.delayed(const Duration(milliseconds: 500));
+      await AppTrackingTransparency.requestTrackingAuthorization();
+    }
+  } catch (e) {
+    debugPrint('ATT request failed: $e');
+  }
+}
+
 class MyApp extends HookConsumerWidget {
   const MyApp({super.key});
 
@@ -52,6 +68,7 @@ class MyApp extends HookConsumerWidget {
       if (lifecycleState == AppLifecycleState.resumed) {
         appOpenAdManager.showAdIfAvailable();
       }
+      _requestTrackingPermission();
       return null;
     }, [lifecycleState]);
 
@@ -60,15 +77,14 @@ class MyApp extends HookConsumerWidget {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       routerConfig: router,
-      builder:
-          (context, child) => UpgradeAlert(
-            navigatorKey: routerKey,
-            onUpdate: () {
-              AppOpenAdManager.notifyAppInitiatedNavigation();
-              return true;
-            },
-            child: child,
-          ),
+      builder: (context, child) => UpgradeAlert(
+        navigatorKey: routerKey,
+        onUpdate: () {
+          AppOpenAdManager.notifyAppInitiatedNavigation();
+          return true;
+        },
+        child: child,
+      ),
     );
   }
 }
